@@ -11,3 +11,276 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Late_fee_policy {
+  days_from Int @id
+  percentage Int
+}
+
+model Boat {
+  hin Int @id
+
+  publicId String @unique
+  name String
+  description String
+
+  idBoatType Int
+
+  departures Departure[]
+  boatHasBoatSlips Boat_has_boat_slip[]
+
+  boatType Boat_type @relation(fields: [idBoatType], references: [id])
+}
+
+model Activity {
+  id Int @id
+
+  publicId String @unique
+  name String
+  description String
+
+  idBoatType Int
+  boatType Boat_type @relation(fields: [idBoatType], references: [id])
+
+  employees Employee_activity[]
+}
+
+model Boat_type {
+  id Int @id
+  name String
+  requiredOperation String
+
+  boats Boat[]
+  activities Activity[]
+  sectors Sector[]
+}
+
+model Sector {
+  id Int @id
+  name String
+  operationType String
+
+  boatSlip Boat_slip[]
+  boatTypes Boat_type[]
+}
+
+model Departure {
+  idBoat Int
+  departureTime DateTime
+
+  publicId String @unique
+  estimatedReturnTime DateTime
+  actualReturnTime DateTime?
+
+  boat Boat @relation(fields: [idBoat], references: [hin])
+
+  @@id([departureTime, idBoat])
+}
+
+model Boat_slip {
+  id Int
+  idSector Int
+
+  state String
+
+  sector Sector @relation(fields: [idSector], references: [id])
+
+  prices Boat_slip_price[]
+  boatHasBoatSlips Boat_has_boat_slip[]
+
+  @@id([id, idSector])
+}
+
+model Boat_slip_price {
+  startTime DateTime
+  idBoatSlip Int
+  idSector Int
+
+  endTime DateTime
+  quotaAmount Decimal
+
+  boatSlip Boat_slip @relation(fields: [idBoatSlip, idSector], references: [id, idSector])
+
+  @@id([startTime, idBoatSlip, idSector])
+}
+
+model Boat_has_boat_slip {
+  startTime DateTime
+  idBoat Int
+
+  publicId String @unique
+  endDateTime DateTime?
+  idBoatSlip Int
+  idSector Int
+
+  boat Boat @relation(fields: [idBoat], references: [hin])
+  boatSlip Boat_slip @relation(fields: [idBoatSlip, idSector], references: [id, idSector])
+
+  contractQuotas Contract_quota[]
+
+  @@id([startTime, idBoat])
+}
+
+model Contract_quota {
+  id Int @id
+
+  publicId String @unique
+  period DateTime
+  startDateTime DateTime
+  idBoat Int
+
+  dueDate DateTime
+  amount Decimal
+  state String
+
+  boatHasBoatSlips Boat_has_boat_slip @relation(fields: [startDateTime, idBoat], references: [startTime, idBoat])
+
+  payment Contract_quota_payment?
+}
+
+model Contract_quota_payment {
+  id Int @id @default(autoincrement())
+
+  paymentDate DateTime?
+  amountPaid Decimal?
+
+  quotaId Int @unique
+  contractQuota Contract_quota @relation(fields: [quotaId], references: [id])
+}
+
+model User {
+  id Int @id @default(autoincrement())
+
+  publicId String @unique
+  email String @unique
+  password String
+  phoneNumber String
+  isActive Boolean @default(true)
+  isAdmin Boolean @default(false)
+
+  employee Employee?
+  member Member?
+}
+
+model Employee {
+  userId Int @id
+
+  firstName String
+  lastName String
+  employeeNumber Int
+  employeeType String
+  licenseNumber String?
+
+  user User @relation(fields: [userId], references: [id])
+
+  activities Employee_activity[]
+}
+
+model Member {
+  userId Int @id
+  documentType String
+  documentNumber String
+  firstName String?
+  lastName String?
+  businessName String?
+
+  user User @relation(fields: [userId], references: [id])
+
+  enrollments Enrollment[]
+}
+
+model Employee_activity {
+  idEmployee Int
+  idActivity Int
+
+  employee Employee @relation(fields: [idEmployee], references: [userId])
+  activity Activity @relation(fields: [idActivity], references: [id])
+
+  @@id([idEmployee, idActivity])
+
+  courses Course[]
+}
+
+model Course {
+  id Int @id
+
+  publicId String @unique
+  capacity Int
+
+  idActivity Int
+  idEmployee Int
+
+  employeesActivity Employee_activity @relation(fields: [idEmployee, idActivity], references: [idEmployee, idActivity])
+
+  courseSchedules Course_schedule[]
+  coursePrices Course_price[]
+  enrollments Enrollment[]
+}
+
+model Course_schedule {
+  id Int
+
+  name String
+  startTime DateTime
+  endTime DateTime
+
+  idCourse Int
+  course Course @relation(fields: [idCourse], references: [id])
+
+  @@id([id, idCourse])
+}
+
+model Course_price {
+  startDate DateTime
+
+  endDate DateTime
+  enrollmentAmount Decimal
+  quotaAmount Decimal
+
+  idCourse Int
+  course Course @relation(fields: [idCourse], references: [id])
+
+  @@id([startDate, idCourse])
+}
+
+model Enrollment {
+  idMember Int
+  idCourse Int
+
+  enrollmentDate DateTime
+  state String
+
+  course Course @relation(fields: [idCourse], references: [id])
+  member Member @relation(fields: [idMember], references: [userId])
+
+  courseQuotas Course_quota[]
+
+  @@id([idMember, idCourse])
+}
+
+model Course_quota {
+  id Int @id @default(autoincrement())
+
+  publicId String @unique
+  period DateTime
+  dueDate DateTime
+  amount Decimal
+  state String
+
+  idMember Int
+  idCourse Int
+
+  enrollment Enrollment @relation(fields: [idMember, idCourse], references: [idMember, idCourse])
+
+  courseQuotaPayment Course_quota_payment?
+}
+
+model Course_quota_payment {
+  id Int @id @default(autoincrement())
+
+  paymentDate DateTime?
+  amountPaid Decimal?
+
+  quotaId Int @unique
+  courseQuota Course_quota @relation(fields: [quotaId], references: [id])
+}
