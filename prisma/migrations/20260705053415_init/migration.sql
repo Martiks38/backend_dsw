@@ -86,7 +86,7 @@ CREATE TABLE `contracts` (
 
 -- CreateTable
 CREATE TABLE `users` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL AUTO_INCREMENT,
     `publicId` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE `users` (
 
     UNIQUE INDEX `users_publicId_key`(`publicId`),
     UNIQUE INDEX `users_email_key`(`email`),
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`userId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -218,10 +218,10 @@ ALTER TABLE `contracts` ADD CONSTRAINT `contracts_boatId_fkey` FOREIGN KEY (`boa
 ALTER TABLE `contracts` ADD CONSTRAINT `contracts_cradleId_fkey` FOREIGN KEY (`cradleId`) REFERENCES `cradles`(`cradleId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `employees` ADD CONSTRAINT `employees_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `employees` ADD CONSTRAINT `employees_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`userId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `members` ADD CONSTRAINT `members_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `members` ADD CONSTRAINT `members_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`userId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `employees_activities` ADD CONSTRAINT `employees_activities_employeeId_fkey` FOREIGN KEY (`employeeId`) REFERENCES `employees`(`userId`) ON DELETE RESTRICT ON UPDATE CASCADE;
