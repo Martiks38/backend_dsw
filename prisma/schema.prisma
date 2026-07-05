@@ -135,7 +135,7 @@ model Contract {
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  userId Int @id @default(autoincrement())
 
   publicId String @unique
   email String @unique
@@ -159,7 +159,7 @@ model Employee {
   employeeType String
   licenseNumber String?
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [userId])
 
   activities EmployeesActivities[]
 
@@ -175,7 +175,7 @@ model Member {
   lastName String?
   businessName String?
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [userId])
 
   boat Boat[]
   enrollments Enrollment[]
