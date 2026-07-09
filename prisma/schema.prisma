@@ -177,6 +177,7 @@ model Member {
   boat        Boat[]
   enrollments Enrollment[]
 
+  @@unique([documentType, documentNumber])
   @@map("members")
 }
 

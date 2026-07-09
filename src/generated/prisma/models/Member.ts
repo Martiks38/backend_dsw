@@ -249,6 +249,7 @@ export type MemberOrderByWithRelationInput = {
 export type MemberWhereUniqueInput = Prisma.AtLeast<
   {
     userId?: number;
+    documentType_documentNumber?: Prisma.MemberDocumentTypeDocumentNumberCompoundUniqueInput;
     AND?: Prisma.MemberWhereInput | Prisma.MemberWhereInput[];
     OR?: Prisma.MemberWhereInput[];
     NOT?: Prisma.MemberWhereInput | Prisma.MemberWhereInput[];
@@ -261,7 +262,7 @@ export type MemberWhereUniqueInput = Prisma.AtLeast<
     boat?: Prisma.BoatListRelationFilter;
     enrollments?: Prisma.EnrollmentListRelationFilter;
   },
-  'userId'
+  'userId' | 'documentType_documentNumber'
 >;
 
 export type MemberOrderByWithAggregationInput = {
@@ -431,6 +432,11 @@ export type MemberOrderByRelevanceInput = {
     | Prisma.MemberOrderByRelevanceFieldEnum[];
   sort: Prisma.SortOrder;
   search: string;
+};
+
+export type MemberDocumentTypeDocumentNumberCompoundUniqueInput = {
+  documentType: string;
+  documentNumber: string;
 };
 
 export type MemberCountOrderByAggregateInput = {
