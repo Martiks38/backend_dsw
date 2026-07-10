@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
+import { MembersModule } from './modules/members/members.module';
 
 @Module({
   imports: [
@@ -11,8 +11,8 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    UsersModule,
     PrismaModule,
+    MembersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
