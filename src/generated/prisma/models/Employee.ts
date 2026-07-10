@@ -251,18 +251,18 @@ export type EmployeeOrderByWithRelationInput = {
 export type EmployeeWhereUniqueInput = Prisma.AtLeast<
   {
     userId?: number;
+    employeeNumber?: number;
     AND?: Prisma.EmployeeWhereInput | Prisma.EmployeeWhereInput[];
     OR?: Prisma.EmployeeWhereInput[];
     NOT?: Prisma.EmployeeWhereInput | Prisma.EmployeeWhereInput[];
     firstName?: Prisma.StringFilter<'Employee'> | string;
     lastName?: Prisma.StringFilter<'Employee'> | string;
-    employeeNumber?: Prisma.IntFilter<'Employee'> | number;
     employeeType?: Prisma.StringFilter<'Employee'> | string;
     licenseNumber?: Prisma.StringNullableFilter<'Employee'> | string | null;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     activities?: Prisma.EmployeesActivitiesListRelationFilter;
   },
-  'userId'
+  'userId' | 'employeeNumber'
 >;
 
 export type EmployeeOrderByWithAggregationInput = {

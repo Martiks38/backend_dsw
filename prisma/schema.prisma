@@ -152,7 +152,7 @@ model Employee {
 
   firstName      String
   lastName       String
-  employeeNumber Int
+  employeeNumber Int     @unique
   employeeType   String
   licenseNumber  String?
 
