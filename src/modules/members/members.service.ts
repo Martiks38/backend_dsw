@@ -11,6 +11,7 @@ import { handlePrismaError } from '@/common/utils/handlePrismaError';
 import {
   CreateMemberDto,
   CreateMemberResponseDto,
+  MessageResponseDto,
   UpdateMemberDto,
   UpdateMemberResponseDto,
 } from './dto';
@@ -158,7 +159,7 @@ export class MembersService {
     }
   }
 
-  async remove(publicId: string): Promise<Record<'message', string>> {
+  async remove(publicId: string): Promise<MessageResponseDto> {
     const user = await this.prisma.user.findUnique({ where: { publicId } });
 
     if (!user) {
