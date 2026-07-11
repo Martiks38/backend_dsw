@@ -352,6 +352,7 @@ export type UserOrderByRelevanceFieldEnum =
 export const EmployeeOrderByRelevanceFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
+  employeeNumber: 'employeeNumber',
   employeeType: 'employeeType',
   licenseNumber: 'licenseNumber',
 } as const;

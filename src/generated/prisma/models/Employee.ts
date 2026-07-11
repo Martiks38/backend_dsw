@@ -28,19 +28,17 @@ export type AggregateEmployee = {
 
 export type EmployeeAvgAggregateOutputType = {
   userId: number | null;
-  employeeNumber: number | null;
 };
 
 export type EmployeeSumAggregateOutputType = {
   userId: number | null;
-  employeeNumber: number | null;
 };
 
 export type EmployeeMinAggregateOutputType = {
   userId: number | null;
   firstName: string | null;
   lastName: string | null;
-  employeeNumber: number | null;
+  employeeNumber: string | null;
   employeeType: string | null;
   licenseNumber: string | null;
 };
@@ -49,7 +47,7 @@ export type EmployeeMaxAggregateOutputType = {
   userId: number | null;
   firstName: string | null;
   lastName: string | null;
-  employeeNumber: number | null;
+  employeeNumber: string | null;
   employeeType: string | null;
   licenseNumber: string | null;
 };
@@ -66,12 +64,10 @@ export type EmployeeCountAggregateOutputType = {
 
 export type EmployeeAvgAggregateInputType = {
   userId?: true;
-  employeeNumber?: true;
 };
 
 export type EmployeeSumAggregateInputType = {
   userId?: true;
-  employeeNumber?: true;
 };
 
 export type EmployeeMinAggregateInputType = {
@@ -199,7 +195,7 @@ export type EmployeeGroupByOutputType = {
   userId: number;
   firstName: string;
   lastName: string;
-  employeeNumber: number;
+  employeeNumber: string;
   employeeType: string;
   licenseNumber: string | null;
   _count: EmployeeCountAggregateOutputType | null;
@@ -229,7 +225,7 @@ export type EmployeeWhereInput = {
   userId?: Prisma.IntFilter<'Employee'> | number;
   firstName?: Prisma.StringFilter<'Employee'> | string;
   lastName?: Prisma.StringFilter<'Employee'> | string;
-  employeeNumber?: Prisma.IntFilter<'Employee'> | number;
+  employeeNumber?: Prisma.StringFilter<'Employee'> | string;
   employeeType?: Prisma.StringFilter<'Employee'> | string;
   licenseNumber?: Prisma.StringNullableFilter<'Employee'> | string | null;
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
@@ -251,7 +247,7 @@ export type EmployeeOrderByWithRelationInput = {
 export type EmployeeWhereUniqueInput = Prisma.AtLeast<
   {
     userId?: number;
-    employeeNumber?: number;
+    employeeNumber?: string;
     AND?: Prisma.EmployeeWhereInput | Prisma.EmployeeWhereInput[];
     OR?: Prisma.EmployeeWhereInput[];
     NOT?: Prisma.EmployeeWhereInput | Prisma.EmployeeWhereInput[];
@@ -290,7 +286,7 @@ export type EmployeeScalarWhereWithAggregatesInput = {
   userId?: Prisma.IntWithAggregatesFilter<'Employee'> | number;
   firstName?: Prisma.StringWithAggregatesFilter<'Employee'> | string;
   lastName?: Prisma.StringWithAggregatesFilter<'Employee'> | string;
-  employeeNumber?: Prisma.IntWithAggregatesFilter<'Employee'> | number;
+  employeeNumber?: Prisma.StringWithAggregatesFilter<'Employee'> | string;
   employeeType?: Prisma.StringWithAggregatesFilter<'Employee'> | string;
   licenseNumber?:
     | Prisma.StringNullableWithAggregatesFilter<'Employee'>
@@ -301,7 +297,7 @@ export type EmployeeScalarWhereWithAggregatesInput = {
 export type EmployeeCreateInput = {
   firstName: string;
   lastName: string;
-  employeeNumber: number;
+  employeeNumber: string;
   employeeType: string;
   licenseNumber?: string | null;
   user: Prisma.UserCreateNestedOneWithoutEmployeeInput;
@@ -312,7 +308,7 @@ export type EmployeeUncheckedCreateInput = {
   userId: number;
   firstName: string;
   lastName: string;
-  employeeNumber: number;
+  employeeNumber: string;
   employeeType: string;
   licenseNumber?: string | null;
   activities?: Prisma.EmployeesActivitiesUncheckedCreateNestedManyWithoutEmployeeInput;
@@ -321,7 +317,7 @@ export type EmployeeUncheckedCreateInput = {
 export type EmployeeUpdateInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+  employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
   licenseNumber?:
     | Prisma.NullableStringFieldUpdateOperationsInput
@@ -335,7 +331,7 @@ export type EmployeeUncheckedUpdateInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+  employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
   licenseNumber?:
     | Prisma.NullableStringFieldUpdateOperationsInput
@@ -348,7 +344,7 @@ export type EmployeeCreateManyInput = {
   userId: number;
   firstName: string;
   lastName: string;
-  employeeNumber: number;
+  employeeNumber: string;
   employeeType: string;
   licenseNumber?: string | null;
 };
@@ -356,7 +352,7 @@ export type EmployeeCreateManyInput = {
 export type EmployeeUpdateManyMutationInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+  employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
   licenseNumber?:
     | Prisma.NullableStringFieldUpdateOperationsInput
@@ -368,7 +364,7 @@ export type EmployeeUncheckedUpdateManyInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+  employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
   licenseNumber?:
     | Prisma.NullableStringFieldUpdateOperationsInput
@@ -400,7 +396,6 @@ export type EmployeeCountOrderByAggregateInput = {
 
 export type EmployeeAvgOrderByAggregateInput = {
   userId?: Prisma.SortOrder;
-  employeeNumber?: Prisma.SortOrder;
 };
 
 export type EmployeeMaxOrderByAggregateInput = {
@@ -423,7 +418,6 @@ export type EmployeeMinOrderByAggregateInput = {
 
 export type EmployeeSumOrderByAggregateInput = {
   userId?: Prisma.SortOrder;
-  employeeNumber?: Prisma.SortOrder;
 };
 
 export type EmployeeScalarRelationFilter = {
@@ -520,7 +514,7 @@ export type EmployeeUpdateOneRequiredWithoutActivitiesNestedInput = {
 export type EmployeeCreateWithoutUserInput = {
   firstName: string;
   lastName: string;
-  employeeNumber: number;
+  employeeNumber: string;
   employeeType: string;
   licenseNumber?: string | null;
   activities?: Prisma.EmployeesActivitiesCreateNestedManyWithoutEmployeeInput;
@@ -529,7 +523,7 @@ export type EmployeeCreateWithoutUserInput = {
 export type EmployeeUncheckedCreateWithoutUserInput = {
   firstName: string;
   lastName: string;
-  employeeNumber: number;
+  employeeNumber: string;
   employeeType: string;
   licenseNumber?: string | null;
   activities?: Prisma.EmployeesActivitiesUncheckedCreateNestedManyWithoutEmployeeInput;
@@ -566,7 +560,7 @@ export type EmployeeUpdateToOneWithWhereWithoutUserInput = {
 export type EmployeeUpdateWithoutUserInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+  employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
   licenseNumber?:
     | Prisma.NullableStringFieldUpdateOperationsInput
@@ -578,7 +572,7 @@ export type EmployeeUpdateWithoutUserInput = {
 export type EmployeeUncheckedUpdateWithoutUserInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+  employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
   licenseNumber?:
     | Prisma.NullableStringFieldUpdateOperationsInput
@@ -590,7 +584,7 @@ export type EmployeeUncheckedUpdateWithoutUserInput = {
 export type EmployeeCreateWithoutActivitiesInput = {
   firstName: string;
   lastName: string;
-  employeeNumber: number;
+  employeeNumber: string;
   employeeType: string;
   licenseNumber?: string | null;
   user: Prisma.UserCreateNestedOneWithoutEmployeeInput;
@@ -600,7 +594,7 @@ export type EmployeeUncheckedCreateWithoutActivitiesInput = {
   userId: number;
   firstName: string;
   lastName: string;
-  employeeNumber: number;
+  employeeNumber: string;
   employeeType: string;
   licenseNumber?: string | null;
 };
@@ -636,7 +630,7 @@ export type EmployeeUpdateToOneWithWhereWithoutActivitiesInput = {
 export type EmployeeUpdateWithoutActivitiesInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+  employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
   licenseNumber?:
     | Prisma.NullableStringFieldUpdateOperationsInput
@@ -649,7 +643,7 @@ export type EmployeeUncheckedUpdateWithoutActivitiesInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+  employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
   licenseNumber?:
     | Prisma.NullableStringFieldUpdateOperationsInput
@@ -757,7 +751,7 @@ export type $EmployeePayload<
       userId: number;
       firstName: string;
       lastName: string;
-      employeeNumber: number;
+      employeeNumber: string;
       employeeType: string;
       licenseNumber: string | null;
     },
@@ -1308,7 +1302,7 @@ export interface EmployeeFieldRefs {
   readonly userId: Prisma.FieldRef<'Employee', 'Int'>;
   readonly firstName: Prisma.FieldRef<'Employee', 'String'>;
   readonly lastName: Prisma.FieldRef<'Employee', 'String'>;
-  readonly employeeNumber: Prisma.FieldRef<'Employee', 'Int'>;
+  readonly employeeNumber: Prisma.FieldRef<'Employee', 'String'>;
   readonly employeeType: Prisma.FieldRef<'Employee', 'String'>;
   readonly licenseNumber: Prisma.FieldRef<'Employee', 'String'>;
 }
