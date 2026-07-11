@@ -19,18 +19,6 @@ export class CreateEmployeeDto {
   phoneNumber!: string;
 
   @IsString()
-  @Length(2, 20, {
-    message: 'El tipo de documento debe tener entre 2 y 20 caracteres',
-  })
-  documentType!: string;
-
-  @IsString()
-  @Length(6, 20, {
-    message: 'El número de documento debe tener entre 6 y 20 caracteres',
-  })
-  documentNumber!: string;
-
-  @IsString()
   @Length(2, 50, { message: 'El nombre debe tener entre 2 y 50 caracteres' })
   firstName!: string;
 
