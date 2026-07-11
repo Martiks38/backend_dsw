@@ -11,11 +11,11 @@ import { handlePrismaError } from '@/common/utils/handlePrismaError';
 import {
   CreateMemberDto,
   CreateMemberResponseDto,
-  MessageResponseDto,
   UpdateMemberDto,
   UpdateMemberResponseDto,
 } from './dto';
 import { memberSelect } from './member.types';
+import { MessageResponseDto } from '@/common/dto/message-response.dto';
 
 @Injectable()
 export class MembersService {
@@ -175,6 +175,7 @@ export class MembersService {
     this.logger.log(`Socio actualizado: userId=${user.userId}`);
 
     return {
+      success: true,
       message: `Socio con id ${publicId} fue eliminado correctamente`,
     };
   }

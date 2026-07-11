@@ -12,11 +12,11 @@ import {
   CreateMemberDto,
   CreateMemberResponseDto,
   MemberResponseDto,
-  MessageResponseDto,
   UpdateMemberDto,
   UpdateMemberResponseDto,
 } from './dto';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { MessageResponseDto } from '@/common/dto/message-response.dto';
 
 @ApiTags('members')
 @Controller('members')
