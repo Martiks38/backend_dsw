@@ -178,6 +178,8 @@ export const UserScalarFieldEnum = {
   email: 'email',
   password: 'password',
   phoneNumber: 'phoneNumber',
+  documentType: 'documentType',
+  documentNumber: 'documentNumber',
   isActive: 'isActive',
   isEmployee: 'isEmployee',
 } as const;
@@ -199,8 +201,6 @@ export type EmployeeScalarFieldEnum =
 
 export const MemberScalarFieldEnum = {
   userId: 'userId',
-  documentType: 'documentType',
-  documentNumber: 'documentNumber',
   firstName: 'firstName',
   lastName: 'lastName',
   businessName: 'businessName',
@@ -344,6 +344,8 @@ export const UserOrderByRelevanceFieldEnum = {
   email: 'email',
   password: 'password',
   phoneNumber: 'phoneNumber',
+  documentType: 'documentType',
+  documentNumber: 'documentNumber',
 } as const;
 
 export type UserOrderByRelevanceFieldEnum =
@@ -361,8 +363,6 @@ export type EmployeeOrderByRelevanceFieldEnum =
   (typeof EmployeeOrderByRelevanceFieldEnum)[keyof typeof EmployeeOrderByRelevanceFieldEnum];
 
 export const MemberOrderByRelevanceFieldEnum = {
-  documentType: 'documentType',
-  documentNumber: 'documentNumber',
   firstName: 'firstName',
   lastName: 'lastName',
   businessName: 'businessName',

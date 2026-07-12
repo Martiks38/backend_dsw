@@ -134,16 +134,19 @@ model Contract {
 model User {
   userId Int @id @default(autoincrement())
 
-  publicId    String  @unique
-  email       String  @unique
-  password    String
-  phoneNumber String
-  isActive    Boolean @default(true)
-  isEmployee  Boolean @default(false)
+  publicId       String  @unique
+  email          String  @unique
+  password       String
+  phoneNumber    String
+  documentType   String
+  documentNumber String
+  isActive       Boolean @default(true)
+  isEmployee     Boolean @default(false)
 
   employee Employee?
   member   Member?
 
+  @@unique([documentType, documentNumber])
   @@map("users")
 }
 
@@ -166,18 +169,15 @@ model Employee {
 model Member {
   userId Int @id
 
-  documentType   String?
-  documentNumber String?
-  firstName      String?
-  lastName       String?
-  businessName   String?
+  firstName    String?
+  lastName     String?
+  businessName String?
 
   user User @relation(fields: [userId], references: [userId])
 
   boat        Boat[]
   enrollments Enrollment[]
 
-  @@unique([documentType, documentNumber])
   @@map("members")
 }
 

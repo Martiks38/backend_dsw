@@ -36,8 +36,6 @@ export type MemberSumAggregateOutputType = {
 
 export type MemberMinAggregateOutputType = {
   userId: number | null;
-  documentType: string | null;
-  documentNumber: string | null;
   firstName: string | null;
   lastName: string | null;
   businessName: string | null;
@@ -45,8 +43,6 @@ export type MemberMinAggregateOutputType = {
 
 export type MemberMaxAggregateOutputType = {
   userId: number | null;
-  documentType: string | null;
-  documentNumber: string | null;
   firstName: string | null;
   lastName: string | null;
   businessName: string | null;
@@ -54,8 +50,6 @@ export type MemberMaxAggregateOutputType = {
 
 export type MemberCountAggregateOutputType = {
   userId: number;
-  documentType: number;
-  documentNumber: number;
   firstName: number;
   lastName: number;
   businessName: number;
@@ -72,8 +66,6 @@ export type MemberSumAggregateInputType = {
 
 export type MemberMinAggregateInputType = {
   userId?: true;
-  documentType?: true;
-  documentNumber?: true;
   firstName?: true;
   lastName?: true;
   businessName?: true;
@@ -81,8 +73,6 @@ export type MemberMinAggregateInputType = {
 
 export type MemberMaxAggregateInputType = {
   userId?: true;
-  documentType?: true;
-  documentNumber?: true;
   firstName?: true;
   lastName?: true;
   businessName?: true;
@@ -90,8 +80,6 @@ export type MemberMaxAggregateInputType = {
 
 export type MemberCountAggregateInputType = {
   userId?: true;
-  documentType?: true;
-  documentNumber?: true;
   firstName?: true;
   lastName?: true;
   businessName?: true;
@@ -193,8 +181,6 @@ export type MemberGroupByArgs<
 
 export type MemberGroupByOutputType = {
   userId: number;
-  documentType: string | null;
-  documentNumber: string | null;
   firstName: string | null;
   lastName: string | null;
   businessName: string | null;
@@ -223,8 +209,6 @@ export type MemberWhereInput = {
   OR?: Prisma.MemberWhereInput[];
   NOT?: Prisma.MemberWhereInput | Prisma.MemberWhereInput[];
   userId?: Prisma.IntFilter<'Member'> | number;
-  documentType?: Prisma.StringNullableFilter<'Member'> | string | null;
-  documentNumber?: Prisma.StringNullableFilter<'Member'> | string | null;
   firstName?: Prisma.StringNullableFilter<'Member'> | string | null;
   lastName?: Prisma.StringNullableFilter<'Member'> | string | null;
   businessName?: Prisma.StringNullableFilter<'Member'> | string | null;
@@ -235,8 +219,6 @@ export type MemberWhereInput = {
 
 export type MemberOrderByWithRelationInput = {
   userId?: Prisma.SortOrder;
-  documentType?: Prisma.SortOrderInput | Prisma.SortOrder;
-  documentNumber?: Prisma.SortOrderInput | Prisma.SortOrder;
   firstName?: Prisma.SortOrderInput | Prisma.SortOrder;
   lastName?: Prisma.SortOrderInput | Prisma.SortOrder;
   businessName?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -249,12 +231,9 @@ export type MemberOrderByWithRelationInput = {
 export type MemberWhereUniqueInput = Prisma.AtLeast<
   {
     userId?: number;
-    documentType_documentNumber?: Prisma.MemberDocumentTypeDocumentNumberCompoundUniqueInput;
     AND?: Prisma.MemberWhereInput | Prisma.MemberWhereInput[];
     OR?: Prisma.MemberWhereInput[];
     NOT?: Prisma.MemberWhereInput | Prisma.MemberWhereInput[];
-    documentType?: Prisma.StringNullableFilter<'Member'> | string | null;
-    documentNumber?: Prisma.StringNullableFilter<'Member'> | string | null;
     firstName?: Prisma.StringNullableFilter<'Member'> | string | null;
     lastName?: Prisma.StringNullableFilter<'Member'> | string | null;
     businessName?: Prisma.StringNullableFilter<'Member'> | string | null;
@@ -262,13 +241,11 @@ export type MemberWhereUniqueInput = Prisma.AtLeast<
     boat?: Prisma.BoatListRelationFilter;
     enrollments?: Prisma.EnrollmentListRelationFilter;
   },
-  'userId' | 'documentType_documentNumber'
+  'userId'
 >;
 
 export type MemberOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder;
-  documentType?: Prisma.SortOrderInput | Prisma.SortOrder;
-  documentNumber?: Prisma.SortOrderInput | Prisma.SortOrder;
   firstName?: Prisma.SortOrderInput | Prisma.SortOrder;
   lastName?: Prisma.SortOrderInput | Prisma.SortOrder;
   businessName?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -288,14 +265,6 @@ export type MemberScalarWhereWithAggregatesInput = {
     | Prisma.MemberScalarWhereWithAggregatesInput
     | Prisma.MemberScalarWhereWithAggregatesInput[];
   userId?: Prisma.IntWithAggregatesFilter<'Member'> | number;
-  documentType?:
-    | Prisma.StringNullableWithAggregatesFilter<'Member'>
-    | string
-    | null;
-  documentNumber?:
-    | Prisma.StringNullableWithAggregatesFilter<'Member'>
-    | string
-    | null;
   firstName?:
     | Prisma.StringNullableWithAggregatesFilter<'Member'>
     | string
@@ -311,8 +280,6 @@ export type MemberScalarWhereWithAggregatesInput = {
 };
 
 export type MemberCreateInput = {
-  documentType?: string | null;
-  documentNumber?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   businessName?: string | null;
@@ -323,8 +290,6 @@ export type MemberCreateInput = {
 
 export type MemberUncheckedCreateInput = {
   userId: number;
-  documentType?: string | null;
-  documentNumber?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   businessName?: string | null;
@@ -333,14 +298,6 @@ export type MemberUncheckedCreateInput = {
 };
 
 export type MemberUpdateInput = {
-  documentType?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
-  documentNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   businessName?:
@@ -354,14 +311,6 @@ export type MemberUpdateInput = {
 
 export type MemberUncheckedUpdateInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
-  documentType?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
-  documentNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   businessName?:
@@ -374,22 +323,12 @@ export type MemberUncheckedUpdateInput = {
 
 export type MemberCreateManyInput = {
   userId: number;
-  documentType?: string | null;
-  documentNumber?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   businessName?: string | null;
 };
 
 export type MemberUpdateManyMutationInput = {
-  documentType?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
-  documentNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   businessName?:
@@ -400,14 +339,6 @@ export type MemberUpdateManyMutationInput = {
 
 export type MemberUncheckedUpdateManyInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
-  documentType?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
-  documentNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   businessName?:
@@ -434,15 +365,8 @@ export type MemberOrderByRelevanceInput = {
   search: string;
 };
 
-export type MemberDocumentTypeDocumentNumberCompoundUniqueInput = {
-  documentType: string;
-  documentNumber: string;
-};
-
 export type MemberCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder;
-  documentType?: Prisma.SortOrder;
-  documentNumber?: Prisma.SortOrder;
   firstName?: Prisma.SortOrder;
   lastName?: Prisma.SortOrder;
   businessName?: Prisma.SortOrder;
@@ -454,8 +378,6 @@ export type MemberAvgOrderByAggregateInput = {
 
 export type MemberMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder;
-  documentType?: Prisma.SortOrder;
-  documentNumber?: Prisma.SortOrder;
   firstName?: Prisma.SortOrder;
   lastName?: Prisma.SortOrder;
   businessName?: Prisma.SortOrder;
@@ -463,8 +385,6 @@ export type MemberMaxOrderByAggregateInput = {
 
 export type MemberMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder;
-  documentType?: Prisma.SortOrder;
-  documentNumber?: Prisma.SortOrder;
   firstName?: Prisma.SortOrder;
   lastName?: Prisma.SortOrder;
   businessName?: Prisma.SortOrder;
@@ -583,8 +503,6 @@ export type MemberUpdateOneRequiredWithoutEnrollmentsNestedInput = {
 };
 
 export type MemberCreateWithoutBoatInput = {
-  documentType?: string | null;
-  documentNumber?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   businessName?: string | null;
@@ -594,8 +512,6 @@ export type MemberCreateWithoutBoatInput = {
 
 export type MemberUncheckedCreateWithoutBoatInput = {
   userId: number;
-  documentType?: string | null;
-  documentNumber?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   businessName?: string | null;
@@ -631,14 +547,6 @@ export type MemberUpdateToOneWithWhereWithoutBoatInput = {
 };
 
 export type MemberUpdateWithoutBoatInput = {
-  documentType?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
-  documentNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   businessName?:
@@ -651,14 +559,6 @@ export type MemberUpdateWithoutBoatInput = {
 
 export type MemberUncheckedUpdateWithoutBoatInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
-  documentType?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
-  documentNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   businessName?:
@@ -669,8 +569,6 @@ export type MemberUncheckedUpdateWithoutBoatInput = {
 };
 
 export type MemberCreateWithoutUserInput = {
-  documentType?: string | null;
-  documentNumber?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   businessName?: string | null;
@@ -679,8 +577,6 @@ export type MemberCreateWithoutUserInput = {
 };
 
 export type MemberUncheckedCreateWithoutUserInput = {
-  documentType?: string | null;
-  documentNumber?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   businessName?: string | null;
@@ -717,14 +613,6 @@ export type MemberUpdateToOneWithWhereWithoutUserInput = {
 };
 
 export type MemberUpdateWithoutUserInput = {
-  documentType?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
-  documentNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   businessName?:
@@ -736,14 +624,6 @@ export type MemberUpdateWithoutUserInput = {
 };
 
 export type MemberUncheckedUpdateWithoutUserInput = {
-  documentType?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
-  documentNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   businessName?:
@@ -755,8 +635,6 @@ export type MemberUncheckedUpdateWithoutUserInput = {
 };
 
 export type MemberCreateWithoutEnrollmentsInput = {
-  documentType?: string | null;
-  documentNumber?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   businessName?: string | null;
@@ -766,8 +644,6 @@ export type MemberCreateWithoutEnrollmentsInput = {
 
 export type MemberUncheckedCreateWithoutEnrollmentsInput = {
   userId: number;
-  documentType?: string | null;
-  documentNumber?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   businessName?: string | null;
@@ -803,14 +679,6 @@ export type MemberUpdateToOneWithWhereWithoutEnrollmentsInput = {
 };
 
 export type MemberUpdateWithoutEnrollmentsInput = {
-  documentType?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
-  documentNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   businessName?:
@@ -823,14 +691,6 @@ export type MemberUpdateWithoutEnrollmentsInput = {
 
 export type MemberUncheckedUpdateWithoutEnrollmentsInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
-  documentType?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
-  documentNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   businessName?:
@@ -896,8 +756,6 @@ export type MemberSelect<
 > = runtime.Types.Extensions.GetSelect<
   {
     userId?: boolean;
-    documentType?: boolean;
-    documentNumber?: boolean;
     firstName?: boolean;
     lastName?: boolean;
     businessName?: boolean;
@@ -911,8 +769,6 @@ export type MemberSelect<
 
 export type MemberSelectScalar = {
   userId?: boolean;
-  documentType?: boolean;
-  documentNumber?: boolean;
   firstName?: boolean;
   lastName?: boolean;
   businessName?: boolean;
@@ -922,12 +778,7 @@ export type MemberOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  | 'userId'
-  | 'documentType'
-  | 'documentNumber'
-  | 'firstName'
-  | 'lastName'
-  | 'businessName',
+  'userId' | 'firstName' | 'lastName' | 'businessName',
   ExtArgs['result']['member']
 >;
 export type MemberInclude<
@@ -953,8 +804,6 @@ export type $MemberPayload<
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
       userId: number;
-      documentType: string | null;
-      documentNumber: string | null;
       firstName: string | null;
       lastName: string | null;
       businessName: string | null;
@@ -1515,8 +1364,6 @@ export interface Prisma__MemberClient<
  */
 export interface MemberFieldRefs {
   readonly userId: Prisma.FieldRef<'Member', 'Int'>;
-  readonly documentType: Prisma.FieldRef<'Member', 'String'>;
-  readonly documentNumber: Prisma.FieldRef<'Member', 'String'>;
   readonly firstName: Prisma.FieldRef<'Member', 'String'>;
   readonly lastName: Prisma.FieldRef<'Member', 'String'>;
   readonly businessName: Prisma.FieldRef<'Member', 'String'>;
