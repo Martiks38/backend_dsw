@@ -248,17 +248,17 @@ export type EmployeeWhereUniqueInput = Prisma.AtLeast<
   {
     userId?: number;
     employeeNumber?: string;
+    licenseNumber?: string;
     AND?: Prisma.EmployeeWhereInput | Prisma.EmployeeWhereInput[];
     OR?: Prisma.EmployeeWhereInput[];
     NOT?: Prisma.EmployeeWhereInput | Prisma.EmployeeWhereInput[];
     firstName?: Prisma.StringFilter<'Employee'> | string;
     lastName?: Prisma.StringFilter<'Employee'> | string;
     employeeType?: Prisma.StringFilter<'Employee'> | string;
-    licenseNumber?: Prisma.StringNullableFilter<'Employee'> | string | null;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     activities?: Prisma.EmployeesActivitiesListRelationFilter;
   },
-  'userId' | 'employeeNumber'
+  'userId' | 'employeeNumber' | 'licenseNumber'
 >;
 
 export type EmployeeOrderByWithAggregationInput = {
