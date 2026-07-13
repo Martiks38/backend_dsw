@@ -1,13 +1,13 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { PrismaService } from '@/prisma/prisma.service';
 import { nanoid } from 'nanoid';
-import { handlePrismaError } from '@/common/utils/handlePrismaError';
+import { handlePrismaError } from '@/common/utils/handlePrismaError.util';
 import {
   CreateMemberDto,
   CreateMemberResponseDto,
@@ -16,6 +16,8 @@ import {
 } from './dto';
 import { memberSelect } from './member.types';
 import { MessageResponseDto } from '@/common/dto/message-response.dto';
+import { hashPassword } from '@/common/utils/hashPassword.util';
+import { Prisma, User } from '@/generated/prisma/client';
 
 @Injectable()
 export class MembersService {
@@ -29,7 +31,7 @@ export class MembersService {
 
     await this.assertIsUnique(email, documentType, documentNumber);
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hashPassword(password);
 
     const result = await this.createUserAndMember({
       ...createMemberDto,
@@ -76,75 +78,57 @@ export class MembersService {
       throw new NotFoundException(`No se encontró el socio con id ${publicId}`);
     }
 
-    const userId = existingMember.userId;
+    const isBusiness = existingMember.businessName !== null;
 
-    const { email, documentType, documentNumber, phoneNumber, ...memberData } =
-      updateMemberDto;
+    this.validateMemberTypeConsistency(isBusiness, updateMemberDto);
 
-    const errors: string[] = [];
+    const userData: Prisma.UserUpdateInput = {};
+    const memberData: Prisma.MemberUpdateInput = {};
 
-    if (email) {
-      const emailOwner = await this.prisma.user.findUnique({
-        where: { email },
-      });
-      if (emailOwner && emailOwner.userId !== userId) {
-        errors.push('El email ya está registrado por otro usuario');
+    const USER_FIELDS = new Set<string>(
+      Object.values(Prisma.UserScalarFieldEnum),
+    );
+    const MEMBER_FIELDS = new Set<string>(
+      Object.values(Prisma.MemberScalarFieldEnum),
+    );
+
+    for (const key of Object.keys(updateMemberDto) as Array<
+      keyof UpdateMemberDto
+    >) {
+      const value = updateMemberDto[key];
+      if (value === undefined) continue;
+
+      if (USER_FIELDS.has(key)) {
+        (userData as Record<string, unknown>)[key] = value;
+      } else if (MEMBER_FIELDS.has(key)) {
+        (memberData as Record<string, unknown>)[key] = value;
       }
     }
 
-    if (documentType && documentNumber) {
-      const documentOwner = await this.prisma.member.findUnique({
-        where: {
-          documentType_documentNumber: { documentType, documentNumber },
-        },
-      });
-      if (documentOwner && documentOwner.userId !== userId) {
-        errors.push(
-          'Ya existe un socio registrado con ese tipo y número de documento',
-        );
-      }
-    }
-
-    if (errors.length > 0) {
-      throw new ConflictException(errors);
-    }
+    const { userId } = existingMember;
+    await this.checkUniqueConstraints(userId, userData);
 
     try {
       return await this.prisma.$transaction(async (tx) => {
-        if (email || phoneNumber) {
-          await tx.user.update({
-            where: { userId },
-            data: { email, phoneNumber },
-          });
+        if (Object.keys(memberData).length > 0) {
+          await tx.member.update({ where: { userId }, data: memberData });
+        }
+        if (Object.keys(userData).length > 0) {
+          await tx.user.update({ where: { userId }, data: userData });
         }
 
-        const member = await tx.member.update({
+        const updatedUser = await tx.user.findUniqueOrThrow({
           where: { userId },
-          data: { documentType, documentNumber, ...memberData },
+          include: { member: true },
         });
-
-        const user = await tx.user.findUniqueOrThrow({
-          where: { userId },
-          select: {
-            publicId: true,
-            email: true,
-            phoneNumber: true,
-            isActive: true,
-          },
-        });
-
-        this.logger.log(`Socio actualizado: userId=${userId}`);
 
         const response: UpdateMemberResponseDto = {
-          email: user.email,
-          publicId: user.publicId,
-          phoneNumber: user.phoneNumber,
-          isActive: user.isActive,
-          documentNumber: member.documentNumber,
-          documentType: member.documentType,
-          firstName: member.firstName,
-          lastName: member.lastName,
-          businessName: member.businessName,
+          publicId: updatedUser.publicId,
+          email: updatedUser.email,
+          phoneNumber: updatedUser.phoneNumber,
+          firstName: updatedUser.member?.firstName ?? null,
+          lastName: updatedUser.member?.lastName ?? null,
+          businessName: updatedUser.member?.businessName ?? null,
         };
 
         return response;
@@ -154,7 +138,7 @@ export class MembersService {
         error,
         this.logger,
         'actualizar socio',
-        'El email o el documento ya están registrados',
+        'El email ya está registrado',
       );
     }
   }
@@ -185,26 +169,30 @@ export class MembersService {
     documentType: string,
     documentNumber: string,
   ): Promise<void> {
-    const [existingUser, existingDocument] = await Promise.all([
-      this.prisma.user.findUnique({ where: { email } }),
-      this.prisma.member.findUnique({
-        where: {
-          documentType_documentNumber: { documentType, documentNumber },
-        },
-      }),
-    ]);
+    const conflicts = await this.prisma.user.findMany({
+      where: {
+        OR: [{ email }, { documentType, documentNumber }],
+      },
+      select: { email: true, documentType: true, documentNumber: true },
+    });
 
     const errors: string[] = [];
 
-    if (existingUser) {
-      errors.push('El email ya está registrado');
-    }
-
-    if (existingDocument) {
-      errors.push(
-        'Ya existe un socio registrado con ese tipo y número de documento',
-      );
-    }
+    conflicts.some((u) => {
+      if (u.email === email) {
+        errors.push('El email ya está registrado');
+      }
+    });
+    conflicts.some((u) => {
+      if (
+        u.documentType === documentType &&
+        u.documentNumber === documentNumber
+      ) {
+        errors.push(
+          'Ya existe un socio registrado con ese tipo y número de documento',
+        );
+      }
+    });
 
     if (errors.length > 0) {
       this.logger.warn(`Intento de creación duplicado: ${errors.join(', ')}`);
@@ -244,6 +232,8 @@ export class MembersService {
             publicId: nanoid(10),
             email: email,
             password,
+            documentType,
+            documentNumber,
             phoneNumber,
             isEmployee: false,
           },
@@ -252,8 +242,6 @@ export class MembersService {
         const member = await tx.member.create({
           data: {
             userId: user.userId,
-            documentType,
-            documentNumber,
             firstName,
             lastName,
             businessName,
@@ -264,8 +252,8 @@ export class MembersService {
           publicId: user.publicId,
           email: user.email,
           phoneNumber: user.phoneNumber,
-          documentType: member.documentType,
-          documentNumber: member.documentNumber,
+          documentType: user.documentType,
+          documentNumber: user.documentNumber,
           firstName: member.firstName,
           lastName: member.lastName,
           businessName: member.businessName,
@@ -280,6 +268,62 @@ export class MembersService {
         'crear socio',
         'El email o el documento ya están registrados',
       );
+    }
+  }
+
+  private validateMemberTypeConsistency(
+    isBusiness: boolean,
+    dto: UpdateMemberDto,
+  ) {
+    const errors: string[] = [];
+
+    if (isBusiness) {
+      if (dto.firstName !== undefined || dto.lastName !== undefined) {
+        errors.push('Una empresa no puede tener nombre y apellido');
+      }
+
+      if (dto.businessName === null) {
+        errors.push('No se puede borrar la razón social de una empresa');
+      }
+    } else {
+      if (dto.businessName !== undefined) {
+        errors.push('Una persona no puede tener razón social');
+      }
+
+      if (dto.firstName === null || dto.lastName === null) {
+        errors.push('No se puede borrar el nombre o apellido de un socio');
+      }
+    }
+
+    if (errors.length > 0) {
+      throw new BadRequestException(errors);
+    }
+  }
+
+  private async checkUniqueConstraints(
+    userId: number,
+    userData: Prisma.UserUpdateInput,
+  ) {
+    const errors: string[] = [];
+    let existingUser: User | null;
+
+    if (typeof userData.email === 'string') {
+      existingUser = await this.prisma.user.findFirst({
+        where: {
+          email: userData.email,
+          userId: {
+            not: userId,
+          },
+        },
+      });
+
+      if (existingUser) {
+        errors.push('El email ya está registrado');
+      }
+    }
+
+    if (errors.length > 0) {
+      throw new ConflictException(errors);
     }
   }
 }

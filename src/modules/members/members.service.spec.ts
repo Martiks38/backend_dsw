@@ -1,22 +1,28 @@
-jest.mock('bcrypt');
+jest.mock('@/common/utils/hashPassword.util');
 jest.mock('nanoid', () => ({
   nanoid: jest.fn(),
 }));
 
-import * as bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MembersService } from './members.service';
 import { PrismaService } from '@/prisma/prisma.service';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { RawMemberWithUser } from './member.types';
-import { CreateMemberDto, CreateMemberResponseDto } from './dto';
+import {
+  CreateMemberDto,
+  CreateMemberResponseDto,
+  UpdateMemberResponseDto,
+} from './dto';
+import { hashPassword } from '@/common/utils/hashPassword.util';
 
 describe('MembersService', () => {
   let service: MembersService;
 
   const mockPrismaService = {
     user: {
+      findMany: jest.fn(),
+      findFirst: jest.fn(),
       findUnique: jest.fn(),
       update: jest.fn(),
       create: jest.fn(),
@@ -24,8 +30,6 @@ describe('MembersService', () => {
     },
     member: {
       findFirst: jest.fn(),
-      findMany: jest.fn(),
-      findUnique: jest.fn(),
       update: jest.fn(),
       create: jest.fn(),
     },
@@ -62,14 +66,14 @@ describe('MembersService', () => {
 
     it('debería devolver el socio combinando datos de user y member', async () => {
       const mockRawMember: RawMemberWithUser = {
-        documentType: 'DNI',
-        documentNumber: '12345678',
         firstName: 'Juan',
         lastName: 'Pérez',
         businessName: null,
         user: {
           publicId: 'abc123',
           email: 'juan@test.com',
+          documentType: 'DNI',
+          documentNumber: '12345678',
           phoneNumber: '3411234567',
           isActive: true,
         },
@@ -90,7 +94,7 @@ describe('MembersService', () => {
 
   describe('create', () => {
     const newMember: CreateMemberDto = {
-      email: 'juan@test.com',
+      email: 'test@test.com',
       password: 'password',
       documentType: 'DNI',
       documentNumber: '12345678',
@@ -107,53 +111,38 @@ describe('MembersService', () => {
     });
 
     it('debería crear el usuario y el socio correctamente', async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue(null);
-      mockPrismaService.member.findFirst.mockRejectedValue(null);
+      mockPrismaService.user.findMany.mockResolvedValue([]);
 
       const mockPasswordHashed = 'hashedPassword';
       const mockPublicId = 'publicId123';
 
-      (bcrypt.hash as jest.Mock).mockResolvedValue(mockPasswordHashed);
+      (hashPassword as jest.Mock).mockResolvedValue(mockPasswordHashed);
       (nanoid as jest.Mock).mockReturnValue(mockPublicId);
 
       mockPrismaService.user.create.mockResolvedValue({
+        ...newMember,
         userId: 1,
         publicId: mockPublicId,
         password: mockPasswordHashed,
-        email: newMember.email,
-        phoneNumber: newMember.phoneNumber,
         isActive: true,
         isEmployee: false,
       });
 
       mockPrismaService.member.create.mockResolvedValue({
         userId: 1,
-        documentType: 'DNI',
-        documentNumber: '12345678',
-        firstName: 'Juan',
-        lastName: 'Pérez',
+        firstName: newMember.firstName,
+        lastName: newMember.lastName,
         businessName: null,
       });
 
       const result = await service.create(newMember);
 
-      expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
-        where: { email: newMember.email },
-      });
-
-      expect(mockPrismaService.member.findUnique).toHaveBeenCalledWith({
-        where: {
-          documentType_documentNumber: {
-            documentType: newMember.documentType,
-            documentNumber: newMember.documentNumber,
-          },
-        },
-      });
-
-      expect(bcrypt.hash).toHaveBeenCalledWith(newMember.password, 10);
+      expect(hashPassword).toHaveBeenCalledWith(newMember.password);
 
       expect(mockPrismaService.user.create).toHaveBeenCalledWith({
         data: {
+          documentType: newMember.documentType,
+          documentNumber: newMember.documentNumber,
           publicId: mockPublicId,
           email: newMember.email,
           password: mockPasswordHashed,
@@ -165,23 +154,21 @@ describe('MembersService', () => {
       expect(mockPrismaService.member.create).toHaveBeenCalledWith({
         data: {
           userId: 1,
-          documentType: 'DNI',
-          documentNumber: '12345678',
-          firstName: 'Pepe',
-          lastName: 'Pepito',
+          firstName: newMember.firstName,
+          lastName: newMember.lastName,
           businessName: undefined,
         },
       });
 
       const expected: CreateMemberResponseDto = {
-        documentType: 'DNI',
-        documentNumber: '12345678',
-        firstName: 'Juan',
-        lastName: 'Pérez',
+        publicId: mockPublicId,
+        email: newMember.email,
+        phoneNumber: newMember.phoneNumber,
+        documentType: newMember.documentType,
+        documentNumber: newMember.documentNumber,
+        firstName: newMember?.firstName ?? '',
+        lastName: newMember?.lastName ?? '',
         businessName: null,
-        publicId: 'publicId123',
-        email: 'juan@test.com',
-        phoneNumber: '3411234567',
       };
 
       expect(result).toEqual(expected);
@@ -190,29 +177,62 @@ describe('MembersService', () => {
     });
 
     it('debería lanzar ConflictException si el email ya está registrado', async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue({ userId: 5 });
-      mockPrismaService.member.findUnique.mockResolvedValue(null);
+      mockPrismaService.user.findMany.mockResolvedValue([
+        {
+          email: newMember.email,
+          documentType: newMember.documentType + '-otro',
+          documentNumber: newMember.documentNumber,
+        },
+      ]);
 
-      await expect(service.create(newMember)).rejects.toThrow(
-        ConflictException,
-      );
+      try {
+        await service.create(newMember);
+
+        throw new Error('Validó erróneamente email');
+      } catch (error) {
+        expect(error).toBeInstanceOf(ConflictException);
+        expect((error as ConflictException).getResponse()).toMatchObject({
+          message: ['El email ya está registrado'],
+        });
+      }
 
       expect(mockPrismaService.$transaction).not.toHaveBeenCalled();
     });
 
     it('debería lanzar ConflictException si el documento ya está registrado', async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue(5);
-      mockPrismaService.member.findUnique.mockResolvedValue(null);
+      mockPrismaService.user.findMany.mockResolvedValue([
+        {
+          email: newMember.email + '-otro',
+          documentType: newMember.documentType,
+          documentNumber: newMember.documentNumber,
+        },
+      ]);
 
-      await expect(service.create(newMember)).rejects.toThrow(
-        ConflictException,
-      );
+      try {
+        await service.create(newMember);
+
+        throw new Error('Validó erróneamente tipo y número de documento');
+      } catch (error) {
+        expect(error).toBeInstanceOf(ConflictException);
+        expect((error as ConflictException).getResponse()).toMatchObject({
+          message: [
+            'Ya existe un socio registrado con ese tipo y número de documento',
+          ],
+        });
+      }
 
       expect(mockPrismaService.$transaction).not.toHaveBeenCalled();
     });
   });
 
   describe('update', () => {
+    beforeEach(() => {
+      mockPrismaService.$transaction.mockImplementation(
+        async (cb: (tx: typeof mockPrismaService) => Promise<unknown>) =>
+          cb(mockPrismaService),
+      );
+    });
+
     it('debería lanzar NotFoundException si el socio no existe', async () => {
       mockPrismaService.member.findFirst.mockResolvedValue(null);
 
@@ -224,41 +244,74 @@ describe('MembersService', () => {
     it('debería lanzar ConflictException si el nuevo email pertenece a otro usuario', async () => {
       mockPrismaService.member.findFirst.mockResolvedValue({
         userId: 1,
+        businessName: 'Business',
       });
-      mockPrismaService.user.findUnique.mockResolvedValue({
+      mockPrismaService.user.findFirst.mockResolvedValue({
         userId: 2,
         email: 'otro@test.com',
       });
 
       await expect(
-        service.update('publicId-1', { email: 'otro@test.com' }),
-      ).rejects.toThrow(ConflictException);
+        service.update('publicId-1', {
+          email: 'otro@test.com',
+        }),
+      ).rejects.toThrow(new ConflictException(['El email ya está registrado']));
+
+      expect(mockPrismaService.$transaction).not.toHaveBeenCalled();
     });
 
     it('debería actualizar correctamente si no hay conflictos', async () => {
+      const partialMember = {
+        publicId: 'publicId-1',
+        email: 'test@test.com',
+        phoneNumber: '3411234567',
+        firstName: null,
+        lastName: null,
+        businessName: 'Business',
+      };
+
       mockPrismaService.member.findFirst.mockResolvedValue({
         userId: 1,
+        email: partialMember.email,
+        businessName: partialMember.businessName,
       });
-      mockPrismaService.$transaction.mockImplementation(
-        async (cb: (tx: typeof mockPrismaService) => Promise<unknown>) =>
-          cb(mockPrismaService),
-      );
+
+      mockPrismaService.user.findFirst.mockResolvedValue(null);
+
       mockPrismaService.member.update.mockResolvedValue({
         userId: 1,
-        firstName: 'Actualizado',
+        businessName: 'Business ABC',
       });
+      mockPrismaService.user.update.mockResolvedValue({
+        userId: 1,
+        email: 'testABC@test.com',
+      });
+
       mockPrismaService.user.findUniqueOrThrow.mockResolvedValue({
         publicId: 'publicId-1',
-        email: 'juan@test.com',
+        email: 'testABC@test.com',
         phoneNumber: '3411234567',
-        isActive: true,
+        member: {
+          userId: 1,
+          firstName: null,
+          lastName: null,
+          businessName: 'Business ABC',
+        },
       });
 
       const result = await service.update('publicId-1', {
-        firstName: 'Actualizado',
+        businessName: 'Business ABC',
+        email: 'testABC@test.com',
       });
 
-      expect(result.firstName).toBe('Actualizado');
+      expect(result).toMatchObject({
+        publicId: 'publicId-1',
+        email: 'testABC@test.com',
+        phoneNumber: '3411234567',
+        firstName: null,
+        lastName: null,
+        businessName: 'Business ABC',
+      } satisfies UpdateMemberResponseDto);
     });
   });
 
@@ -266,9 +319,23 @@ describe('MembersService', () => {
     it('debería lanzar NotFoundException si el usuario no existe', async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
 
-      await expect(service.remove('publicId-inexistente')).rejects.toThrow(
-        NotFoundException,
-      );
+      const mockPublicId = 'publicId-inexistente';
+
+      try {
+        await service.remove(mockPublicId);
+        throw new Error('Fallo al borrar usuario');
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect((error as NotFoundException).getResponse()).toMatchObject({
+          message: `No se encontró el socio con id ${mockPublicId}`,
+        });
+      }
+
+      expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
+        where: { publicId: mockPublicId },
+      });
+
+      expect(mockPrismaService.user.update).not.toHaveBeenCalled();
     });
 
     it('debería desactivar al usuario correctamente', async () => {
@@ -280,11 +347,13 @@ describe('MembersService', () => {
 
       const result = await service.remove('publicId-1');
 
+      expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
+        where: { publicId: 'publicId-1' },
+      });
       expect(mockPrismaService.user.update).toHaveBeenCalledWith({
         where: { userId: 1 },
         data: { isActive: false },
       });
-
       expect(result.message).toContain('eliminado correctamente');
     });
   });
