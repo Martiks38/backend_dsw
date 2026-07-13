@@ -13,13 +13,18 @@ export interface MemberCreate {
 }
 
 export const memberSelect = {
-  documentType: true,
-  documentNumber: true,
   firstName: true,
   lastName: true,
   businessName: true,
   user: {
-    select: { publicId: true, email: true, phoneNumber: true, isActive: true },
+    select: {
+      publicId: true,
+      email: true,
+      phoneNumber: true,
+      documentType: true,
+      documentNumber: true,
+      isActive: true,
+    },
   },
 } satisfies Prisma.MemberSelect;
 
