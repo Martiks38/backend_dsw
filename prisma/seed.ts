@@ -8,7 +8,7 @@ import {
   InstallmentType,
 } from '../src/generated/prisma/client';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
-import { hashPassword } from '../src/common/utils/hassPassword.util';
+import { hashPassword } from '../src/common/utils/hashPassword.util';
 
 const databaseUrl = process.env.DATABASE_URL;
 
