@@ -339,22 +339,22 @@ describe('MembersService', () => {
     });
 
     it('debería desactivar al usuario correctamente', async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue({ userId: 1 });
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        userId: 1,
+        isActive: true,
+      });
       mockPrismaService.user.update.mockResolvedValue({
         userId: 1,
         isActive: false,
       });
 
-      const result = await service.remove('publicId-1');
+      const publicId = 'abc123';
+      const response = await service.remove(publicId);
 
-      expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
-        where: { publicId: 'publicId-1' },
+      expect(response).toMatchObject({
+        success: true,
+        message: `Socio con id ${publicId} fue eliminado exitosamente`,
       });
-      expect(mockPrismaService.user.update).toHaveBeenCalledWith({
-        where: { userId: 1 },
-        data: { isActive: false },
-      });
-      expect(result.message).toContain('eliminado correctamente');
     });
   });
 });

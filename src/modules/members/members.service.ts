@@ -146,7 +146,7 @@ export class MembersService {
   async remove(publicId: string): Promise<MessageResponseDto> {
     const user = await this.prisma.user.findUnique({ where: { publicId } });
 
-    if (!user) {
+    if (!user || !user.isActive) {
       this.logger.warn(`Socio no encontrado: publicId=${publicId}`);
       throw new NotFoundException(`No se encontró el socio con id ${publicId}`);
     }
@@ -160,7 +160,7 @@ export class MembersService {
 
     return {
       success: true,
-      message: `Socio con id ${publicId} fue eliminado correctamente`,
+      message: `Socio con id ${publicId} fue eliminado exitosamente`,
     };
   }
 
