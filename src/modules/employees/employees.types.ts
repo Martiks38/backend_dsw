@@ -10,6 +10,8 @@ export const employeeSelect = {
     select: {
       publicId: true,
       email: true,
+      documentType: true,
+      documentNumber: true,
       phoneNumber: true,
       isActive: true,
       isEmployee: true,
@@ -20,3 +22,10 @@ export const employeeSelect = {
 export type RawEmployeeWithUser = Prisma.EmployeeGetPayload<{
   select: typeof employeeSelect;
 }>;
+
+export interface UniqueFields {
+  email: string;
+  documentType: string;
+  documentNumber: string;
+  licenseNumber: string | undefined;
+}
