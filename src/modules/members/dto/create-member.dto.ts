@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsString, Length, ValidateIf } from 'class-validator';
 
 export class CreateMemberDto {
@@ -28,24 +28,21 @@ export class CreateMemberDto {
   })
   documentNumber!: string;
 
-  @ApiProperty({
-    required: false,
-    description: 'Requerido si no se envía businessName',
+  @ApiPropertyOptional({
+    description: 'Requerido si no se envía businessName.',
   })
   @ValidateIf((o: CreateMemberDto) => !o.businessName)
   @Length(2, 50, { message: 'El nombre debe tener entre 2 y 50 caracteres' })
   firstName?: string;
 
-  @ApiProperty({
-    required: false,
+  @ApiPropertyOptional({
     description: 'Requerido si no se envía businessName',
   })
   @ValidateIf((o: CreateMemberDto) => !o.businessName)
   @Length(2, 50, { message: 'El apellido debe tener entre 2 y 50 caracteres' })
   lastName?: string;
 
-  @ApiProperty({
-    required: false,
+  @ApiPropertyOptional({
     description: ' Requerido si no se envían firstName y lastName',
   })
   @ValidateIf((o: CreateMemberDto) => !o.firstName && !o.lastName)

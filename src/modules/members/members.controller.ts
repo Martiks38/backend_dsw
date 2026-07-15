@@ -15,7 +15,16 @@ import {
   UpdateMemberDto,
   UpdateMemberResponseDto,
 } from './dto';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { MessageResponseDto } from '@/common/dto/message-response.dto';
 
 @ApiTags('members')
@@ -24,30 +33,47 @@ export class MembersController {
   constructor(private readonly membersService: MembersService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crea un nuevo member (User + Member)' })
-  @ApiResponse({ status: 201, type: CreateMemberResponseDto })
-  @ApiResponse({ status: 409, description: 'Email o document ya registrado' })
+  @ApiOperation({ summary: 'Crea un nuevo socio (User + Member)' })
+  @ApiCreatedResponse({ type: CreateMemberResponseDto })
+  @ApiConflictResponse({
+    description: 'Email o documento ya registrado para otro usuario',
+  })
   create(@Body() createMemberDto: CreateMemberDto) {
     return this.membersService.create(createMemberDto);
   }
 
   @Get(':publicId')
-  @ApiOperation({ summary: 'Busca un member por publicId' })
-  @ApiParam({ name: 'publicId', description: 'Identificador público' })
-  @ApiResponse({ status: 200, type: MemberResponseDto })
-  @ApiResponse({ status: 404, description: 'Member no encontrado' })
+  @ApiOperation({ summary: 'Busca un socio por publicId' })
+  @ApiParam({
+    name: 'publicId',
+    type: 'string',
+    description: 'Identificador público',
+  })
+  @ApiOkResponse({ type: MemberResponseDto })
+  @ApiNotFoundResponse({
+    description: 'Socio no encontrado con el ID proporcionado',
+  })
   findOne(@Param('publicId') publicId: string) {
     return this.membersService.findOne(publicId);
   }
 
   @Patch(':publicId')
-  @ApiOperation({ summary: 'Actualiza un member existente' })
-  @ApiParam({ name: 'publicId', description: 'Identificador público' })
-  @ApiResponse({ status: 200, type: UpdateMemberResponseDto })
-  @ApiResponse({ status: 404, description: 'Member no encontrado' })
-  @ApiResponse({
-    status: 409,
-    description: 'El email o documento ya está registrado por otro member',
+  @ApiOperation({ summary: 'Actualiza los datos de un empleado' })
+  @ApiParam({
+    name: 'publicId',
+    type: 'string',
+    description: 'Identificador público',
+  })
+  @ApiBody({
+    type: UpdateMemberDto,
+    description: 'Campos del socio a modificar',
+  })
+  @ApiOkResponse({ type: UpdateMemberResponseDto })
+  @ApiNotFoundResponse({
+    description: 'Socio no encontrado o deshabilitado',
+  })
+  @ApiConflictResponse({
+    description: 'El email o documento ya está registrado por otro usuario',
   })
   update(
     @Param('publicId') publicId: string,
@@ -57,17 +83,19 @@ export class MembersController {
   }
 
   @Delete(':publicId')
-  @ApiOperation({ summary: 'Eliminación (soft delete) un member' })
+  @ApiOperation({ summary: 'Deshabilitar un socio' })
   @ApiParam({
     name: 'publicId',
+    type: 'string',
     description: 'Identificador público',
   })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: 'Member eliminado correctamente',
     type: MessageResponseDto,
   })
-  @ApiResponse({ status: 404, description: 'Member no encontrado' })
+  @ApiNotFoundResponse({
+    description: 'No se encontró un socio activo con el ID proporcionado',
+  })
   remove(@Param('publicId') publicId: string) {
     return this.membersService.remove(publicId);
   }
