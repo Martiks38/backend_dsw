@@ -9,12 +9,14 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { UniqueFields } from './employees.types';
 import { hashPassword } from '@/common/utils/hashPassword.util';
-import { CreateEmployeeResponseDto } from './dto/create-employee-response.dto';
 import { nanoid } from 'nanoid';
 import { handlePrismaError } from '@/common/utils/handlePrismaError.util';
-import { EmployeeResponseDto } from './dto';
-import { UpdateEmployeeResponseDto } from './dto/update-employee-response.dto';
 import { Prisma } from '@/generated/prisma/client';
+import {
+  CreateEmployeeResponseDto,
+  EmployeeResponseDto,
+  UpdateEmployeeResponseDto,
+} from './dto';
 
 @Injectable()
 export class EmployeesService {

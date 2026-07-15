@@ -1,5 +1,5 @@
 import { EmployeeType } from '@/common/enums/employee-type.enum';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, TransformFnParams } from 'class-transformer';
 import { IsEmail, Length, IsString, ValidateIf, IsEnum } from 'class-validator';
 
@@ -45,8 +45,7 @@ export class CreateEmployeeDto {
   @IsEnum(EmployeeType, { message: 'El tipo de empleado no es válido' })
   employeeType!: EmployeeType;
 
-  @ApiProperty({
-    required: false,
+  @ApiPropertyOptional({
     description: 'Requerido si el tipo de empleado es Instructor',
   })
   @ValidateIf(

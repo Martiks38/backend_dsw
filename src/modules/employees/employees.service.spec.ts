@@ -8,12 +8,14 @@ import { EmployeesService } from './employees.service';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { RawEmployeeWithUser } from './employees.types';
 import { EmployeeType } from '@/common/enums/employee-type.enum';
-import { CreateEmployeeDto } from './dto';
+import {
+  CreateEmployeeDto,
+  CreateEmployeeResponseDto,
+  UpdateEmployeeResponseDto,
+} from './dto';
 import { nanoid } from 'nanoid';
 import { hashPassword } from '@/common/utils/hashPassword.util';
-import { CreateEmployeeResponseDto } from './dto/create-employee-response.dto';
 import { PrismaService } from '@/prisma/prisma.service';
-import { UpdateEmployeeResponseDto } from './dto/update-employee-response.dto';
 
 describe('EmployeesService', () => {
   let service: EmployeesService;
