@@ -1,15 +1,12 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { EmployeesService } from './employees.service';
-import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import {
   ApiBody,
   ApiConflictResponse,
@@ -20,9 +17,14 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { EmployeeResponseDto } from './dto';
-import { UpdateMemberResponseDto } from '../members/dto';
+
 import { MessageResponseDto } from '@/common/dto/message-response.dto';
+
+import { UpdateMemberResponseDto } from '../members/dto';
+import { EmployeeResponseDto } from './dto';
+import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { EmployeesService } from './employees.service';
 
 @ApiTags('employees')
 @Controller('employees')

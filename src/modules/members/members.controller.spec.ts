@@ -1,10 +1,11 @@
+import { Test, TestingModule } from '@nestjs/testing';
+
+import { MembersController } from './members.controller';
+import { MembersService } from './members.service';
+
 jest.mock('nanoid', () => ({
   nanoid: jest.fn(),
 }));
-
-import { Test, TestingModule } from '@nestjs/testing';
-import { MembersController } from './members.controller';
-import { MembersService } from './members.service';
 
 describe('MembersController', () => {
   let controller: MembersController;

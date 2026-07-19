@@ -1,20 +1,12 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { MembersService } from './members.service';
-import {
-  CreateMemberDto,
-  CreateMemberResponseDto,
-  MemberResponseDto,
-  UpdateMemberDto,
-  UpdateMemberResponseDto,
-} from './dto';
 import {
   ApiBody,
   ApiConflictResponse,
@@ -25,7 +17,17 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
+
 import { MessageResponseDto } from '@/common/dto/message-response.dto';
+
+import {
+  CreateMemberDto,
+  CreateMemberResponseDto,
+  MemberResponseDto,
+  UpdateMemberDto,
+  UpdateMemberResponseDto,
+} from './dto';
+import { MembersService } from './members.service';
 
 @ApiTags('members')
 @Controller('members')

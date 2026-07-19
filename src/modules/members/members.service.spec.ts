@@ -1,20 +1,22 @@
-jest.mock('@/common/utils/hashPassword.util');
-jest.mock('nanoid', () => ({
-  nanoid: jest.fn(),
-}));
-
-import { nanoid } from 'nanoid';
-import { Test, TestingModule } from '@nestjs/testing';
-import { MembersService } from './members.service';
-import { PrismaService } from '@/prisma/prisma.service';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { RawMemberWithUser } from './member.types';
+import { Test, TestingModule } from '@nestjs/testing';
+import { nanoid } from 'nanoid';
+
+import { hashPassword } from '@/common/utils/hashPassword.util';
+import { PrismaService } from '@/prisma/prisma.service';
+
 import {
   CreateMemberDto,
   CreateMemberResponseDto,
   UpdateMemberResponseDto,
 } from './dto';
-import { hashPassword } from '@/common/utils/hashPassword.util';
+import { RawMemberWithUser } from './member.types';
+import { MembersService } from './members.service';
+
+jest.mock('@/common/utils/hashPassword.util');
+jest.mock('nanoid', () => ({
+  nanoid: jest.fn(),
+}));
 
 describe('MembersService', () => {
   let service: MembersService;

@@ -5,9 +5,14 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from '@/prisma/prisma.service';
 import { nanoid } from 'nanoid';
+
+import { MessageResponseDto } from '@/common/dto/message-response.dto';
 import { handlePrismaError } from '@/common/utils/handlePrismaError.util';
+import { hashPassword } from '@/common/utils/hashPassword.util';
+import { Prisma, User } from '@/generated/prisma/client';
+import { PrismaService } from '@/prisma/prisma.service';
+
 import {
   CreateMemberDto,
   CreateMemberResponseDto,
@@ -15,9 +20,6 @@ import {
   UpdateMemberResponseDto,
 } from './dto';
 import { memberSelect } from './member.types';
-import { MessageResponseDto } from '@/common/dto/message-response.dto';
-import { hashPassword } from '@/common/utils/hashPassword.util';
-import { Prisma, User } from '@/generated/prisma/client';
 
 @Injectable()
 export class MembersService {

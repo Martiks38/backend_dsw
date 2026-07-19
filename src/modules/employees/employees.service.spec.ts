@@ -1,21 +1,23 @@
-jest.mock('@/common/utils/hashPassword.util');
-jest.mock('nanoid', () => ({
-  nanoid: jest.fn(),
-}));
-
-import { Test, TestingModule } from '@nestjs/testing';
-import { EmployeesService } from './employees.service';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { RawEmployeeWithUser } from './employees.types';
+import { Test, TestingModule } from '@nestjs/testing';
+import { nanoid } from 'nanoid';
+
 import { EmployeeType } from '@/common/enums/employee-type.enum';
+import { hashPassword } from '@/common/utils/hashPassword.util';
+import { PrismaService } from '@/prisma/prisma.service';
+
 import {
   CreateEmployeeDto,
   CreateEmployeeResponseDto,
   UpdateEmployeeResponseDto,
 } from './dto';
-import { nanoid } from 'nanoid';
-import { hashPassword } from '@/common/utils/hashPassword.util';
-import { PrismaService } from '@/prisma/prisma.service';
+import { EmployeesService } from './employees.service';
+import { RawEmployeeWithUser } from './employees.types';
+
+jest.mock('@/common/utils/hashPassword.util');
+jest.mock('nanoid', () => ({
+  nanoid: jest.fn(),
+}));
 
 describe('EmployeesService', () => {
   let service: EmployeesService;

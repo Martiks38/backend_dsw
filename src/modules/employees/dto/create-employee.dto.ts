@@ -1,7 +1,8 @@
-import { EmployeeType } from '@/common/enums/employee-type.enum';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, TransformFnParams } from 'class-transformer';
-import { IsEmail, Length, IsString, ValidateIf, IsEnum } from 'class-validator';
+import { IsEmail, IsEnum, IsString, Length, ValidateIf } from 'class-validator';
+
+import { EmployeeType } from '@/common/enums/employee-type.enum';
 
 export class CreateEmployeeDto {
   @IsEmail({}, { message: 'El email no es válido' })

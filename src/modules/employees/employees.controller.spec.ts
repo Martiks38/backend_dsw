@@ -1,16 +1,18 @@
-jest.mock('nanoid', () => ({
-  nanoid: jest.fn(),
-}));
-
 import { Test, TestingModule } from '@nestjs/testing';
-import { EmployeesController } from './employees.controller';
-import { EmployeesService } from './employees.service';
+
+import { EmployeeType } from '@/common/enums/employee-type.enum';
+
 import {
   CreateEmployeeDto,
   EmployeeResponseDto,
   UpdateEmployeeDto,
 } from './dto';
-import { EmployeeType } from '@/common/enums/employee-type.enum';
+import { EmployeesController } from './employees.controller';
+import { EmployeesService } from './employees.service';
+
+jest.mock('nanoid', () => ({
+  nanoid: jest.fn(),
+}));
 
 describe('EmployeesController', () => {
   let controller: EmployeesController;

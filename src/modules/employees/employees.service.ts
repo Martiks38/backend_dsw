@@ -4,19 +4,21 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { PrismaService } from '@/prisma/prisma.service';
-import { UniqueFields } from './employees.types';
-import { hashPassword } from '@/common/utils/hashPassword.util';
 import { nanoid } from 'nanoid';
+
 import { handlePrismaError } from '@/common/utils/handlePrismaError.util';
+import { hashPassword } from '@/common/utils/hashPassword.util';
 import { Prisma } from '@/generated/prisma/client';
+import { PrismaService } from '@/prisma/prisma.service';
+
 import {
   CreateEmployeeResponseDto,
   EmployeeResponseDto,
   UpdateEmployeeResponseDto,
 } from './dto';
+import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { UniqueFields } from './employees.types';
 
 @Injectable()
 export class EmployeesService {
