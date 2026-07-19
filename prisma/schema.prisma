@@ -4,284 +4,299 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
-  moduleFormat    = "cjs"
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
   provider = "mysql"
 }
 
-model Late_fee_policy {
-  days_from Int @id
-  percentage Int
-}
-
 model Boat {
   hin Int @id
 
-  publicId String @unique
-  name String
+  publicId    String @unique
+  name        String
   description String
 
-  idBoatType Int
+  boatTypeId Int
+  userId     Int
 
-  departures Departure[]
-  boatHasBoatSlips Boat_has_boat_slip[]
+  boatType BoatType @relation(fields: [boatTypeId], references: [boatTypeId])
+  member   Member   @relation(fields: [userId], references: [userId])
 
-  boatType Boat_type @relation(fields: [idBoatType], references: [id])
+  contracts  Contract[]
+  departures BoatDeparture[]
+
+  @@map("boats")
 }
 
 model Activity {
-  id Int @id
+  activityId Int @id @default(autoincrement())
 
-  publicId String @unique
-  name String
+  publicId    String @unique
+  name        String
   description String
 
-  idBoatType Int
-  boatType Boat_type @relation(fields: [idBoatType], references: [id])
+  boatTypeId Int
+  boatType   BoatType @relation(fields: [boatTypeId], references: [boatTypeId])
 
-  employees Employee_activity[]
+  employees EmployeesActivities[]
+
+  @@map("activities")
 }
 
-model Boat_type {
-  id Int @id
-  name String
+model BoatType {
+  boatTypeId Int @id @default(autoincrement())
+
+  name              String
   requiredOperation String
 
-  boats Boat[]
+  boats      Boat[]
   activities Activity[]
-  sectors Sector[]
+
+  @@map("boat_types")
 }
 
-model Sector {
-  id Int @id
-  name String
-  operationType String
+model BoatDeparture {
+  exitedAt DateTime
+  boatId   Int
 
-  boatSlip Boat_slip[]
-  boatTypes Boat_type[]
+  publicId                String    @unique
+  estimatedReturnDatetime DateTime
+  realReturnDatetime      DateTime?
+
+  boat Boat @relation(fields: [boatId], references: [hin])
+
+  @@id([exitedAt, boatId])
+  @@map("boat_departures")
 }
 
-model Departure {
-  idBoat Int
-  departureTime DateTime
+model Cradle {
+  cradleId Int @id
 
-  publicId String @unique
-  estimatedReturnTime DateTime
-  actualReturnTime DateTime?
+  state        String
+  cradleCode   String
+  sizeCategory CradleSizeCategory
+  isOccupied   Boolean
 
-  boat Boat @relation(fields: [idBoat], references: [hin])
+  boatHasBoatSlips Contract[]
 
-  @@id([departureTime, idBoat])
+  cradleCategoryId Int
+
+  cradleCategory CradleCategory @relation(fields: [cradleCategoryId], references: [cradleCategoryId])
+
+  @@map("cradles")
 }
 
-model Boat_slip {
-  id Int
-  idSector Int
+model CradleCategory {
+  cradleCategoryId Int @id @default(autoincrement())
 
-  state String
+  name           String
+  hierarchyLevel Int
 
-  sector Sector @relation(fields: [idSector], references: [id])
+  cradles       Cradle[]
+  cradleTariffs CradleTariff[]
 
-  prices Boat_slip_price[]
-  boatHasBoatSlips Boat_has_boat_slip[]
-
-  @@id([id, idSector])
+  @@map("cradle_categories")
 }
 
-model Boat_slip_price {
-  startTime DateTime
-  idBoatSlip Int
-  idSector Int
+model CradleTariff {
+  cradleCategoryId Int
+  startDate        DateTime
 
-  endTime DateTime
-  quotaAmount Decimal
+  monthlyPrice Decimal
 
-  boatSlip Boat_slip @relation(fields: [idBoatSlip, idSector], references: [id, idSector])
+  cradleCategory CradleCategory @relation(fields: [cradleCategoryId], references: [cradleCategoryId])
 
-  @@id([startTime, idBoatSlip, idSector])
+  @@id([startDate, cradleCategoryId])
+  @@map("cradle_tariffs")
 }
 
-model Boat_has_boat_slip {
-  startTime DateTime
-  idBoat Int
+model Contract {
+  startDatetime DateTime
+  boatId        Int
 
-  publicId String @unique
-  endDateTime DateTime?
-  idBoatSlip Int
-  idSector Int
+  endDatetime DateTime?
 
-  boat Boat @relation(fields: [idBoat], references: [hin])
-  boatSlip Boat_slip @relation(fields: [idBoatSlip, idSector], references: [id, idSector])
+  cradleId Int
 
-  contractQuotas Contract_quota[]
+  boat   Boat   @relation(fields: [boatId], references: [hin])
+  cradle Cradle @relation(fields: [cradleId], references: [cradleId])
 
-  @@id([startTime, idBoat])
-}
+  installments Installment[]
 
-model Contract_quota {
-  id Int @id
-
-  publicId String @unique
-  period DateTime
-  startDateTime DateTime
-  idBoat Int
-
-  dueDate DateTime
-  amount Decimal
-  state String
-
-  boatHasBoatSlips Boat_has_boat_slip @relation(fields: [startDateTime, idBoat], references: [startTime, idBoat])
-
-  payment Contract_quota_payment?
-}
-
-model Contract_quota_payment {
-  id Int @id @default(autoincrement())
-
-  paymentDate DateTime?
-  amountPaid Decimal?
-
-  quotaId Int @unique
-  contractQuota Contract_quota @relation(fields: [quotaId], references: [id])
+  @@id([startDatetime, boatId])
+  @@map("contracts")
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  userId Int @id @default(autoincrement())
 
-  publicId String @unique
-  email String @unique
-  password String
-  phoneNumber String
-  isActive Boolean @default(true)
-  isAdmin Boolean @default(false)
+  publicId       String  @unique
+  email          String  @unique
+  password       String
+  phoneNumber    String
+  documentType   String
+  documentNumber String
+  isActive       Boolean @default(true)
+  isEmployee     Boolean @default(false)
 
   employee Employee?
-  member Member?
+  member   Member?
+
+  @@unique([documentType, documentNumber])
+  @@map("users")
 }
 
 model Employee {
   userId Int @id
 
-  firstName String
-  lastName String
-  employeeNumber Int
-  employeeType String
-  licenseNumber String?
+  firstName      String
+  lastName       String
+  employeeNumber String  @unique
+  employeeType   String
+  licenseNumber  String? @unique
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [userId])
 
-  activities Employee_activity[]
+  activities EmployeesActivities[]
+
+  @@map("employees")
 }
 
 model Member {
   userId Int @id
-  documentType String
-  documentNumber String
-  firstName String?
-  lastName String?
+
+  firstName    String?
+  lastName     String?
   businessName String?
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [userId])
 
+  boat        Boat[]
   enrollments Enrollment[]
+
+  @@map("members")
 }
 
-model Employee_activity {
-  idEmployee Int
-  idActivity Int
+model EmployeesActivities {
+  employeeId Int
+  activityId Int
 
-  employee Employee @relation(fields: [idEmployee], references: [userId])
-  activity Activity @relation(fields: [idActivity], references: [id])
-
-  @@id([idEmployee, idActivity])
+  employee Employee @relation(fields: [employeeId], references: [userId])
+  activity Activity @relation(fields: [activityId], references: [activityId])
 
   courses Course[]
+
+  @@id([employeeId, activityId])
+  @@map("employees_activities")
 }
 
 model Course {
-  id Int @id
+  courseId Int @id @default(autoincrement())
 
-  publicId String @unique
-  capacity Int
+  publicId   String   @unique
+  capacity   Int
+  start_date DateTime
+  end_date   DateTime
+  name       String
 
-  idActivity Int
-  idEmployee Int
+  activityId Int
+  employeeId Int
 
-  employeesActivity Employee_activity @relation(fields: [idEmployee, idActivity], references: [idEmployee, idActivity])
+  employeeActivity EmployeesActivities @relation(fields: [employeeId, activityId], references: [employeeId, activityId])
 
-  courseSchedules Course_schedule[]
-  coursePrices Course_price[]
-  enrollments Enrollment[]
+  enrollments     Enrollment[]
+  courseSchedules CourseSchedule[]
+  coursePrices    CoursePrice[]
+
+  @@map("courses")
 }
 
-model Course_schedule {
-  id Int
+model CourseSchedule {
+  weekday String
 
-  name String
   startTime DateTime
-  endTime DateTime
+  endTime   DateTime
 
-  idCourse Int
-  course Course @relation(fields: [idCourse], references: [id])
+  courseId Int
 
-  @@id([id, idCourse])
+  course Course @relation(fields: [courseId], references: [courseId])
+
+  @@id([weekday, courseId])
+  @@map("course_schedules")
 }
 
-model Course_price {
+model CoursePrice {
   startDate DateTime
 
-  endDate DateTime
-  enrollmentAmount Decimal
-  quotaAmount Decimal
+  enrollmentPrice  Decimal
+  installmentPrice Decimal
 
-  idCourse Int
-  course Course @relation(fields: [idCourse], references: [id])
+  courseId Int
+  course   Course @relation(fields: [courseId], references: [courseId])
 
-  @@id([startDate, idCourse])
+  @@id([startDate, courseId])
+  @@map("course_prices")
 }
 
 model Enrollment {
-  idMember Int
-  idCourse Int
+  memberId Int
+  courseId Int
 
-  enrollmentDate DateTime
-  state String
+  registered_at DateTime
+  status        StatusEnrollment @default(ACTIVE)
 
-  course Course @relation(fields: [idCourse], references: [id])
-  member Member @relation(fields: [idMember], references: [userId])
+  course Course @relation(fields: [courseId], references: [courseId])
+  member Member @relation(fields: [memberId], references: [userId])
 
-  courseQuotas Course_quota[]
+  installments Installment[]
 
-  @@id([idMember, idCourse])
+  @@id([memberId, courseId])
+  @@map("enrollments")
 }
 
-model Course_quota {
-  id Int @id @default(autoincrement())
+model Installment {
+  installmentId Int @id @default(autoincrement())
 
-  publicId String @unique
-  period DateTime
-  dueDate DateTime
-  amount Decimal
-  state String
+  publicId          String            @unique
+  paymentDate       DateTime
+  installmentStatus InstallmentStatus @default(PENDING)
+  installmentType   InstallmentType
+  amount            Decimal
 
-  idMember Int
-  idCourse Int
+  userId        Int
+  courseId      Int
+  startDatetime DateTime
+  boatId        Int
 
-  enrollment Enrollment @relation(fields: [idMember, idCourse], references: [idMember, idCourse])
+  enrollment Enrollment @relation(fields: [userId, courseId], references: [memberId, courseId])
+  contract   Contract   @relation(fields: [startDatetime, boatId], references: [startDatetime, boatId])
 
-  courseQuotaPayment Course_quota_payment?
+  @@map("installments")
 }
 
-model Course_quota_payment {
-  id Int @id @default(autoincrement())
+enum CradleSizeCategory {
+  SMALL
+  MEDIUM
+  LARGE
+}
 
-  paymentDate DateTime?
-  amountPaid Decimal?
+enum StatusEnrollment {
+  ACTIVE
+  COMPLETED
+  DROPPED
+}
 
-  quotaId Int @unique
-  courseQuota Course_quota @relation(fields: [quotaId], references: [id])
+enum InstallmentStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+enum InstallmentType {
+  ENROLLMENT
+  CRADLE_RENTAL
 }

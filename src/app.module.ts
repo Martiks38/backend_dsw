@@ -1,9 +1,22 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { EmployeesModule } from './modules/employees/employees.module';
+import { MembersModule } from './modules/members/members.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    PrismaModule,
+    MembersModule,
+    EmployeesModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
