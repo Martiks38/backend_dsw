@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PrismaModule } from './prisma/prisma.module';
-import { ConfigModule } from '@nestjs/config';
-import { MembersModule } from './modules/members/members.module';
 import { EmployeesModule } from './modules/employees/employees.module';
+import { MembersModule } from './modules/members/members.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
