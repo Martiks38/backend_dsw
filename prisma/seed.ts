@@ -1,14 +1,16 @@
-import { nanoid } from 'nanoid';
 import 'dotenv/config';
+
+import { PrismaMariaDb } from '@prisma/adapter-mariadb';
+import { nanoid } from 'nanoid';
+
+import { hashPassword } from '../src/common/utils/hashPassword.util';
 import {
-  PrismaClient,
   CradleSizeCategory,
-  StatusEnrollment,
   InstallmentStatus,
   InstallmentType,
+  PrismaClient,
+  StatusEnrollment,
 } from '../src/generated/prisma/client';
-import { PrismaMariaDb } from '@prisma/adapter-mariadb';
-import { hashPassword } from '../src/common/utils/hashPassword.util';
 
 const databaseUrl = process.env.DATABASE_URL;
 
