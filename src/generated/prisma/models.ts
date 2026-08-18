@@ -8,20 +8,14 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Boat.js';
-export type * from './models/Activity.js';
 export type * from './models/BoatType.js';
 export type * from './models/BoatDeparture.js';
 export type * from './models/Cradle.js';
-export type * from './models/CradleCategory.js';
-export type * from './models/CradleTariff.js';
 export type * from './models/Contract.js';
 export type * from './models/User.js';
 export type * from './models/Employee.js';
 export type * from './models/Member.js';
-export type * from './models/EmployeesActivities.js';
-export type * from './models/Course.js';
-export type * from './models/CourseSchedule.js';
-export type * from './models/CoursePrice.js';
-export type * from './models/Enrollment.js';
-export type * from './models/Installment.js';
+export type * from './models/PasswordResetToken.js';
+export type * from './models/ServiceRequest.js';
+export type * from './models/ServiceType.js';
 export type * from './commonInputTypes.js';

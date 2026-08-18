@@ -27,16 +27,19 @@ export type AggregateContract = {
 };
 
 export type ContractAvgAggregateOutputType = {
+  contractId: number | null;
   boatId: number | null;
   cradleId: number | null;
 };
 
 export type ContractSumAggregateOutputType = {
+  contractId: number | null;
   boatId: number | null;
   cradleId: number | null;
 };
 
 export type ContractMinAggregateOutputType = {
+  contractId: number | null;
   startDatetime: Date | null;
   boatId: number | null;
   endDatetime: Date | null;
@@ -44,6 +47,7 @@ export type ContractMinAggregateOutputType = {
 };
 
 export type ContractMaxAggregateOutputType = {
+  contractId: number | null;
   startDatetime: Date | null;
   boatId: number | null;
   endDatetime: Date | null;
@@ -51,6 +55,7 @@ export type ContractMaxAggregateOutputType = {
 };
 
 export type ContractCountAggregateOutputType = {
+  contractId: number;
   startDatetime: number;
   boatId: number;
   endDatetime: number;
@@ -59,16 +64,19 @@ export type ContractCountAggregateOutputType = {
 };
 
 export type ContractAvgAggregateInputType = {
+  contractId?: true;
   boatId?: true;
   cradleId?: true;
 };
 
 export type ContractSumAggregateInputType = {
+  contractId?: true;
   boatId?: true;
   cradleId?: true;
 };
 
 export type ContractMinAggregateInputType = {
+  contractId?: true;
   startDatetime?: true;
   boatId?: true;
   endDatetime?: true;
@@ -76,6 +84,7 @@ export type ContractMinAggregateInputType = {
 };
 
 export type ContractMaxAggregateInputType = {
+  contractId?: true;
   startDatetime?: true;
   boatId?: true;
   endDatetime?: true;
@@ -83,6 +92,7 @@ export type ContractMaxAggregateInputType = {
 };
 
 export type ContractCountAggregateInputType = {
+  contractId?: true;
   startDatetime?: true;
   boatId?: true;
   endDatetime?: true;
@@ -184,6 +194,7 @@ export type ContractGroupByArgs<
 };
 
 export type ContractGroupByOutputType = {
+  contractId: number;
   startDatetime: Date;
   boatId: number;
   endDatetime: Date | null;
@@ -212,6 +223,7 @@ export type ContractWhereInput = {
   AND?: Prisma.ContractWhereInput | Prisma.ContractWhereInput[];
   OR?: Prisma.ContractWhereInput[];
   NOT?: Prisma.ContractWhereInput | Prisma.ContractWhereInput[];
+  contractId?: Prisma.IntFilter<'Contract'> | number;
   startDatetime?: Prisma.DateTimeFilter<'Contract'> | Date | string;
   boatId?: Prisma.IntFilter<'Contract'> | number;
   endDatetime?:
@@ -225,22 +237,21 @@ export type ContractWhereInput = {
     Prisma.CradleScalarRelationFilter,
     Prisma.CradleWhereInput
   >;
-  installments?: Prisma.InstallmentListRelationFilter;
 };
 
 export type ContractOrderByWithRelationInput = {
+  contractId?: Prisma.SortOrder;
   startDatetime?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   endDatetime?: Prisma.SortOrderInput | Prisma.SortOrder;
   cradleId?: Prisma.SortOrder;
   boat?: Prisma.BoatOrderByWithRelationInput;
   cradle?: Prisma.CradleOrderByWithRelationInput;
-  installments?: Prisma.InstallmentOrderByRelationAggregateInput;
 };
 
 export type ContractWhereUniqueInput = Prisma.AtLeast<
   {
-    startDatetime_boatId?: Prisma.ContractStartDatetimeBoatIdCompoundUniqueInput;
+    contractId?: number;
     AND?: Prisma.ContractWhereInput | Prisma.ContractWhereInput[];
     OR?: Prisma.ContractWhereInput[];
     NOT?: Prisma.ContractWhereInput | Prisma.ContractWhereInput[];
@@ -257,12 +268,12 @@ export type ContractWhereUniqueInput = Prisma.AtLeast<
       Prisma.CradleScalarRelationFilter,
       Prisma.CradleWhereInput
     >;
-    installments?: Prisma.InstallmentListRelationFilter;
   },
-  'startDatetime_boatId'
+  'contractId'
 >;
 
 export type ContractOrderByWithAggregationInput = {
+  contractId?: Prisma.SortOrder;
   startDatetime?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   endDatetime?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -282,6 +293,7 @@ export type ContractScalarWhereWithAggregatesInput = {
   NOT?:
     | Prisma.ContractScalarWhereWithAggregatesInput
     | Prisma.ContractScalarWhereWithAggregatesInput[];
+  contractId?: Prisma.IntWithAggregatesFilter<'Contract'> | number;
   startDatetime?:
     | Prisma.DateTimeWithAggregatesFilter<'Contract'>
     | Date
@@ -300,15 +312,14 @@ export type ContractCreateInput = {
   endDatetime?: Date | string | null;
   boat: Prisma.BoatCreateNestedOneWithoutContractsInput;
   cradle: Prisma.CradleCreateNestedOneWithoutBoatHasBoatSlipsInput;
-  installments?: Prisma.InstallmentCreateNestedManyWithoutContractInput;
 };
 
 export type ContractUncheckedCreateInput = {
+  contractId?: number;
   startDatetime: Date | string;
   boatId: number;
   endDatetime?: Date | string | null;
   cradleId: number;
-  installments?: Prisma.InstallmentUncheckedCreateNestedManyWithoutContractInput;
 };
 
 export type ContractUpdateInput = {
@@ -320,10 +331,10 @@ export type ContractUpdateInput = {
     | null;
   boat?: Prisma.BoatUpdateOneRequiredWithoutContractsNestedInput;
   cradle?: Prisma.CradleUpdateOneRequiredWithoutBoatHasBoatSlipsNestedInput;
-  installments?: Prisma.InstallmentUpdateManyWithoutContractNestedInput;
 };
 
 export type ContractUncheckedUpdateInput = {
+  contractId?: Prisma.IntFieldUpdateOperationsInput | number;
   startDatetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   endDatetime?:
@@ -332,10 +343,10 @@ export type ContractUncheckedUpdateInput = {
     | string
     | null;
   cradleId?: Prisma.IntFieldUpdateOperationsInput | number;
-  installments?: Prisma.InstallmentUncheckedUpdateManyWithoutContractNestedInput;
 };
 
 export type ContractCreateManyInput = {
+  contractId?: number;
   startDatetime: Date | string;
   boatId: number;
   endDatetime?: Date | string | null;
@@ -352,6 +363,7 @@ export type ContractUpdateManyMutationInput = {
 };
 
 export type ContractUncheckedUpdateManyInput = {
+  contractId?: Prisma.IntFieldUpdateOperationsInput | number;
   startDatetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   endDatetime?:
@@ -372,12 +384,8 @@ export type ContractOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder;
 };
 
-export type ContractStartDatetimeBoatIdCompoundUniqueInput = {
-  startDatetime: Date | string;
-  boatId: number;
-};
-
 export type ContractCountOrderByAggregateInput = {
+  contractId?: Prisma.SortOrder;
   startDatetime?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   endDatetime?: Prisma.SortOrder;
@@ -385,11 +393,13 @@ export type ContractCountOrderByAggregateInput = {
 };
 
 export type ContractAvgOrderByAggregateInput = {
+  contractId?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   cradleId?: Prisma.SortOrder;
 };
 
 export type ContractMaxOrderByAggregateInput = {
+  contractId?: Prisma.SortOrder;
   startDatetime?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   endDatetime?: Prisma.SortOrder;
@@ -397,6 +407,7 @@ export type ContractMaxOrderByAggregateInput = {
 };
 
 export type ContractMinOrderByAggregateInput = {
+  contractId?: Prisma.SortOrder;
   startDatetime?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   endDatetime?: Prisma.SortOrder;
@@ -404,13 +415,9 @@ export type ContractMinOrderByAggregateInput = {
 };
 
 export type ContractSumOrderByAggregateInput = {
+  contractId?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   cradleId?: Prisma.SortOrder;
-};
-
-export type ContractScalarRelationFilter = {
-  is?: Prisma.ContractWhereInput;
-  isNot?: Prisma.ContractWhereInput;
 };
 
 export type ContractCreateNestedManyWithoutBoatInput = {
@@ -601,44 +608,17 @@ export type ContractUncheckedUpdateManyWithoutCradleNestedInput = {
     | Prisma.ContractScalarWhereInput[];
 };
 
-export type ContractCreateNestedOneWithoutInstallmentsInput = {
-  create?: Prisma.XOR<
-    Prisma.ContractCreateWithoutInstallmentsInput,
-    Prisma.ContractUncheckedCreateWithoutInstallmentsInput
-  >;
-  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutInstallmentsInput;
-  connect?: Prisma.ContractWhereUniqueInput;
-};
-
-export type ContractUpdateOneRequiredWithoutInstallmentsNestedInput = {
-  create?: Prisma.XOR<
-    Prisma.ContractCreateWithoutInstallmentsInput,
-    Prisma.ContractUncheckedCreateWithoutInstallmentsInput
-  >;
-  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutInstallmentsInput;
-  upsert?: Prisma.ContractUpsertWithoutInstallmentsInput;
-  connect?: Prisma.ContractWhereUniqueInput;
-  update?: Prisma.XOR<
-    Prisma.XOR<
-      Prisma.ContractUpdateToOneWithWhereWithoutInstallmentsInput,
-      Prisma.ContractUpdateWithoutInstallmentsInput
-    >,
-    Prisma.ContractUncheckedUpdateWithoutInstallmentsInput
-  >;
-};
-
 export type ContractCreateWithoutBoatInput = {
   startDatetime: Date | string;
   endDatetime?: Date | string | null;
   cradle: Prisma.CradleCreateNestedOneWithoutBoatHasBoatSlipsInput;
-  installments?: Prisma.InstallmentCreateNestedManyWithoutContractInput;
 };
 
 export type ContractUncheckedCreateWithoutBoatInput = {
+  contractId?: number;
   startDatetime: Date | string;
   endDatetime?: Date | string | null;
   cradleId: number;
-  installments?: Prisma.InstallmentUncheckedCreateNestedManyWithoutContractInput;
 };
 
 export type ContractCreateOrConnectWithoutBoatInput = {
@@ -688,6 +668,7 @@ export type ContractScalarWhereInput = {
   AND?: Prisma.ContractScalarWhereInput | Prisma.ContractScalarWhereInput[];
   OR?: Prisma.ContractScalarWhereInput[];
   NOT?: Prisma.ContractScalarWhereInput | Prisma.ContractScalarWhereInput[];
+  contractId?: Prisma.IntFilter<'Contract'> | number;
   startDatetime?: Prisma.DateTimeFilter<'Contract'> | Date | string;
   boatId?: Prisma.IntFilter<'Contract'> | number;
   endDatetime?:
@@ -702,14 +683,13 @@ export type ContractCreateWithoutCradleInput = {
   startDatetime: Date | string;
   endDatetime?: Date | string | null;
   boat: Prisma.BoatCreateNestedOneWithoutContractsInput;
-  installments?: Prisma.InstallmentCreateNestedManyWithoutContractInput;
 };
 
 export type ContractUncheckedCreateWithoutCradleInput = {
+  contractId?: number;
   startDatetime: Date | string;
   boatId: number;
   endDatetime?: Date | string | null;
-  installments?: Prisma.InstallmentUncheckedCreateNestedManyWithoutContractInput;
 };
 
 export type ContractCreateOrConnectWithoutCradleInput = {
@@ -755,71 +735,8 @@ export type ContractUpdateManyWithWhereWithoutCradleInput = {
   >;
 };
 
-export type ContractCreateWithoutInstallmentsInput = {
-  startDatetime: Date | string;
-  endDatetime?: Date | string | null;
-  boat: Prisma.BoatCreateNestedOneWithoutContractsInput;
-  cradle: Prisma.CradleCreateNestedOneWithoutBoatHasBoatSlipsInput;
-};
-
-export type ContractUncheckedCreateWithoutInstallmentsInput = {
-  startDatetime: Date | string;
-  boatId: number;
-  endDatetime?: Date | string | null;
-  cradleId: number;
-};
-
-export type ContractCreateOrConnectWithoutInstallmentsInput = {
-  where: Prisma.ContractWhereUniqueInput;
-  create: Prisma.XOR<
-    Prisma.ContractCreateWithoutInstallmentsInput,
-    Prisma.ContractUncheckedCreateWithoutInstallmentsInput
-  >;
-};
-
-export type ContractUpsertWithoutInstallmentsInput = {
-  update: Prisma.XOR<
-    Prisma.ContractUpdateWithoutInstallmentsInput,
-    Prisma.ContractUncheckedUpdateWithoutInstallmentsInput
-  >;
-  create: Prisma.XOR<
-    Prisma.ContractCreateWithoutInstallmentsInput,
-    Prisma.ContractUncheckedCreateWithoutInstallmentsInput
-  >;
-  where?: Prisma.ContractWhereInput;
-};
-
-export type ContractUpdateToOneWithWhereWithoutInstallmentsInput = {
-  where?: Prisma.ContractWhereInput;
-  data: Prisma.XOR<
-    Prisma.ContractUpdateWithoutInstallmentsInput,
-    Prisma.ContractUncheckedUpdateWithoutInstallmentsInput
-  >;
-};
-
-export type ContractUpdateWithoutInstallmentsInput = {
-  startDatetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  endDatetime?:
-    | Prisma.NullableDateTimeFieldUpdateOperationsInput
-    | Date
-    | string
-    | null;
-  boat?: Prisma.BoatUpdateOneRequiredWithoutContractsNestedInput;
-  cradle?: Prisma.CradleUpdateOneRequiredWithoutBoatHasBoatSlipsNestedInput;
-};
-
-export type ContractUncheckedUpdateWithoutInstallmentsInput = {
-  startDatetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
-  endDatetime?:
-    | Prisma.NullableDateTimeFieldUpdateOperationsInput
-    | Date
-    | string
-    | null;
-  cradleId?: Prisma.IntFieldUpdateOperationsInput | number;
-};
-
 export type ContractCreateManyBoatInput = {
+  contractId?: number;
   startDatetime: Date | string;
   endDatetime?: Date | string | null;
   cradleId: number;
@@ -833,10 +750,10 @@ export type ContractUpdateWithoutBoatInput = {
     | string
     | null;
   cradle?: Prisma.CradleUpdateOneRequiredWithoutBoatHasBoatSlipsNestedInput;
-  installments?: Prisma.InstallmentUpdateManyWithoutContractNestedInput;
 };
 
 export type ContractUncheckedUpdateWithoutBoatInput = {
+  contractId?: Prisma.IntFieldUpdateOperationsInput | number;
   startDatetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   endDatetime?:
     | Prisma.NullableDateTimeFieldUpdateOperationsInput
@@ -844,10 +761,10 @@ export type ContractUncheckedUpdateWithoutBoatInput = {
     | string
     | null;
   cradleId?: Prisma.IntFieldUpdateOperationsInput | number;
-  installments?: Prisma.InstallmentUncheckedUpdateManyWithoutContractNestedInput;
 };
 
 export type ContractUncheckedUpdateManyWithoutBoatInput = {
+  contractId?: Prisma.IntFieldUpdateOperationsInput | number;
   startDatetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   endDatetime?:
     | Prisma.NullableDateTimeFieldUpdateOperationsInput
@@ -858,6 +775,7 @@ export type ContractUncheckedUpdateManyWithoutBoatInput = {
 };
 
 export type ContractCreateManyCradleInput = {
+  contractId?: number;
   startDatetime: Date | string;
   boatId: number;
   endDatetime?: Date | string | null;
@@ -871,10 +789,10 @@ export type ContractUpdateWithoutCradleInput = {
     | string
     | null;
   boat?: Prisma.BoatUpdateOneRequiredWithoutContractsNestedInput;
-  installments?: Prisma.InstallmentUpdateManyWithoutContractNestedInput;
 };
 
 export type ContractUncheckedUpdateWithoutCradleInput = {
+  contractId?: Prisma.IntFieldUpdateOperationsInput | number;
   startDatetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   endDatetime?:
@@ -882,10 +800,10 @@ export type ContractUncheckedUpdateWithoutCradleInput = {
     | Date
     | string
     | null;
-  installments?: Prisma.InstallmentUncheckedUpdateManyWithoutContractNestedInput;
 };
 
 export type ContractUncheckedUpdateManyWithoutCradleInput = {
+  contractId?: Prisma.IntFieldUpdateOperationsInput | number;
   startDatetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   endDatetime?:
@@ -893,44 +811,6 @@ export type ContractUncheckedUpdateManyWithoutCradleInput = {
     | Date
     | string
     | null;
-};
-
-/**
- * Count Type ContractCountOutputType
- */
-
-export type ContractCountOutputType = {
-  installments: number;
-};
-
-export type ContractCountOutputTypeSelect<
-  ExtArgs extends runtime.Types.Extensions.InternalArgs =
-    runtime.Types.Extensions.DefaultArgs,
-> = {
-  installments?: boolean | ContractCountOutputTypeCountInstallmentsArgs;
-};
-
-/**
- * ContractCountOutputType without action
- */
-export type ContractCountOutputTypeDefaultArgs<
-  ExtArgs extends runtime.Types.Extensions.InternalArgs =
-    runtime.Types.Extensions.DefaultArgs,
-> = {
-  /**
-   * Select specific fields to fetch from the ContractCountOutputType
-   */
-  select?: Prisma.ContractCountOutputTypeSelect<ExtArgs> | null;
-};
-
-/**
- * ContractCountOutputType without action
- */
-export type ContractCountOutputTypeCountInstallmentsArgs<
-  ExtArgs extends runtime.Types.Extensions.InternalArgs =
-    runtime.Types.Extensions.DefaultArgs,
-> = {
-  where?: Prisma.InstallmentWhereInput;
 };
 
 export type ContractSelect<
@@ -938,19 +818,19 @@ export type ContractSelect<
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetSelect<
   {
+    contractId?: boolean;
     startDatetime?: boolean;
     boatId?: boolean;
     endDatetime?: boolean;
     cradleId?: boolean;
     boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
     cradle?: boolean | Prisma.CradleDefaultArgs<ExtArgs>;
-    installments?: boolean | Prisma.Contract$installmentsArgs<ExtArgs>;
-    _count?: boolean | Prisma.ContractCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['contract']
 >;
 
 export type ContractSelectScalar = {
+  contractId?: boolean;
   startDatetime?: boolean;
   boatId?: boolean;
   endDatetime?: boolean;
@@ -961,7 +841,7 @@ export type ContractOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  'startDatetime' | 'boatId' | 'endDatetime' | 'cradleId',
+  'contractId' | 'startDatetime' | 'boatId' | 'endDatetime' | 'cradleId',
   ExtArgs['result']['contract']
 >;
 export type ContractInclude<
@@ -970,8 +850,6 @@ export type ContractInclude<
 > = {
   boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
   cradle?: boolean | Prisma.CradleDefaultArgs<ExtArgs>;
-  installments?: boolean | Prisma.Contract$installmentsArgs<ExtArgs>;
-  _count?: boolean | Prisma.ContractCountOutputTypeDefaultArgs<ExtArgs>;
 };
 
 export type $ContractPayload<
@@ -982,10 +860,10 @@ export type $ContractPayload<
   objects: {
     boat: Prisma.$BoatPayload<ExtArgs>;
     cradle: Prisma.$CradlePayload<ExtArgs>;
-    installments: Prisma.$InstallmentPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
+      contractId: number;
       startDatetime: Date;
       boatId: number;
       endDatetime: Date | null;
@@ -1134,8 +1012,8 @@ export interface ContractDelegate<
    * // Get first 10 Contracts
    * const contracts = await prisma.contract.findMany({ take: 10 })
    *
-   * // Only select the `startDatetime`
-   * const contractWithStartDatetimeOnly = await prisma.contract.findMany({ select: { startDatetime: true } })
+   * // Only select the `contractId`
+   * const contractWithContractIdOnly = await prisma.contract.findMany({ select: { contractId: true } })
    *
    */
   findMany<T extends ContractFindManyArgs>(
@@ -1496,17 +1374,6 @@ export interface Prisma__ContractClient<
     ExtArgs,
     GlobalOmitOptions
   >;
-  installments<T extends Prisma.Contract$installmentsArgs<ExtArgs> = {}>(
-    args?: Prisma.Subset<T, Prisma.Contract$installmentsArgs<ExtArgs>>,
-  ): Prisma.PrismaPromise<
-    | runtime.Types.Result.GetResult<
-        Prisma.$InstallmentPayload<ExtArgs>,
-        T,
-        'findMany',
-        GlobalOmitOptions
-      >
-    | Null
-  >;
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1549,6 +1416,7 @@ export interface Prisma__ContractClient<
  * Fields of the Contract model
  */
 export interface ContractFieldRefs {
+  readonly contractId: Prisma.FieldRef<'Contract', 'Int'>;
   readonly startDatetime: Prisma.FieldRef<'Contract', 'DateTime'>;
   readonly boatId: Prisma.FieldRef<'Contract', 'Int'>;
   readonly endDatetime: Prisma.FieldRef<'Contract', 'DateTime'>;
@@ -1954,37 +1822,6 @@ export type ContractDeleteManyArgs<
    * Limit how many Contracts to delete.
    */
   limit?: number;
-};
-
-/**
- * Contract.installments
- */
-export type Contract$installmentsArgs<
-  ExtArgs extends runtime.Types.Extensions.InternalArgs =
-    runtime.Types.Extensions.DefaultArgs,
-> = {
-  /**
-   * Select specific fields to fetch from the Installment
-   */
-  select?: Prisma.InstallmentSelect<ExtArgs> | null;
-  /**
-   * Omit specific fields from the Installment
-   */
-  omit?: Prisma.InstallmentOmit<ExtArgs> | null;
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.InstallmentInclude<ExtArgs> | null;
-  where?: Prisma.InstallmentWhereInput;
-  orderBy?:
-    | Prisma.InstallmentOrderByWithRelationInput
-    | Prisma.InstallmentOrderByWithRelationInput[];
-  cursor?: Prisma.InstallmentWhereUniqueInput;
-  take?: number;
-  skip?: number;
-  distinct?:
-    | Prisma.InstallmentScalarFieldEnum
-    | Prisma.InstallmentScalarFieldEnum[];
 };
 
 /**

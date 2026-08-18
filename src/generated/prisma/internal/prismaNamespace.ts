@@ -93,12 +93,12 @@ export type PrismaVersion = {
 };
 
 /**
- * Prisma Client JS version: 7.8.0
- * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
+ * Prisma Client JS version: 7.9.1
+ * Query Engine version: e922089b7d7502aff4249d5da3420f6fa55fc6ad
  */
 export const prismaVersion: PrismaVersion = {
-  client: '7.8.0',
-  engine: '3c6e192761c0362d496ed980de936e2f3cebcd3a',
+  client: '7.9.1',
+  engine: 'e922089b7d7502aff4249d5da3420f6fa55fc6ad',
 };
 
 /**
@@ -173,6 +173,22 @@ export type Subset<T, U> = {
 };
 
 /**
+ * Resolved type of the argument passed to the `PrismaClient` constructor.
+ *
+ * When called without a narrower options type (the common case), this resolves
+ * to `PrismaClientOptions` directly, which produces a clear TypeScript error
+ * message (`not assignable to parameter of type 'PrismaClientOptions'`) when
+ * the argument is missing or incomplete. When the user supplies a narrower
+ * options type (e.g. via a literal), it falls back to `Subset` to keep
+ * filtering out unknown properties.
+ */
+export type PrismaClientConstructorArgs<Options extends PrismaClientOptions> = [
+  PrismaClientOptions,
+] extends [Options]
+  ? PrismaClientOptions
+  : Subset<Options, PrismaClientOptions>;
+
+/**
  * SelectSubset
  * @desc From `T` pick properties that exist in `U`. Simple version of Intersection.
  * Additionally, it validates, if both select and include are present. If the case, it errors.
@@ -201,7 +217,7 @@ type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
  */
 export type XOR<T, U> = T extends object
   ? U extends object
-    ? (Without<T, U> & U) | (Without<U, T> & T)
+    ? ((Without<T, U> & U) | (Without<U, T> & T)) & object
     : U
   : T;
 
@@ -413,22 +429,16 @@ type FieldRefInputType<Model, FieldType> = Model extends never
 
 export const ModelName = {
   Boat: 'Boat',
-  Activity: 'Activity',
   BoatType: 'BoatType',
   BoatDeparture: 'BoatDeparture',
   Cradle: 'Cradle',
-  CradleCategory: 'CradleCategory',
-  CradleTariff: 'CradleTariff',
   Contract: 'Contract',
   User: 'User',
   Employee: 'Employee',
   Member: 'Member',
-  EmployeesActivities: 'EmployeesActivities',
-  Course: 'Course',
-  CourseSchedule: 'CourseSchedule',
-  CoursePrice: 'CoursePrice',
-  Enrollment: 'Enrollment',
-  Installment: 'Installment',
+  PasswordResetToken: 'PasswordResetToken',
+  ServiceRequest: 'ServiceRequest',
+  ServiceType: 'ServiceType',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -452,22 +462,16 @@ export type TypeMap<
   meta: {
     modelProps:
       | 'boat'
-      | 'activity'
       | 'boatType'
       | 'boatDeparture'
       | 'cradle'
-      | 'cradleCategory'
-      | 'cradleTariff'
       | 'contract'
       | 'user'
       | 'employee'
       | 'member'
-      | 'employeesActivities'
-      | 'course'
-      | 'courseSchedule'
-      | 'coursePrice'
-      | 'enrollment'
-      | 'installment';
+      | 'passwordResetToken'
+      | 'serviceRequest'
+      | 'serviceType';
     txIsolationLevel: TransactionIsolationLevel;
   };
   model: {
@@ -535,74 +539,6 @@ export type TypeMap<
           args: Prisma.BoatCountArgs<ExtArgs>;
           result:
             | runtime.Types.Utils.Optional<Prisma.BoatCountAggregateOutputType>
-            | number;
-        };
-      };
-    };
-    Activity: {
-      payload: Prisma.$ActivityPayload<ExtArgs>;
-      fields: Prisma.ActivityFieldRefs;
-      operations: {
-        findUnique: {
-          args: Prisma.ActivityFindUniqueArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityPayload> | null;
-        };
-        findUniqueOrThrow: {
-          args: Prisma.ActivityFindUniqueOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityPayload>;
-        };
-        findFirst: {
-          args: Prisma.ActivityFindFirstArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityPayload> | null;
-        };
-        findFirstOrThrow: {
-          args: Prisma.ActivityFindFirstOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityPayload>;
-        };
-        findMany: {
-          args: Prisma.ActivityFindManyArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityPayload>[];
-        };
-        create: {
-          args: Prisma.ActivityCreateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityPayload>;
-        };
-        createMany: {
-          args: Prisma.ActivityCreateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        delete: {
-          args: Prisma.ActivityDeleteArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityPayload>;
-        };
-        update: {
-          args: Prisma.ActivityUpdateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityPayload>;
-        };
-        deleteMany: {
-          args: Prisma.ActivityDeleteManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        updateMany: {
-          args: Prisma.ActivityUpdateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        upsert: {
-          args: Prisma.ActivityUpsertArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityPayload>;
-        };
-        aggregate: {
-          args: Prisma.ActivityAggregateArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.AggregateActivity>;
-        };
-        groupBy: {
-          args: Prisma.ActivityGroupByArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.ActivityGroupByOutputType>[];
-        };
-        count: {
-          args: Prisma.ActivityCountArgs<ExtArgs>;
-          result:
-            | runtime.Types.Utils.Optional<Prisma.ActivityCountAggregateOutputType>
             | number;
         };
       };
@@ -807,142 +743,6 @@ export type TypeMap<
           args: Prisma.CradleCountArgs<ExtArgs>;
           result:
             | runtime.Types.Utils.Optional<Prisma.CradleCountAggregateOutputType>
-            | number;
-        };
-      };
-    };
-    CradleCategory: {
-      payload: Prisma.$CradleCategoryPayload<ExtArgs>;
-      fields: Prisma.CradleCategoryFieldRefs;
-      operations: {
-        findUnique: {
-          args: Prisma.CradleCategoryFindUniqueArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleCategoryPayload> | null;
-        };
-        findUniqueOrThrow: {
-          args: Prisma.CradleCategoryFindUniqueOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleCategoryPayload>;
-        };
-        findFirst: {
-          args: Prisma.CradleCategoryFindFirstArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleCategoryPayload> | null;
-        };
-        findFirstOrThrow: {
-          args: Prisma.CradleCategoryFindFirstOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleCategoryPayload>;
-        };
-        findMany: {
-          args: Prisma.CradleCategoryFindManyArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleCategoryPayload>[];
-        };
-        create: {
-          args: Prisma.CradleCategoryCreateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleCategoryPayload>;
-        };
-        createMany: {
-          args: Prisma.CradleCategoryCreateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        delete: {
-          args: Prisma.CradleCategoryDeleteArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleCategoryPayload>;
-        };
-        update: {
-          args: Prisma.CradleCategoryUpdateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleCategoryPayload>;
-        };
-        deleteMany: {
-          args: Prisma.CradleCategoryDeleteManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        updateMany: {
-          args: Prisma.CradleCategoryUpdateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        upsert: {
-          args: Prisma.CradleCategoryUpsertArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleCategoryPayload>;
-        };
-        aggregate: {
-          args: Prisma.CradleCategoryAggregateArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.AggregateCradleCategory>;
-        };
-        groupBy: {
-          args: Prisma.CradleCategoryGroupByArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.CradleCategoryGroupByOutputType>[];
-        };
-        count: {
-          args: Prisma.CradleCategoryCountArgs<ExtArgs>;
-          result:
-            | runtime.Types.Utils.Optional<Prisma.CradleCategoryCountAggregateOutputType>
-            | number;
-        };
-      };
-    };
-    CradleTariff: {
-      payload: Prisma.$CradleTariffPayload<ExtArgs>;
-      fields: Prisma.CradleTariffFieldRefs;
-      operations: {
-        findUnique: {
-          args: Prisma.CradleTariffFindUniqueArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleTariffPayload> | null;
-        };
-        findUniqueOrThrow: {
-          args: Prisma.CradleTariffFindUniqueOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleTariffPayload>;
-        };
-        findFirst: {
-          args: Prisma.CradleTariffFindFirstArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleTariffPayload> | null;
-        };
-        findFirstOrThrow: {
-          args: Prisma.CradleTariffFindFirstOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleTariffPayload>;
-        };
-        findMany: {
-          args: Prisma.CradleTariffFindManyArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleTariffPayload>[];
-        };
-        create: {
-          args: Prisma.CradleTariffCreateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleTariffPayload>;
-        };
-        createMany: {
-          args: Prisma.CradleTariffCreateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        delete: {
-          args: Prisma.CradleTariffDeleteArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleTariffPayload>;
-        };
-        update: {
-          args: Prisma.CradleTariffUpdateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleTariffPayload>;
-        };
-        deleteMany: {
-          args: Prisma.CradleTariffDeleteManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        updateMany: {
-          args: Prisma.CradleTariffUpdateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        upsert: {
-          args: Prisma.CradleTariffUpsertArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradleTariffPayload>;
-        };
-        aggregate: {
-          args: Prisma.CradleTariffAggregateArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.AggregateCradleTariff>;
-        };
-        groupBy: {
-          args: Prisma.CradleTariffGroupByArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.CradleTariffGroupByOutputType>[];
-        };
-        count: {
-          args: Prisma.CradleTariffCountArgs<ExtArgs>;
-          result:
-            | runtime.Types.Utils.Optional<Prisma.CradleTariffCountAggregateOutputType>
             | number;
         };
       };
@@ -1219,410 +1019,206 @@ export type TypeMap<
         };
       };
     };
-    EmployeesActivities: {
-      payload: Prisma.$EmployeesActivitiesPayload<ExtArgs>;
-      fields: Prisma.EmployeesActivitiesFieldRefs;
+    PasswordResetToken: {
+      payload: Prisma.$PasswordResetTokenPayload<ExtArgs>;
+      fields: Prisma.PasswordResetTokenFieldRefs;
       operations: {
         findUnique: {
-          args: Prisma.EmployeesActivitiesFindUniqueArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeesActivitiesPayload> | null;
+          args: Prisma.PasswordResetTokenFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload> | null;
         };
         findUniqueOrThrow: {
-          args: Prisma.EmployeesActivitiesFindUniqueOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeesActivitiesPayload>;
+          args: Prisma.PasswordResetTokenFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>;
         };
         findFirst: {
-          args: Prisma.EmployeesActivitiesFindFirstArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeesActivitiesPayload> | null;
+          args: Prisma.PasswordResetTokenFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload> | null;
         };
         findFirstOrThrow: {
-          args: Prisma.EmployeesActivitiesFindFirstOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeesActivitiesPayload>;
+          args: Prisma.PasswordResetTokenFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>;
         };
         findMany: {
-          args: Prisma.EmployeesActivitiesFindManyArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeesActivitiesPayload>[];
+          args: Prisma.PasswordResetTokenFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>[];
         };
         create: {
-          args: Prisma.EmployeesActivitiesCreateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeesActivitiesPayload>;
+          args: Prisma.PasswordResetTokenCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>;
         };
         createMany: {
-          args: Prisma.EmployeesActivitiesCreateManyArgs<ExtArgs>;
+          args: Prisma.PasswordResetTokenCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
         delete: {
-          args: Prisma.EmployeesActivitiesDeleteArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeesActivitiesPayload>;
+          args: Prisma.PasswordResetTokenDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>;
         };
         update: {
-          args: Prisma.EmployeesActivitiesUpdateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeesActivitiesPayload>;
+          args: Prisma.PasswordResetTokenUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>;
         };
         deleteMany: {
-          args: Prisma.EmployeesActivitiesDeleteManyArgs<ExtArgs>;
+          args: Prisma.PasswordResetTokenDeleteManyArgs<ExtArgs>;
           result: BatchPayload;
         };
         updateMany: {
-          args: Prisma.EmployeesActivitiesUpdateManyArgs<ExtArgs>;
+          args: Prisma.PasswordResetTokenUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
         upsert: {
-          args: Prisma.EmployeesActivitiesUpsertArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeesActivitiesPayload>;
+          args: Prisma.PasswordResetTokenUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>;
         };
         aggregate: {
-          args: Prisma.EmployeesActivitiesAggregateArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.AggregateEmployeesActivities>;
+          args: Prisma.PasswordResetTokenAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePasswordResetToken>;
         };
         groupBy: {
-          args: Prisma.EmployeesActivitiesGroupByArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.EmployeesActivitiesGroupByOutputType>[];
+          args: Prisma.PasswordResetTokenGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.PasswordResetTokenGroupByOutputType>[];
         };
         count: {
-          args: Prisma.EmployeesActivitiesCountArgs<ExtArgs>;
+          args: Prisma.PasswordResetTokenCountArgs<ExtArgs>;
           result:
-            | runtime.Types.Utils.Optional<Prisma.EmployeesActivitiesCountAggregateOutputType>
+            | runtime.Types.Utils.Optional<Prisma.PasswordResetTokenCountAggregateOutputType>
             | number;
         };
       };
     };
-    Course: {
-      payload: Prisma.$CoursePayload<ExtArgs>;
-      fields: Prisma.CourseFieldRefs;
+    ServiceRequest: {
+      payload: Prisma.$ServiceRequestPayload<ExtArgs>;
+      fields: Prisma.ServiceRequestFieldRefs;
       operations: {
         findUnique: {
-          args: Prisma.CourseFindUniqueArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePayload> | null;
+          args: Prisma.ServiceRequestFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequestPayload> | null;
         };
         findUniqueOrThrow: {
-          args: Prisma.CourseFindUniqueOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePayload>;
+          args: Prisma.ServiceRequestFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequestPayload>;
         };
         findFirst: {
-          args: Prisma.CourseFindFirstArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePayload> | null;
+          args: Prisma.ServiceRequestFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequestPayload> | null;
         };
         findFirstOrThrow: {
-          args: Prisma.CourseFindFirstOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePayload>;
+          args: Prisma.ServiceRequestFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequestPayload>;
         };
         findMany: {
-          args: Prisma.CourseFindManyArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePayload>[];
+          args: Prisma.ServiceRequestFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequestPayload>[];
         };
         create: {
-          args: Prisma.CourseCreateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePayload>;
+          args: Prisma.ServiceRequestCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequestPayload>;
         };
         createMany: {
-          args: Prisma.CourseCreateManyArgs<ExtArgs>;
+          args: Prisma.ServiceRequestCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
         delete: {
-          args: Prisma.CourseDeleteArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePayload>;
+          args: Prisma.ServiceRequestDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequestPayload>;
         };
         update: {
-          args: Prisma.CourseUpdateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePayload>;
+          args: Prisma.ServiceRequestUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequestPayload>;
         };
         deleteMany: {
-          args: Prisma.CourseDeleteManyArgs<ExtArgs>;
+          args: Prisma.ServiceRequestDeleteManyArgs<ExtArgs>;
           result: BatchPayload;
         };
         updateMany: {
-          args: Prisma.CourseUpdateManyArgs<ExtArgs>;
+          args: Prisma.ServiceRequestUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
         upsert: {
-          args: Prisma.CourseUpsertArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePayload>;
+          args: Prisma.ServiceRequestUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequestPayload>;
         };
         aggregate: {
-          args: Prisma.CourseAggregateArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.AggregateCourse>;
+          args: Prisma.ServiceRequestAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateServiceRequest>;
         };
         groupBy: {
-          args: Prisma.CourseGroupByArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.CourseGroupByOutputType>[];
+          args: Prisma.ServiceRequestGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.ServiceRequestGroupByOutputType>[];
         };
         count: {
-          args: Prisma.CourseCountArgs<ExtArgs>;
+          args: Prisma.ServiceRequestCountArgs<ExtArgs>;
           result:
-            | runtime.Types.Utils.Optional<Prisma.CourseCountAggregateOutputType>
+            | runtime.Types.Utils.Optional<Prisma.ServiceRequestCountAggregateOutputType>
             | number;
         };
       };
     };
-    CourseSchedule: {
-      payload: Prisma.$CourseSchedulePayload<ExtArgs>;
-      fields: Prisma.CourseScheduleFieldRefs;
+    ServiceType: {
+      payload: Prisma.$ServiceTypePayload<ExtArgs>;
+      fields: Prisma.ServiceTypeFieldRefs;
       operations: {
         findUnique: {
-          args: Prisma.CourseScheduleFindUniqueArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseSchedulePayload> | null;
+          args: Prisma.ServiceTypeFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceTypePayload> | null;
         };
         findUniqueOrThrow: {
-          args: Prisma.CourseScheduleFindUniqueOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseSchedulePayload>;
+          args: Prisma.ServiceTypeFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceTypePayload>;
         };
         findFirst: {
-          args: Prisma.CourseScheduleFindFirstArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseSchedulePayload> | null;
+          args: Prisma.ServiceTypeFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceTypePayload> | null;
         };
         findFirstOrThrow: {
-          args: Prisma.CourseScheduleFindFirstOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseSchedulePayload>;
+          args: Prisma.ServiceTypeFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceTypePayload>;
         };
         findMany: {
-          args: Prisma.CourseScheduleFindManyArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseSchedulePayload>[];
+          args: Prisma.ServiceTypeFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceTypePayload>[];
         };
         create: {
-          args: Prisma.CourseScheduleCreateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseSchedulePayload>;
+          args: Prisma.ServiceTypeCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceTypePayload>;
         };
         createMany: {
-          args: Prisma.CourseScheduleCreateManyArgs<ExtArgs>;
+          args: Prisma.ServiceTypeCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
         delete: {
-          args: Prisma.CourseScheduleDeleteArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseSchedulePayload>;
+          args: Prisma.ServiceTypeDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceTypePayload>;
         };
         update: {
-          args: Prisma.CourseScheduleUpdateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseSchedulePayload>;
+          args: Prisma.ServiceTypeUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceTypePayload>;
         };
         deleteMany: {
-          args: Prisma.CourseScheduleDeleteManyArgs<ExtArgs>;
+          args: Prisma.ServiceTypeDeleteManyArgs<ExtArgs>;
           result: BatchPayload;
         };
         updateMany: {
-          args: Prisma.CourseScheduleUpdateManyArgs<ExtArgs>;
+          args: Prisma.ServiceTypeUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
         upsert: {
-          args: Prisma.CourseScheduleUpsertArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseSchedulePayload>;
+          args: Prisma.ServiceTypeUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceTypePayload>;
         };
         aggregate: {
-          args: Prisma.CourseScheduleAggregateArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.AggregateCourseSchedule>;
+          args: Prisma.ServiceTypeAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateServiceType>;
         };
         groupBy: {
-          args: Prisma.CourseScheduleGroupByArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.CourseScheduleGroupByOutputType>[];
+          args: Prisma.ServiceTypeGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.ServiceTypeGroupByOutputType>[];
         };
         count: {
-          args: Prisma.CourseScheduleCountArgs<ExtArgs>;
+          args: Prisma.ServiceTypeCountArgs<ExtArgs>;
           result:
-            | runtime.Types.Utils.Optional<Prisma.CourseScheduleCountAggregateOutputType>
-            | number;
-        };
-      };
-    };
-    CoursePrice: {
-      payload: Prisma.$CoursePricePayload<ExtArgs>;
-      fields: Prisma.CoursePriceFieldRefs;
-      operations: {
-        findUnique: {
-          args: Prisma.CoursePriceFindUniqueArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePricePayload> | null;
-        };
-        findUniqueOrThrow: {
-          args: Prisma.CoursePriceFindUniqueOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePricePayload>;
-        };
-        findFirst: {
-          args: Prisma.CoursePriceFindFirstArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePricePayload> | null;
-        };
-        findFirstOrThrow: {
-          args: Prisma.CoursePriceFindFirstOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePricePayload>;
-        };
-        findMany: {
-          args: Prisma.CoursePriceFindManyArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePricePayload>[];
-        };
-        create: {
-          args: Prisma.CoursePriceCreateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePricePayload>;
-        };
-        createMany: {
-          args: Prisma.CoursePriceCreateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        delete: {
-          args: Prisma.CoursePriceDeleteArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePricePayload>;
-        };
-        update: {
-          args: Prisma.CoursePriceUpdateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePricePayload>;
-        };
-        deleteMany: {
-          args: Prisma.CoursePriceDeleteManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        updateMany: {
-          args: Prisma.CoursePriceUpdateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        upsert: {
-          args: Prisma.CoursePriceUpsertArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePricePayload>;
-        };
-        aggregate: {
-          args: Prisma.CoursePriceAggregateArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.AggregateCoursePrice>;
-        };
-        groupBy: {
-          args: Prisma.CoursePriceGroupByArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.CoursePriceGroupByOutputType>[];
-        };
-        count: {
-          args: Prisma.CoursePriceCountArgs<ExtArgs>;
-          result:
-            | runtime.Types.Utils.Optional<Prisma.CoursePriceCountAggregateOutputType>
-            | number;
-        };
-      };
-    };
-    Enrollment: {
-      payload: Prisma.$EnrollmentPayload<ExtArgs>;
-      fields: Prisma.EnrollmentFieldRefs;
-      operations: {
-        findUnique: {
-          args: Prisma.EnrollmentFindUniqueArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EnrollmentPayload> | null;
-        };
-        findUniqueOrThrow: {
-          args: Prisma.EnrollmentFindUniqueOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EnrollmentPayload>;
-        };
-        findFirst: {
-          args: Prisma.EnrollmentFindFirstArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EnrollmentPayload> | null;
-        };
-        findFirstOrThrow: {
-          args: Prisma.EnrollmentFindFirstOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EnrollmentPayload>;
-        };
-        findMany: {
-          args: Prisma.EnrollmentFindManyArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EnrollmentPayload>[];
-        };
-        create: {
-          args: Prisma.EnrollmentCreateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EnrollmentPayload>;
-        };
-        createMany: {
-          args: Prisma.EnrollmentCreateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        delete: {
-          args: Prisma.EnrollmentDeleteArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EnrollmentPayload>;
-        };
-        update: {
-          args: Prisma.EnrollmentUpdateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EnrollmentPayload>;
-        };
-        deleteMany: {
-          args: Prisma.EnrollmentDeleteManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        updateMany: {
-          args: Prisma.EnrollmentUpdateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        upsert: {
-          args: Prisma.EnrollmentUpsertArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EnrollmentPayload>;
-        };
-        aggregate: {
-          args: Prisma.EnrollmentAggregateArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.AggregateEnrollment>;
-        };
-        groupBy: {
-          args: Prisma.EnrollmentGroupByArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.EnrollmentGroupByOutputType>[];
-        };
-        count: {
-          args: Prisma.EnrollmentCountArgs<ExtArgs>;
-          result:
-            | runtime.Types.Utils.Optional<Prisma.EnrollmentCountAggregateOutputType>
-            | number;
-        };
-      };
-    };
-    Installment: {
-      payload: Prisma.$InstallmentPayload<ExtArgs>;
-      fields: Prisma.InstallmentFieldRefs;
-      operations: {
-        findUnique: {
-          args: Prisma.InstallmentFindUniqueArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPayload> | null;
-        };
-        findUniqueOrThrow: {
-          args: Prisma.InstallmentFindUniqueOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPayload>;
-        };
-        findFirst: {
-          args: Prisma.InstallmentFindFirstArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPayload> | null;
-        };
-        findFirstOrThrow: {
-          args: Prisma.InstallmentFindFirstOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPayload>;
-        };
-        findMany: {
-          args: Prisma.InstallmentFindManyArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPayload>[];
-        };
-        create: {
-          args: Prisma.InstallmentCreateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPayload>;
-        };
-        createMany: {
-          args: Prisma.InstallmentCreateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        delete: {
-          args: Prisma.InstallmentDeleteArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPayload>;
-        };
-        update: {
-          args: Prisma.InstallmentUpdateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPayload>;
-        };
-        deleteMany: {
-          args: Prisma.InstallmentDeleteManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        updateMany: {
-          args: Prisma.InstallmentUpdateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        upsert: {
-          args: Prisma.InstallmentUpsertArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPayload>;
-        };
-        aggregate: {
-          args: Prisma.InstallmentAggregateArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.AggregateInstallment>;
-        };
-        groupBy: {
-          args: Prisma.InstallmentGroupByArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.InstallmentGroupByOutputType>[];
-        };
-        count: {
-          args: Prisma.InstallmentCountArgs<ExtArgs>;
-          result:
-            | runtime.Types.Utils.Optional<Prisma.InstallmentCountAggregateOutputType>
+            | runtime.Types.Utils.Optional<Prisma.ServiceTypeCountAggregateOutputType>
             | number;
         };
       };
@@ -1667,7 +1263,7 @@ export type TransactionIsolationLevel =
   (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
 
 export const BoatScalarFieldEnum = {
-  hin: 'hin',
+  boatId: 'boatId',
   publicId: 'publicId',
   name: 'name',
   description: 'description',
@@ -1677,17 +1273,6 @@ export const BoatScalarFieldEnum = {
 
 export type BoatScalarFieldEnum =
   (typeof BoatScalarFieldEnum)[keyof typeof BoatScalarFieldEnum];
-
-export const ActivityScalarFieldEnum = {
-  activityId: 'activityId',
-  publicId: 'publicId',
-  name: 'name',
-  description: 'description',
-  boatTypeId: 'boatTypeId',
-} as const;
-
-export type ActivityScalarFieldEnum =
-  (typeof ActivityScalarFieldEnum)[keyof typeof ActivityScalarFieldEnum];
 
 export const BoatTypeScalarFieldEnum = {
   boatTypeId: 'boatTypeId',
@@ -1701,9 +1286,9 @@ export type BoatTypeScalarFieldEnum =
 export const BoatDepartureScalarFieldEnum = {
   exitedAt: 'exitedAt',
   boatId: 'boatId',
-  publicId: 'publicId',
   estimatedReturnDatetime: 'estimatedReturnDatetime',
   realReturnDatetime: 'realReturnDatetime',
+  serviceRequestId: 'serviceRequestId',
 } as const;
 
 export type BoatDepartureScalarFieldEnum =
@@ -1713,33 +1298,13 @@ export const CradleScalarFieldEnum = {
   cradleId: 'cradleId',
   state: 'state',
   cradleCode: 'cradleCode',
-  sizeCategory: 'sizeCategory',
-  isOccupied: 'isOccupied',
-  cradleCategoryId: 'cradleCategoryId',
 } as const;
 
 export type CradleScalarFieldEnum =
   (typeof CradleScalarFieldEnum)[keyof typeof CradleScalarFieldEnum];
 
-export const CradleCategoryScalarFieldEnum = {
-  cradleCategoryId: 'cradleCategoryId',
-  name: 'name',
-  hierarchyLevel: 'hierarchyLevel',
-} as const;
-
-export type CradleCategoryScalarFieldEnum =
-  (typeof CradleCategoryScalarFieldEnum)[keyof typeof CradleCategoryScalarFieldEnum];
-
-export const CradleTariffScalarFieldEnum = {
-  cradleCategoryId: 'cradleCategoryId',
-  startDate: 'startDate',
-  monthlyPrice: 'monthlyPrice',
-} as const;
-
-export type CradleTariffScalarFieldEnum =
-  (typeof CradleTariffScalarFieldEnum)[keyof typeof CradleTariffScalarFieldEnum];
-
 export const ContractScalarFieldEnum = {
+  contractId: 'contractId',
   startDatetime: 'startDatetime',
   boatId: 'boatId',
   endDatetime: 'endDatetime',
@@ -1770,7 +1335,6 @@ export const EmployeeScalarFieldEnum = {
   lastName: 'lastName',
   employeeNumber: 'employeeNumber',
   employeeType: 'employeeType',
-  licenseNumber: 'licenseNumber',
 } as const;
 
 export type EmployeeScalarFieldEnum =
@@ -1786,73 +1350,43 @@ export const MemberScalarFieldEnum = {
 export type MemberScalarFieldEnum =
   (typeof MemberScalarFieldEnum)[keyof typeof MemberScalarFieldEnum];
 
-export const EmployeesActivitiesScalarFieldEnum = {
-  employeeId: 'employeeId',
-  activityId: 'activityId',
-} as const;
-
-export type EmployeesActivitiesScalarFieldEnum =
-  (typeof EmployeesActivitiesScalarFieldEnum)[keyof typeof EmployeesActivitiesScalarFieldEnum];
-
-export const CourseScalarFieldEnum = {
-  courseId: 'courseId',
-  publicId: 'publicId',
-  capacity: 'capacity',
-  start_date: 'start_date',
-  end_date: 'end_date',
-  name: 'name',
-  activityId: 'activityId',
-  employeeId: 'employeeId',
-} as const;
-
-export type CourseScalarFieldEnum =
-  (typeof CourseScalarFieldEnum)[keyof typeof CourseScalarFieldEnum];
-
-export const CourseScheduleScalarFieldEnum = {
-  weekday: 'weekday',
-  startTime: 'startTime',
-  endTime: 'endTime',
-  courseId: 'courseId',
-} as const;
-
-export type CourseScheduleScalarFieldEnum =
-  (typeof CourseScheduleScalarFieldEnum)[keyof typeof CourseScheduleScalarFieldEnum];
-
-export const CoursePriceScalarFieldEnum = {
-  startDate: 'startDate',
-  enrollmentPrice: 'enrollmentPrice',
-  installmentPrice: 'installmentPrice',
-  courseId: 'courseId',
-} as const;
-
-export type CoursePriceScalarFieldEnum =
-  (typeof CoursePriceScalarFieldEnum)[keyof typeof CoursePriceScalarFieldEnum];
-
-export const EnrollmentScalarFieldEnum = {
-  memberId: 'memberId',
-  courseId: 'courseId',
-  registered_at: 'registered_at',
-  status: 'status',
-} as const;
-
-export type EnrollmentScalarFieldEnum =
-  (typeof EnrollmentScalarFieldEnum)[keyof typeof EnrollmentScalarFieldEnum];
-
-export const InstallmentScalarFieldEnum = {
-  installmentId: 'installmentId',
-  publicId: 'publicId',
-  paymentDate: 'paymentDate',
-  installmentStatus: 'installmentStatus',
-  installmentType: 'installmentType',
-  amount: 'amount',
+export const PasswordResetTokenScalarFieldEnum = {
+  passwordResetTokenId: 'passwordResetTokenId',
   userId: 'userId',
-  courseId: 'courseId',
-  startDatetime: 'startDatetime',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  used: 'used',
+  createdAt: 'createdAt',
+} as const;
+
+export type PasswordResetTokenScalarFieldEnum =
+  (typeof PasswordResetTokenScalarFieldEnum)[keyof typeof PasswordResetTokenScalarFieldEnum];
+
+export const ServiceRequestScalarFieldEnum = {
+  serviceRequestId: 'serviceRequestId',
+  status: 'status',
+  requestedDatetime: 'requestedDatetime',
+  observations: 'observations',
+  internalComment: 'internalComment',
+  createdAt: 'createdAt',
+  serviceTypeId: 'serviceTypeId',
+  requestedByUserId: 'requestedByUserId',
+  assignedEmployeeId: 'assignedEmployeeId',
   boatId: 'boatId',
 } as const;
 
-export type InstallmentScalarFieldEnum =
-  (typeof InstallmentScalarFieldEnum)[keyof typeof InstallmentScalarFieldEnum];
+export type ServiceRequestScalarFieldEnum =
+  (typeof ServiceRequestScalarFieldEnum)[keyof typeof ServiceRequestScalarFieldEnum];
+
+export const ServiceTypeScalarFieldEnum = {
+  serviceTypeId: 'serviceTypeId',
+  name: 'name',
+  description: 'description',
+  isActive: 'isActive',
+} as const;
+
+export type ServiceTypeScalarFieldEnum =
+  (typeof ServiceTypeScalarFieldEnum)[keyof typeof ServiceTypeScalarFieldEnum];
 
 export const SortOrder = {
   asc: 'asc',
@@ -1870,18 +1404,8 @@ export const BoatOrderByRelevanceFieldEnum = {
 export type BoatOrderByRelevanceFieldEnum =
   (typeof BoatOrderByRelevanceFieldEnum)[keyof typeof BoatOrderByRelevanceFieldEnum];
 
-export const ActivityOrderByRelevanceFieldEnum = {
-  publicId: 'publicId',
-  name: 'name',
-  description: 'description',
-} as const;
-
-export type ActivityOrderByRelevanceFieldEnum =
-  (typeof ActivityOrderByRelevanceFieldEnum)[keyof typeof ActivityOrderByRelevanceFieldEnum];
-
 export const BoatTypeOrderByRelevanceFieldEnum = {
   name: 'name',
-  requiredOperation: 'requiredOperation',
 } as const;
 
 export type BoatTypeOrderByRelevanceFieldEnum =
@@ -1894,13 +1418,6 @@ export const NullsOrder = {
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
 
-export const BoatDepartureOrderByRelevanceFieldEnum = {
-  publicId: 'publicId',
-} as const;
-
-export type BoatDepartureOrderByRelevanceFieldEnum =
-  (typeof BoatDepartureOrderByRelevanceFieldEnum)[keyof typeof BoatDepartureOrderByRelevanceFieldEnum];
-
 export const CradleOrderByRelevanceFieldEnum = {
   state: 'state',
   cradleCode: 'cradleCode',
@@ -1908,13 +1425,6 @@ export const CradleOrderByRelevanceFieldEnum = {
 
 export type CradleOrderByRelevanceFieldEnum =
   (typeof CradleOrderByRelevanceFieldEnum)[keyof typeof CradleOrderByRelevanceFieldEnum];
-
-export const CradleCategoryOrderByRelevanceFieldEnum = {
-  name: 'name',
-} as const;
-
-export type CradleCategoryOrderByRelevanceFieldEnum =
-  (typeof CradleCategoryOrderByRelevanceFieldEnum)[keyof typeof CradleCategoryOrderByRelevanceFieldEnum];
 
 export const UserOrderByRelevanceFieldEnum = {
   publicId: 'publicId',
@@ -1932,8 +1442,6 @@ export const EmployeeOrderByRelevanceFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   employeeNumber: 'employeeNumber',
-  employeeType: 'employeeType',
-  licenseNumber: 'licenseNumber',
 } as const;
 
 export type EmployeeOrderByRelevanceFieldEnum =
@@ -1948,27 +1456,28 @@ export const MemberOrderByRelevanceFieldEnum = {
 export type MemberOrderByRelevanceFieldEnum =
   (typeof MemberOrderByRelevanceFieldEnum)[keyof typeof MemberOrderByRelevanceFieldEnum];
 
-export const CourseOrderByRelevanceFieldEnum = {
-  publicId: 'publicId',
+export const PasswordResetTokenOrderByRelevanceFieldEnum = {
+  tokenHash: 'tokenHash',
+} as const;
+
+export type PasswordResetTokenOrderByRelevanceFieldEnum =
+  (typeof PasswordResetTokenOrderByRelevanceFieldEnum)[keyof typeof PasswordResetTokenOrderByRelevanceFieldEnum];
+
+export const ServiceRequestOrderByRelevanceFieldEnum = {
+  observations: 'observations',
+  internalComment: 'internalComment',
+} as const;
+
+export type ServiceRequestOrderByRelevanceFieldEnum =
+  (typeof ServiceRequestOrderByRelevanceFieldEnum)[keyof typeof ServiceRequestOrderByRelevanceFieldEnum];
+
+export const ServiceTypeOrderByRelevanceFieldEnum = {
   name: 'name',
+  description: 'description',
 } as const;
 
-export type CourseOrderByRelevanceFieldEnum =
-  (typeof CourseOrderByRelevanceFieldEnum)[keyof typeof CourseOrderByRelevanceFieldEnum];
-
-export const CourseScheduleOrderByRelevanceFieldEnum = {
-  weekday: 'weekday',
-} as const;
-
-export type CourseScheduleOrderByRelevanceFieldEnum =
-  (typeof CourseScheduleOrderByRelevanceFieldEnum)[keyof typeof CourseScheduleOrderByRelevanceFieldEnum];
-
-export const InstallmentOrderByRelevanceFieldEnum = {
-  publicId: 'publicId',
-} as const;
-
-export type InstallmentOrderByRelevanceFieldEnum =
-  (typeof InstallmentOrderByRelevanceFieldEnum)[keyof typeof InstallmentOrderByRelevanceFieldEnum];
+export type ServiceTypeOrderByRelevanceFieldEnum =
+  (typeof ServiceTypeOrderByRelevanceFieldEnum)[keyof typeof ServiceTypeOrderByRelevanceFieldEnum];
 
 /**
  * Field references
@@ -1991,18 +1500,20 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<
 >;
 
 /**
+ * Reference to a field of type 'OperationType'
+ */
+export type EnumOperationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'OperationType'
+>;
+
+/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<
   $PrismaModel,
   'DateTime'
 >;
-
-/**
- * Reference to a field of type 'CradleSizeCategory'
- */
-export type EnumCradleSizeCategoryFieldRefInput<$PrismaModel> =
-  FieldRefInputType<$PrismaModel, 'CradleSizeCategory'>;
 
 /**
  * Reference to a field of type 'Boolean'
@@ -2013,33 +1524,19 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<
 >;
 
 /**
- * Reference to a field of type 'Decimal'
+ * Reference to a field of type 'EmployeeType'
  */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<
+export type EnumEmployeeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
   $PrismaModel,
-  'Decimal'
+  'EmployeeType'
 >;
 
 /**
- * Reference to a field of type 'StatusEnrollment'
+ * Reference to a field of type 'ServiceStatus'
  */
-export type EnumStatusEnrollmentFieldRefInput<$PrismaModel> = FieldRefInputType<
+export type EnumServiceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
   $PrismaModel,
-  'StatusEnrollment'
->;
-
-/**
- * Reference to a field of type 'InstallmentStatus'
- */
-export type EnumInstallmentStatusFieldRefInput<$PrismaModel> =
-  FieldRefInputType<$PrismaModel, 'InstallmentStatus'>;
-
-/**
- * Reference to a field of type 'InstallmentType'
- */
-export type EnumInstallmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
-  $PrismaModel,
-  'InstallmentType'
+  'ServiceStatus'
 >;
 
 /**
@@ -2065,22 +1562,10 @@ export const defineExtension = runtime.Extensions
 >;
 export type DefaultPrismaClient = PrismaClient;
 export type ErrorFormat = 'pretty' | 'colorless' | 'minimal';
-export type PrismaClientOptions = (
-  | {
-      /**
-       * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-pg`.
-       */
-      adapter: runtime.SqlDriverAdapterFactory;
-      accelerateUrl?: never;
-    }
-  | {
-      /**
-       * Prisma Accelerate URL allowing the client to connect through Accelerate instead of a direct database.
-       */
-      accelerateUrl: string;
-      adapter?: never;
-    }
-) & {
+/**
+ * Options common to all variants of `PrismaClientOptions`, regardless of whether you connect to your database through a driver adapter or through Prisma Accelerate.
+ */
+export interface PrismaClientBaseOptions {
   /**
    * @default "colorless"
    */
@@ -2166,25 +1651,71 @@ export type PrismaClientOptions = (
    * ```
    */
   queryPlanCacheMaxSize?: number;
-};
+}
+
+/**
+ * `PrismaClient` options for connecting to your database through Prisma Accelerate instead of a driver adapter.
+ *
+ * Learn more: https://pris.ly/d/accelerate
+ */
+export interface PrismaClientOptionsWithAccelerateUrl extends PrismaClientBaseOptions {
+  /**
+   * The Prisma Accelerate connection URL. Use this option to connect to your database through Prisma Accelerate instead of using a driver adapter to connect directly.
+   *
+   * Learn more: https://pris.ly/d/accelerate
+   */
+  accelerateUrl: string;
+  adapter?: never;
+}
+
+/**
+ * `PrismaClient` options for connecting to your database through a driver adapter. This is the common case in Prisma 7.
+ *
+ * Learn more: https://pris.ly/d/driver-adapters
+ */
+export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions {
+  /**
+   * A driver adapter that PrismaClient uses to connect to your database, such as the ones provided by `@prisma/adapter-pg`, `@prisma/adapter-libsql`, `@prisma/adapter-planetscale`, etc.
+   *
+   * A driver adapter is **required** unless you connect to your database through Prisma Accelerate (in which case use `accelerateUrl` instead).
+   *
+   * Learn more: https://pris.ly/d/driver-adapters
+   *
+   * @example
+   * ```ts
+   * import { PrismaPg } from '@prisma/adapter-pg'
+   * import { PrismaClient } from './generated/prisma/client'
+   *
+   * const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
+   * const prisma = new PrismaClient({ adapter })
+   * ```
+   */
+  adapter: runtime.SqlDriverAdapterFactory;
+  accelerateUrl?: never;
+}
+
+/**
+ * Options passed to the `PrismaClient` constructor.
+ *
+ * A driver adapter (or, alternatively, a Prisma Accelerate URL) is **required**. See {@link PrismaClientOptionsWithAdapter} and {@link PrismaClientOptionsWithAccelerateUrl} for the two variants. All other properties live in {@link PrismaClientBaseOptions} and are optional.
+ *
+ * Learn more about driver adapters: https://pris.ly/d/driver-adapters
+ */
+export type PrismaClientOptions =
+  | PrismaClientOptionsWithAccelerateUrl
+  | PrismaClientOptionsWithAdapter;
 export type GlobalOmitConfig = {
   boat?: Prisma.BoatOmit;
-  activity?: Prisma.ActivityOmit;
   boatType?: Prisma.BoatTypeOmit;
   boatDeparture?: Prisma.BoatDepartureOmit;
   cradle?: Prisma.CradleOmit;
-  cradleCategory?: Prisma.CradleCategoryOmit;
-  cradleTariff?: Prisma.CradleTariffOmit;
   contract?: Prisma.ContractOmit;
   user?: Prisma.UserOmit;
   employee?: Prisma.EmployeeOmit;
   member?: Prisma.MemberOmit;
-  employeesActivities?: Prisma.EmployeesActivitiesOmit;
-  course?: Prisma.CourseOmit;
-  courseSchedule?: Prisma.CourseScheduleOmit;
-  coursePrice?: Prisma.CoursePriceOmit;
-  enrollment?: Prisma.EnrollmentOmit;
-  installment?: Prisma.InstallmentOmit;
+  passwordResetToken?: Prisma.PasswordResetTokenOmit;
+  serviceRequest?: Prisma.ServiceRequestOmit;
+  serviceType?: Prisma.ServiceTypeOmit;
 };
 
 /* Types for Logging */

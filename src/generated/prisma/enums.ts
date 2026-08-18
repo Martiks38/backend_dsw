@@ -8,37 +8,25 @@
  * 🟢 You can import this file directly.
  */
 
-export const CradleSizeCategory = {
-  SMALL: 'SMALL',
-  MEDIUM: 'MEDIUM',
-  LARGE: 'LARGE',
-} as const;
-
-export type CradleSizeCategory =
-  (typeof CradleSizeCategory)[keyof typeof CradleSizeCategory];
-
-export const StatusEnrollment = {
-  ACTIVE: 'ACTIVE',
-  COMPLETED: 'COMPLETED',
-  DROPPED: 'DROPPED',
-} as const;
-
-export type StatusEnrollment =
-  (typeof StatusEnrollment)[keyof typeof StatusEnrollment];
-
-export const InstallmentStatus = {
+export const ServiceStatus = {
   PENDING: 'PENDING',
-  PAID: 'PAID',
-  OVERDUE: 'OVERDUE',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELED: 'CANCELED',
 } as const;
 
-export type InstallmentStatus =
-  (typeof InstallmentStatus)[keyof typeof InstallmentStatus];
+export type ServiceStatus = (typeof ServiceStatus)[keyof typeof ServiceStatus];
 
-export const InstallmentType = {
-  ENROLLMENT: 'ENROLLMENT',
-  CRADLE_RENTAL: 'CRADLE_RENTAL',
+export const EmployeeType = {
+  ADMIN: 'ADMIN',
+  OPERATOR: 'OPERATOR',
 } as const;
 
-export type InstallmentType =
-  (typeof InstallmentType)[keyof typeof InstallmentType];
+export type EmployeeType = (typeof EmployeeType)[keyof typeof EmployeeType];
+
+export const OperationType = {
+  MANUAL: 'MANUAL',
+  AUTOMATIC: 'AUTOMATIC',
+} as const;
+
+export type OperationType = (typeof OperationType)[keyof typeof OperationType];

@@ -37,13 +37,13 @@ export type BoatTypeSumAggregateOutputType = {
 export type BoatTypeMinAggregateOutputType = {
   boatTypeId: number | null;
   name: string | null;
-  requiredOperation: string | null;
+  requiredOperation: $Enums.OperationType | null;
 };
 
 export type BoatTypeMaxAggregateOutputType = {
   boatTypeId: number | null;
   name: string | null;
-  requiredOperation: string | null;
+  requiredOperation: $Enums.OperationType | null;
 };
 
 export type BoatTypeCountAggregateOutputType = {
@@ -176,7 +176,7 @@ export type BoatTypeGroupByArgs<
 export type BoatTypeGroupByOutputType = {
   boatTypeId: number;
   name: string;
-  requiredOperation: string;
+  requiredOperation: $Enums.OperationType;
   _count: BoatTypeCountAggregateOutputType | null;
   _avg: BoatTypeAvgAggregateOutputType | null;
   _sum: BoatTypeSumAggregateOutputType | null;
@@ -203,9 +203,10 @@ export type BoatTypeWhereInput = {
   NOT?: Prisma.BoatTypeWhereInput | Prisma.BoatTypeWhereInput[];
   boatTypeId?: Prisma.IntFilter<'BoatType'> | number;
   name?: Prisma.StringFilter<'BoatType'> | string;
-  requiredOperation?: Prisma.StringFilter<'BoatType'> | string;
+  requiredOperation?:
+    | Prisma.EnumOperationTypeFilter<'BoatType'>
+    | $Enums.OperationType;
   boats?: Prisma.BoatListRelationFilter;
-  activities?: Prisma.ActivityListRelationFilter;
 };
 
 export type BoatTypeOrderByWithRelationInput = {
@@ -213,7 +214,6 @@ export type BoatTypeOrderByWithRelationInput = {
   name?: Prisma.SortOrder;
   requiredOperation?: Prisma.SortOrder;
   boats?: Prisma.BoatOrderByRelationAggregateInput;
-  activities?: Prisma.ActivityOrderByRelationAggregateInput;
   _relevance?: Prisma.BoatTypeOrderByRelevanceInput;
 };
 
@@ -224,9 +224,10 @@ export type BoatTypeWhereUniqueInput = Prisma.AtLeast<
     OR?: Prisma.BoatTypeWhereInput[];
     NOT?: Prisma.BoatTypeWhereInput | Prisma.BoatTypeWhereInput[];
     name?: Prisma.StringFilter<'BoatType'> | string;
-    requiredOperation?: Prisma.StringFilter<'BoatType'> | string;
+    requiredOperation?:
+      | Prisma.EnumOperationTypeFilter<'BoatType'>
+      | $Enums.OperationType;
     boats?: Prisma.BoatListRelationFilter;
-    activities?: Prisma.ActivityListRelationFilter;
   },
   'boatTypeId'
 >;
@@ -252,54 +253,60 @@ export type BoatTypeScalarWhereWithAggregatesInput = {
     | Prisma.BoatTypeScalarWhereWithAggregatesInput[];
   boatTypeId?: Prisma.IntWithAggregatesFilter<'BoatType'> | number;
   name?: Prisma.StringWithAggregatesFilter<'BoatType'> | string;
-  requiredOperation?: Prisma.StringWithAggregatesFilter<'BoatType'> | string;
+  requiredOperation?:
+    | Prisma.EnumOperationTypeWithAggregatesFilter<'BoatType'>
+    | $Enums.OperationType;
 };
 
 export type BoatTypeCreateInput = {
   name: string;
-  requiredOperation: string;
+  requiredOperation: $Enums.OperationType;
   boats?: Prisma.BoatCreateNestedManyWithoutBoatTypeInput;
-  activities?: Prisma.ActivityCreateNestedManyWithoutBoatTypeInput;
 };
 
 export type BoatTypeUncheckedCreateInput = {
   boatTypeId?: number;
   name: string;
-  requiredOperation: string;
+  requiredOperation: $Enums.OperationType;
   boats?: Prisma.BoatUncheckedCreateNestedManyWithoutBoatTypeInput;
-  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutBoatTypeInput;
 };
 
 export type BoatTypeUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
-  requiredOperation?: Prisma.StringFieldUpdateOperationsInput | string;
+  requiredOperation?:
+    | Prisma.EnumOperationTypeFieldUpdateOperationsInput
+    | $Enums.OperationType;
   boats?: Prisma.BoatUpdateManyWithoutBoatTypeNestedInput;
-  activities?: Prisma.ActivityUpdateManyWithoutBoatTypeNestedInput;
 };
 
 export type BoatTypeUncheckedUpdateInput = {
   boatTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
-  requiredOperation?: Prisma.StringFieldUpdateOperationsInput | string;
+  requiredOperation?:
+    | Prisma.EnumOperationTypeFieldUpdateOperationsInput
+    | $Enums.OperationType;
   boats?: Prisma.BoatUncheckedUpdateManyWithoutBoatTypeNestedInput;
-  activities?: Prisma.ActivityUncheckedUpdateManyWithoutBoatTypeNestedInput;
 };
 
 export type BoatTypeCreateManyInput = {
   boatTypeId?: number;
   name: string;
-  requiredOperation: string;
+  requiredOperation: $Enums.OperationType;
 };
 
 export type BoatTypeUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
-  requiredOperation?: Prisma.StringFieldUpdateOperationsInput | string;
+  requiredOperation?:
+    | Prisma.EnumOperationTypeFieldUpdateOperationsInput
+    | $Enums.OperationType;
 };
 
 export type BoatTypeUncheckedUpdateManyInput = {
   boatTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
-  requiredOperation?: Prisma.StringFieldUpdateOperationsInput | string;
+  requiredOperation?:
+    | Prisma.EnumOperationTypeFieldUpdateOperationsInput
+    | $Enums.OperationType;
 };
 
 export type BoatTypeScalarRelationFilter = {
@@ -367,43 +374,19 @@ export type BoatTypeUpdateOneRequiredWithoutBoatsNestedInput = {
   >;
 };
 
-export type BoatTypeCreateNestedOneWithoutActivitiesInput = {
-  create?: Prisma.XOR<
-    Prisma.BoatTypeCreateWithoutActivitiesInput,
-    Prisma.BoatTypeUncheckedCreateWithoutActivitiesInput
-  >;
-  connectOrCreate?: Prisma.BoatTypeCreateOrConnectWithoutActivitiesInput;
-  connect?: Prisma.BoatTypeWhereUniqueInput;
-};
-
-export type BoatTypeUpdateOneRequiredWithoutActivitiesNestedInput = {
-  create?: Prisma.XOR<
-    Prisma.BoatTypeCreateWithoutActivitiesInput,
-    Prisma.BoatTypeUncheckedCreateWithoutActivitiesInput
-  >;
-  connectOrCreate?: Prisma.BoatTypeCreateOrConnectWithoutActivitiesInput;
-  upsert?: Prisma.BoatTypeUpsertWithoutActivitiesInput;
-  connect?: Prisma.BoatTypeWhereUniqueInput;
-  update?: Prisma.XOR<
-    Prisma.XOR<
-      Prisma.BoatTypeUpdateToOneWithWhereWithoutActivitiesInput,
-      Prisma.BoatTypeUpdateWithoutActivitiesInput
-    >,
-    Prisma.BoatTypeUncheckedUpdateWithoutActivitiesInput
-  >;
+export type EnumOperationTypeFieldUpdateOperationsInput = {
+  set?: $Enums.OperationType;
 };
 
 export type BoatTypeCreateWithoutBoatsInput = {
   name: string;
-  requiredOperation: string;
-  activities?: Prisma.ActivityCreateNestedManyWithoutBoatTypeInput;
+  requiredOperation: $Enums.OperationType;
 };
 
 export type BoatTypeUncheckedCreateWithoutBoatsInput = {
   boatTypeId?: number;
   name: string;
-  requiredOperation: string;
-  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutBoatTypeInput;
+  requiredOperation: $Enums.OperationType;
 };
 
 export type BoatTypeCreateOrConnectWithoutBoatsInput = {
@@ -436,69 +419,17 @@ export type BoatTypeUpdateToOneWithWhereWithoutBoatsInput = {
 
 export type BoatTypeUpdateWithoutBoatsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
-  requiredOperation?: Prisma.StringFieldUpdateOperationsInput | string;
-  activities?: Prisma.ActivityUpdateManyWithoutBoatTypeNestedInput;
+  requiredOperation?:
+    | Prisma.EnumOperationTypeFieldUpdateOperationsInput
+    | $Enums.OperationType;
 };
 
 export type BoatTypeUncheckedUpdateWithoutBoatsInput = {
   boatTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
-  requiredOperation?: Prisma.StringFieldUpdateOperationsInput | string;
-  activities?: Prisma.ActivityUncheckedUpdateManyWithoutBoatTypeNestedInput;
-};
-
-export type BoatTypeCreateWithoutActivitiesInput = {
-  name: string;
-  requiredOperation: string;
-  boats?: Prisma.BoatCreateNestedManyWithoutBoatTypeInput;
-};
-
-export type BoatTypeUncheckedCreateWithoutActivitiesInput = {
-  boatTypeId?: number;
-  name: string;
-  requiredOperation: string;
-  boats?: Prisma.BoatUncheckedCreateNestedManyWithoutBoatTypeInput;
-};
-
-export type BoatTypeCreateOrConnectWithoutActivitiesInput = {
-  where: Prisma.BoatTypeWhereUniqueInput;
-  create: Prisma.XOR<
-    Prisma.BoatTypeCreateWithoutActivitiesInput,
-    Prisma.BoatTypeUncheckedCreateWithoutActivitiesInput
-  >;
-};
-
-export type BoatTypeUpsertWithoutActivitiesInput = {
-  update: Prisma.XOR<
-    Prisma.BoatTypeUpdateWithoutActivitiesInput,
-    Prisma.BoatTypeUncheckedUpdateWithoutActivitiesInput
-  >;
-  create: Prisma.XOR<
-    Prisma.BoatTypeCreateWithoutActivitiesInput,
-    Prisma.BoatTypeUncheckedCreateWithoutActivitiesInput
-  >;
-  where?: Prisma.BoatTypeWhereInput;
-};
-
-export type BoatTypeUpdateToOneWithWhereWithoutActivitiesInput = {
-  where?: Prisma.BoatTypeWhereInput;
-  data: Prisma.XOR<
-    Prisma.BoatTypeUpdateWithoutActivitiesInput,
-    Prisma.BoatTypeUncheckedUpdateWithoutActivitiesInput
-  >;
-};
-
-export type BoatTypeUpdateWithoutActivitiesInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string;
-  requiredOperation?: Prisma.StringFieldUpdateOperationsInput | string;
-  boats?: Prisma.BoatUpdateManyWithoutBoatTypeNestedInput;
-};
-
-export type BoatTypeUncheckedUpdateWithoutActivitiesInput = {
-  boatTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
-  name?: Prisma.StringFieldUpdateOperationsInput | string;
-  requiredOperation?: Prisma.StringFieldUpdateOperationsInput | string;
-  boats?: Prisma.BoatUncheckedUpdateManyWithoutBoatTypeNestedInput;
+  requiredOperation?:
+    | Prisma.EnumOperationTypeFieldUpdateOperationsInput
+    | $Enums.OperationType;
 };
 
 /**
@@ -507,7 +438,6 @@ export type BoatTypeUncheckedUpdateWithoutActivitiesInput = {
 
 export type BoatTypeCountOutputType = {
   boats: number;
-  activities: number;
 };
 
 export type BoatTypeCountOutputTypeSelect<
@@ -515,7 +445,6 @@ export type BoatTypeCountOutputTypeSelect<
     runtime.Types.Extensions.DefaultArgs,
 > = {
   boats?: boolean | BoatTypeCountOutputTypeCountBoatsArgs;
-  activities?: boolean | BoatTypeCountOutputTypeCountActivitiesArgs;
 };
 
 /**
@@ -541,16 +470,6 @@ export type BoatTypeCountOutputTypeCountBoatsArgs<
   where?: Prisma.BoatWhereInput;
 };
 
-/**
- * BoatTypeCountOutputType without action
- */
-export type BoatTypeCountOutputTypeCountActivitiesArgs<
-  ExtArgs extends runtime.Types.Extensions.InternalArgs =
-    runtime.Types.Extensions.DefaultArgs,
-> = {
-  where?: Prisma.ActivityWhereInput;
-};
-
 export type BoatTypeSelect<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
@@ -560,7 +479,6 @@ export type BoatTypeSelect<
     name?: boolean;
     requiredOperation?: boolean;
     boats?: boolean | Prisma.BoatType$boatsArgs<ExtArgs>;
-    activities?: boolean | Prisma.BoatType$activitiesArgs<ExtArgs>;
     _count?: boolean | Prisma.BoatTypeCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['boatType']
@@ -584,7 +502,6 @@ export type BoatTypeInclude<
     runtime.Types.Extensions.DefaultArgs,
 > = {
   boats?: boolean | Prisma.BoatType$boatsArgs<ExtArgs>;
-  activities?: boolean | Prisma.BoatType$activitiesArgs<ExtArgs>;
   _count?: boolean | Prisma.BoatTypeCountOutputTypeDefaultArgs<ExtArgs>;
 };
 
@@ -595,13 +512,12 @@ export type $BoatTypePayload<
   name: 'BoatType';
   objects: {
     boats: Prisma.$BoatPayload<ExtArgs>[];
-    activities: Prisma.$ActivityPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
       boatTypeId: number;
       name: string;
-      requiredOperation: string;
+      requiredOperation: $Enums.OperationType;
     },
     ExtArgs['result']['boatType']
   >;
@@ -1091,17 +1007,6 @@ export interface Prisma__BoatTypeClient<
       >
     | Null
   >;
-  activities<T extends Prisma.BoatType$activitiesArgs<ExtArgs> = {}>(
-    args?: Prisma.Subset<T, Prisma.BoatType$activitiesArgs<ExtArgs>>,
-  ): Prisma.PrismaPromise<
-    | runtime.Types.Result.GetResult<
-        Prisma.$ActivityPayload<ExtArgs>,
-        T,
-        'findMany',
-        GlobalOmitOptions
-      >
-    | Null
-  >;
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1146,7 +1051,7 @@ export interface Prisma__BoatTypeClient<
 export interface BoatTypeFieldRefs {
   readonly boatTypeId: Prisma.FieldRef<'BoatType', 'Int'>;
   readonly name: Prisma.FieldRef<'BoatType', 'String'>;
-  readonly requiredOperation: Prisma.FieldRef<'BoatType', 'String'>;
+  readonly requiredOperation: Prisma.FieldRef<'BoatType', 'OperationType'>;
 }
 
 // Custom InputTypes
@@ -1577,35 +1482,6 @@ export type BoatType$boatsArgs<
   take?: number;
   skip?: number;
   distinct?: Prisma.BoatScalarFieldEnum | Prisma.BoatScalarFieldEnum[];
-};
-
-/**
- * BoatType.activities
- */
-export type BoatType$activitiesArgs<
-  ExtArgs extends runtime.Types.Extensions.InternalArgs =
-    runtime.Types.Extensions.DefaultArgs,
-> = {
-  /**
-   * Select specific fields to fetch from the Activity
-   */
-  select?: Prisma.ActivitySelect<ExtArgs> | null;
-  /**
-   * Omit specific fields from the Activity
-   */
-  omit?: Prisma.ActivityOmit<ExtArgs> | null;
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ActivityInclude<ExtArgs> | null;
-  where?: Prisma.ActivityWhereInput;
-  orderBy?:
-    | Prisma.ActivityOrderByWithRelationInput
-    | Prisma.ActivityOrderByWithRelationInput[];
-  cursor?: Prisma.ActivityWhereUniqueInput;
-  take?: number;
-  skip?: number;
-  distinct?: Prisma.ActivityScalarFieldEnum | Prisma.ActivityScalarFieldEnum[];
 };
 
 /**

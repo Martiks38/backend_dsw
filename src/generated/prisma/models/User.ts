@@ -252,6 +252,7 @@ export type UserWhereInput = {
   documentNumber?: Prisma.StringFilter<'User'> | string;
   isActive?: Prisma.BoolFilter<'User'> | boolean;
   isEmployee?: Prisma.BoolFilter<'User'> | boolean;
+  passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter;
   employee?: Prisma.XOR<
     Prisma.EmployeeNullableScalarRelationFilter,
     Prisma.EmployeeWhereInput
@@ -272,6 +273,7 @@ export type UserOrderByWithRelationInput = {
   documentNumber?: Prisma.SortOrder;
   isActive?: Prisma.SortOrder;
   isEmployee?: Prisma.SortOrder;
+  passwordResetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput;
   employee?: Prisma.EmployeeOrderByWithRelationInput;
   member?: Prisma.MemberOrderByWithRelationInput;
   _relevance?: Prisma.UserOrderByRelevanceInput;
@@ -292,6 +294,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<
     documentNumber?: Prisma.StringFilter<'User'> | string;
     isActive?: Prisma.BoolFilter<'User'> | boolean;
     isEmployee?: Prisma.BoolFilter<'User'> | boolean;
+    passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter;
     employee?: Prisma.XOR<
       Prisma.EmployeeNullableScalarRelationFilter,
       Prisma.EmployeeWhereInput
@@ -349,6 +352,7 @@ export type UserCreateInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput;
   employee?: Prisma.EmployeeCreateNestedOneWithoutUserInput;
   member?: Prisma.MemberCreateNestedOneWithoutUserInput;
 };
@@ -363,6 +367,7 @@ export type UserUncheckedCreateInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput;
   employee?: Prisma.EmployeeUncheckedCreateNestedOneWithoutUserInput;
   member?: Prisma.MemberUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -376,6 +381,7 @@ export type UserUpdateInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput;
   employee?: Prisma.EmployeeUpdateOneWithoutUserNestedInput;
   member?: Prisma.MemberUpdateOneWithoutUserNestedInput;
 };
@@ -390,6 +396,7 @@ export type UserUncheckedUpdateInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput;
   employee?: Prisma.EmployeeUncheckedUpdateOneWithoutUserNestedInput;
   member?: Prisma.MemberUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -491,6 +498,10 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput;
 };
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean;
+};
+
 export type UserCreateNestedOneWithoutEmployeeInput = {
   create?: Prisma.XOR<
     Prisma.UserCreateWithoutEmployeeInput,
@@ -543,6 +554,32 @@ export type UserUpdateOneRequiredWithoutMemberNestedInput = {
   >;
 };
 
+export type UserCreateNestedOneWithoutPasswordResetTokensInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutPasswordResetTokensInput,
+    Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput;
+  connect?: Prisma.UserWhereUniqueInput;
+};
+
+export type UserUpdateOneRequiredWithoutPasswordResetTokensNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutPasswordResetTokensInput,
+    Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput;
+  upsert?: Prisma.UserUpsertWithoutPasswordResetTokensInput;
+  connect?: Prisma.UserWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.UserUpdateToOneWithWhereWithoutPasswordResetTokensInput,
+      Prisma.UserUpdateWithoutPasswordResetTokensInput
+    >,
+    Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput
+  >;
+};
+
 export type UserCreateWithoutEmployeeInput = {
   publicId: string;
   email: string;
@@ -552,6 +589,7 @@ export type UserCreateWithoutEmployeeInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput;
   member?: Prisma.MemberCreateNestedOneWithoutUserInput;
 };
 
@@ -565,6 +603,7 @@ export type UserUncheckedCreateWithoutEmployeeInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput;
   member?: Prisma.MemberUncheckedCreateNestedOneWithoutUserInput;
 };
 
@@ -605,6 +644,7 @@ export type UserUpdateWithoutEmployeeInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput;
   member?: Prisma.MemberUpdateOneWithoutUserNestedInput;
 };
 
@@ -618,6 +658,7 @@ export type UserUncheckedUpdateWithoutEmployeeInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput;
   member?: Prisma.MemberUncheckedUpdateOneWithoutUserNestedInput;
 };
 
@@ -630,6 +671,7 @@ export type UserCreateWithoutMemberInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput;
   employee?: Prisma.EmployeeCreateNestedOneWithoutUserInput;
 };
 
@@ -643,6 +685,7 @@ export type UserUncheckedCreateWithoutMemberInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput;
   employee?: Prisma.EmployeeUncheckedCreateNestedOneWithoutUserInput;
 };
 
@@ -683,6 +726,7 @@ export type UserUpdateWithoutMemberInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput;
   employee?: Prisma.EmployeeUpdateOneWithoutUserNestedInput;
 };
 
@@ -696,7 +740,130 @@ export type UserUncheckedUpdateWithoutMemberInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput;
   employee?: Prisma.EmployeeUncheckedUpdateOneWithoutUserNestedInput;
+};
+
+export type UserCreateWithoutPasswordResetTokensInput = {
+  publicId: string;
+  email: string;
+  password: string;
+  phoneNumber: string;
+  documentType: string;
+  documentNumber: string;
+  isActive?: boolean;
+  isEmployee?: boolean;
+  employee?: Prisma.EmployeeCreateNestedOneWithoutUserInput;
+  member?: Prisma.MemberCreateNestedOneWithoutUserInput;
+};
+
+export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
+  userId?: number;
+  publicId: string;
+  email: string;
+  password: string;
+  phoneNumber: string;
+  documentType: string;
+  documentNumber: string;
+  isActive?: boolean;
+  isEmployee?: boolean;
+  employee?: Prisma.EmployeeUncheckedCreateNestedOneWithoutUserInput;
+  member?: Prisma.MemberUncheckedCreateNestedOneWithoutUserInput;
+};
+
+export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
+  where: Prisma.UserWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutPasswordResetTokensInput,
+    Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput
+  >;
+};
+
+export type UserUpsertWithoutPasswordResetTokensInput = {
+  update: Prisma.XOR<
+    Prisma.UserUpdateWithoutPasswordResetTokensInput,
+    Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput
+  >;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutPasswordResetTokensInput,
+    Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput
+  >;
+  where?: Prisma.UserWhereInput;
+};
+
+export type UserUpdateToOneWithWhereWithoutPasswordResetTokensInput = {
+  where?: Prisma.UserWhereInput;
+  data: Prisma.XOR<
+    Prisma.UserUpdateWithoutPasswordResetTokensInput,
+    Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput
+  >;
+};
+
+export type UserUpdateWithoutPasswordResetTokensInput = {
+  publicId?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string;
+  documentType?: Prisma.StringFieldUpdateOperationsInput | string;
+  documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  employee?: Prisma.EmployeeUpdateOneWithoutUserNestedInput;
+  member?: Prisma.MemberUpdateOneWithoutUserNestedInput;
+};
+
+export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
+  userId?: Prisma.IntFieldUpdateOperationsInput | number;
+  publicId?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string;
+  documentType?: Prisma.StringFieldUpdateOperationsInput | string;
+  documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  employee?: Prisma.EmployeeUncheckedUpdateOneWithoutUserNestedInput;
+  member?: Prisma.MemberUncheckedUpdateOneWithoutUserNestedInput;
+};
+
+/**
+ * Count Type UserCountOutputType
+ */
+
+export type UserCountOutputType = {
+  passwordResetTokens: number;
+};
+
+export type UserCountOutputTypeSelect<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  passwordResetTokens?:
+    | boolean
+    | UserCountOutputTypeCountPasswordResetTokensArgs;
+};
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeDefaultArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the UserCountOutputType
+   */
+  select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null;
+};
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPasswordResetTokensArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.PasswordResetTokenWhereInput;
 };
 
 export type UserSelect<
@@ -713,8 +880,12 @@ export type UserSelect<
     documentNumber?: boolean;
     isActive?: boolean;
     isEmployee?: boolean;
+    passwordResetTokens?:
+      | boolean
+      | Prisma.User$passwordResetTokensArgs<ExtArgs>;
     employee?: boolean | Prisma.User$employeeArgs<ExtArgs>;
     member?: boolean | Prisma.User$memberArgs<ExtArgs>;
+    _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['user']
 >;
@@ -750,8 +921,10 @@ export type UserInclude<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
+  passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>;
   employee?: boolean | Prisma.User$employeeArgs<ExtArgs>;
   member?: boolean | Prisma.User$memberArgs<ExtArgs>;
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 
 export type $UserPayload<
@@ -760,6 +933,7 @@ export type $UserPayload<
 > = {
   name: 'User';
   objects: {
+    passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[];
     employee: Prisma.$EmployeePayload<ExtArgs> | null;
     member: Prisma.$MemberPayload<ExtArgs> | null;
   };
@@ -1252,6 +1426,19 @@ export interface Prisma__UserClient<
   GlobalOmitOptions = {},
 > extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: 'PrismaPromise';
+  passwordResetTokens<
+    T extends Prisma.User$passwordResetTokensArgs<ExtArgs> = {},
+  >(
+    args?: Prisma.Subset<T, Prisma.User$passwordResetTokensArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$PasswordResetTokenPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
   employee<T extends Prisma.User$employeeArgs<ExtArgs> = {}>(
     args?: Prisma.Subset<T, Prisma.User$employeeArgs<ExtArgs>>,
   ): Prisma.Prisma__EmployeeClient<
@@ -1718,6 +1905,37 @@ export type UserDeleteManyArgs<
    * Limit how many Users to delete.
    */
   limit?: number;
+};
+
+/**
+ * User.passwordResetTokens
+ */
+export type User$passwordResetTokensArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the PasswordResetToken
+   */
+  select?: Prisma.PasswordResetTokenSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the PasswordResetToken
+   */
+  omit?: Prisma.PasswordResetTokenOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PasswordResetTokenInclude<ExtArgs> | null;
+  where?: Prisma.PasswordResetTokenWhereInput;
+  orderBy?:
+    | Prisma.PasswordResetTokenOrderByWithRelationInput
+    | Prisma.PasswordResetTokenOrderByWithRelationInput[];
+  cursor?: Prisma.PasswordResetTokenWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?:
+    | Prisma.PasswordResetTokenScalarFieldEnum
+    | Prisma.PasswordResetTokenScalarFieldEnum[];
 };
 
 /**

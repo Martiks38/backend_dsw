@@ -50,11 +50,6 @@ export { Prisma };
  */
 export type Boat = Prisma.BoatModel;
 /**
- * Model Activity
- *
- */
-export type Activity = Prisma.ActivityModel;
-/**
  * Model BoatType
  *
  */
@@ -69,16 +64,6 @@ export type BoatDeparture = Prisma.BoatDepartureModel;
  *
  */
 export type Cradle = Prisma.CradleModel;
-/**
- * Model CradleCategory
- *
- */
-export type CradleCategory = Prisma.CradleCategoryModel;
-/**
- * Model CradleTariff
- *
- */
-export type CradleTariff = Prisma.CradleTariffModel;
 /**
  * Model Contract
  *
@@ -100,32 +85,17 @@ export type Employee = Prisma.EmployeeModel;
  */
 export type Member = Prisma.MemberModel;
 /**
- * Model EmployeesActivities
+ * Model PasswordResetToken
  *
  */
-export type EmployeesActivities = Prisma.EmployeesActivitiesModel;
+export type PasswordResetToken = Prisma.PasswordResetTokenModel;
 /**
- * Model Course
+ * Model ServiceRequest
  *
  */
-export type Course = Prisma.CourseModel;
+export type ServiceRequest = Prisma.ServiceRequestModel;
 /**
- * Model CourseSchedule
+ * Model ServiceType
  *
  */
-export type CourseSchedule = Prisma.CourseScheduleModel;
-/**
- * Model CoursePrice
- *
- */
-export type CoursePrice = Prisma.CoursePriceModel;
-/**
- * Model Enrollment
- *
- */
-export type Enrollment = Prisma.EnrollmentModel;
-/**
- * Model Installment
- *
- */
-export type Installment = Prisma.InstallmentModel;
+export type ServiceType = Prisma.ServiceTypeModel;
