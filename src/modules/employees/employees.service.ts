@@ -26,14 +26,12 @@ export class EmployeesService {
 
   constructor(private prisma: PrismaService) {}
   async create(createEmployeeDto: CreateEmployeeDto) {
-    const { email, documentType, documentNumber, licenseNumber } =
-      createEmployeeDto;
+    const { email, documentType, documentNumber } = createEmployeeDto;
 
     const uniqueFields: UniqueFields = {
       email,
       documentType,
       documentNumber,
-      licenseNumber,
     };
 
     await this.assetIsUnique(uniqueFields);
@@ -79,7 +77,6 @@ export class EmployeesService {
       email: employee.user.email,
       employeeNumber: employee.employeeNumber,
       employeeType: employee.employeeType,
-      licenseNumber: employee.licenseNumber,
       isEmployee: employee.user.isEmployee,
       isActive: employee.user.isActive,
     };
@@ -218,29 +215,16 @@ export class EmployeesService {
   }
 
   private async assetIsUnique(props: UniqueFields) {
-    const { email, documentType, documentNumber, licenseNumber } = props;
+    const { email, documentType, documentNumber } = props;
 
     const conflicts = await this.prisma.user.findMany({
       where: {
-        OR: [
-          { email },
-          { documentType, documentNumber },
-          {
-            employee: {
-              licenseNumber,
-            },
-          },
-        ],
+        OR: [{ email }, { documentType, documentNumber }],
       },
       select: {
         email: true,
         documentType: true,
         documentNumber: true,
-        employee: {
-          select: {
-            licenseNumber: true,
-          },
-        },
       },
     });
 
@@ -256,10 +240,6 @@ export class EmployeesService {
         u.documentNumber === documentNumber
       ) {
         errors.push('Ya existe un usuario con ese tipo y número de documento');
-      }
-
-      if (u.employee?.licenseNumber === licenseNumber) {
-        errors.push('El número de licencia ya está registrado');
       }
     }
 
@@ -283,7 +263,6 @@ export class EmployeesService {
       employeeType,
       password,
       phoneNumber,
-      licenseNumber,
     } = newEmployee;
 
     try {
@@ -305,7 +284,6 @@ export class EmployeesService {
             userId: user.userId,
             employeeType,
             employeeNumber: nanoid(10),
-            licenseNumber,
             firstName,
             lastName,
           },
@@ -319,7 +297,6 @@ export class EmployeesService {
           documentNumber: user.documentNumber,
           employeeType: employee.employeeType,
           employeeNumber: employee.employeeNumber,
-          licenseNumber: employee.licenseNumber ?? null,
         };
 
         return response;

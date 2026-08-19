@@ -2,8 +2,8 @@ import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { nanoid } from 'nanoid';
 
-import { EmployeeType } from '@/common/enums/employee-type.enum';
 import { hashPassword } from '@/common/utils/hashPassword.util';
+import { EmployeeType } from '@/generated/prisma/enums';
 import { PrismaService } from '@/prisma/prisma.service';
 
 import {
@@ -73,7 +73,6 @@ describe('EmployeesService', () => {
         lastName: 'Pepito',
         employeeNumber: '12345',
         employeeType: EmployeeType.ADMIN,
-        licenseNumber: null,
         user: {
           publicId: 'abc123',
           email: 'test@test.com',
@@ -174,7 +173,6 @@ describe('EmployeesService', () => {
           lastName: newEmployee.lastName,
           employeeType: newEmployee.employeeType,
           employeeNumber: mockEmployeeNumber,
-          licenseNumber: newEmployee.licenseNumber,
         },
       });
 
@@ -186,7 +184,6 @@ describe('EmployeesService', () => {
         documentNumber: newEmployee.documentNumber,
         employeeType: newEmployee.employeeType,
         employeeNumber: mockEmployeeNumber,
-        licenseNumber: newEmployee.licenseNumber ?? null,
       };
 
       expect(result).toMatchObject(expectedResult);
@@ -200,9 +197,6 @@ describe('EmployeesService', () => {
           email: newEmployee.email,
           documentType: 'DNI',
           documentNumber: '11111111',
-          employee: {
-            licenseNumber: null,
-          },
         },
       ]);
 
