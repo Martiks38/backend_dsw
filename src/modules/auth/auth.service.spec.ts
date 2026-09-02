@@ -51,7 +51,7 @@ describe('AuthService', () => {
   };
 
   const mockJwtService = {
-    sign: jest.fn(),
+    signAsync: jest.fn(),
   };
 
   const mockMailService = {
@@ -73,6 +73,7 @@ describe('AuthService', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    jest.useRealTimers();
   });
 
   describe('requestPasswordReset', () => {
@@ -159,8 +160,6 @@ describe('AuthService', () => {
       expect(createCallArgs.data.userId).toBe(1);
       expect(createCallArgs.data.tokenHash).toEqual(expect.any(String));
       expect(createCallArgs.data.expiresAt).toEqual(expiresAt);
-
-      jest.useRealTimers();
     });
   });
 
@@ -195,6 +194,7 @@ describe('AuthService', () => {
     const dto: LoginDto = {
       email: 'test@test.com',
       password: 'password',
+      remember: true,
     };
 
     const hashedPassword = 'hashed';
@@ -256,15 +256,14 @@ describe('AuthService', () => {
   });
 
   describe('generateToken', () => {
-    it('debería firmar y devolver un token JWT', () => {
-      mockJwtService.sign.mockReturnValue('jwt-token');
+    it('debería firmar y devolver un token JWT', async () => {
+      mockJwtService.signAsync.mockResolvedValue('jwt-token');
 
       const user = { id: 'user-id', role: 'admin' };
-      const token = service.generateToken(user);
+      const token = await service.generateToken(user.id);
 
-      expect(mockJwtService.sign).toHaveBeenCalledWith({
+      expect(mockJwtService.signAsync).toHaveBeenCalledWith({
         sub: user.id,
-        role: user.role,
       });
       expect(token).toBe('jwt-token');
     });
@@ -274,6 +273,7 @@ describe('AuthService', () => {
     const dto: LoginDto = {
       email: 'test@test.com',
       password: 'password',
+      remember: true,
     };
 
     const hashedPassword = 'hashed';

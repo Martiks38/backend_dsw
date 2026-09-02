@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import type { Response } from 'express';
+import type { CookieOptions, Response } from 'express';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -13,8 +13,13 @@ describe('AuthController', () => {
     generateToken: jest.fn(),
   };
 
+  const mockCookie = jest.fn<
+    void,
+    [name: string, value: string, options?: CookieOptions]
+  >();
+
   const mockResponse = {
-    cookie: jest.fn(),
+    cookie: mockCookie,
     clearCookie: jest.fn(),
   };
 
@@ -39,9 +44,10 @@ describe('AuthController', () => {
     const loginDto: LoginDto = {
       email: 'test@test.com',
       password: 'password',
+      remember: true,
     };
 
-    it('debería validar credenciales, generar token y setear la cookie', async () => {
+    it('debería validar credenciales, generar token y setear la cookie persistente para recordar la cuenta', async () => {
       const user = { id: 'id', role: 'member' };
       mockAuthService.validateCredentials.mockResolvedValue(user);
       mockAuthService.generateToken.mockReturnValue('token');
@@ -54,16 +60,49 @@ describe('AuthController', () => {
       expect(mockAuthService.validateCredentials).toHaveBeenCalledWith(
         loginDto,
       );
-      expect(mockAuthService.generateToken).toHaveBeenCalledWith(user);
+      expect(mockAuthService.generateToken).toHaveBeenCalledWith(user.id);
       expect(mockResponse.cookie).toHaveBeenCalledWith(
         'access_token',
         'token',
         expect.objectContaining({
           httpOnly: true,
-          maxAge: 1000 * 60 * 60 * 24,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 1000 * 60 * 60 * 24, // 1 día
+          path: '/',
         }),
       );
-      expect(result).toEqual({ message: 'Login exitoso' });
+
+      expect(result).toEqual({ user });
+    });
+
+    it('debería crear una cookie de sesión si debe recordar la cuenta', async () => {
+      const loginDtoWithoutRemember: LoginDto = {
+        email: 'test@test.com',
+        password: 'password',
+        remember: false,
+      };
+
+      const user = { id: 'id', role: 'member' };
+
+      mockAuthService.validateCredentials.mockResolvedValue(user);
+      mockAuthService.generateToken.mockReturnValue('token');
+
+      await controller.login(
+        loginDtoWithoutRemember,
+        mockResponse as unknown as Response,
+      );
+
+      expect(mockResponse.cookie).toHaveBeenCalledWith(
+        'access_token',
+        'token',
+        {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          path: '/',
+        },
+      );
     });
 
     it('debería propagar el error si las credenciales son inválidas', async () => {
@@ -84,7 +123,9 @@ describe('AuthController', () => {
     it('debería limpiar la cookie access_token y devolver el mensaje', () => {
       const result = controller.logout(mockResponse as unknown as Response);
 
-      expect(mockResponse.clearCookie).toHaveBeenCalledWith('access_token');
+      expect(mockResponse.clearCookie).toHaveBeenCalledWith('access_token', {
+        path: '/',
+      });
       expect(result).toEqual({ message: 'Sesión cerrada' });
     });
   });
