@@ -83,7 +83,7 @@ export class AuthService {
   }
 
   async validateCredentials(dto: LoginDto) {
-    const message = 'Credenciales inválidas';
+    const ERROR_MESSAGE = 'Credenciales inválidas';
 
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
@@ -100,13 +100,13 @@ export class AuthService {
     });
 
     if (!user || !user.isActive) {
-      throw new UnauthorizedException(message);
+      throw new UnauthorizedException(ERROR_MESSAGE);
     }
 
     const validatePassword = await comparePassword(dto.password, user.password);
 
     if (!validatePassword) {
-      throw new UnauthorizedException(message);
+      throw new UnauthorizedException(`${ERROR_MESSAGE} o usuario inactivo`);
     }
 
     const role = getUserRole(user);
@@ -117,10 +117,9 @@ export class AuthService {
     };
   }
 
-  generateToken(user: { id: string; role: string }) {
-    return this.jwtService.sign({
-      sub: user.id,
-      role: user.role,
+  async generateToken(publicId: string) {
+    return await this.jwtService.signAsync({
+      sub: publicId,
     });
   }
 }
