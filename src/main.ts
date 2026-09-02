@@ -15,13 +15,15 @@ async function bootstrap() {
     .setDescription('API para la gestión del club náutico')
     .setVersion('1.0')
     .addTag('socios')
+    .addTag('empleados')
     .addTag('embarcaciones')
-    .addTag('cursos')
     .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
+
+  app.setGlobalPrefix('api');
 
   app.use(cookieParser());
 
