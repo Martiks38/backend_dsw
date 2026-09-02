@@ -1,5 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
+import { EmployeeType } from '@/generated/prisma/enums';
+
 export class CreateEmployeeResponseDto {
   publicId!: string;
 
@@ -15,10 +17,8 @@ export class CreateEmployeeResponseDto {
   documentNumber!: string | null;
 
   @ApiPropertyOptional({ nullable: true })
-  employeeType!: string;
-
-  employeeNumber!: string;
+  employeeType!: EmployeeType;
 
   @ApiPropertyOptional({ nullable: true })
-  licenseNumber!: string | null;
+  employeeNumber!: string | null;
 }

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { EmployeeType } from '@/common/enums/employee-type.enum';
+import { EmployeeType } from '@/generated/prisma/enums';
 
 import {
   CreateEmployeeDto,
@@ -81,7 +81,6 @@ describe('EmployeesController', () => {
         isActive: true,
         documentType: 'DNI',
         documentNumber: '12345678',
-        licenseNumber: null,
       };
       mockEmployeesService.findOne.mockResolvedValue(expectedResult);
 
@@ -110,7 +109,6 @@ describe('EmployeesController', () => {
         isActive: true,
         documentType: '',
         documentNumber: '',
-        licenseNumber: null,
       };
 
       const expectedResult: EmployeeResponseDto = {

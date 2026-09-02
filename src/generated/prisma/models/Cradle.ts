@@ -28,77 +28,55 @@ export type AggregateCradle = {
 
 export type CradleAvgAggregateOutputType = {
   cradleId: number | null;
-  cradleCategoryId: number | null;
 };
 
 export type CradleSumAggregateOutputType = {
   cradleId: number | null;
-  cradleCategoryId: number | null;
 };
 
 export type CradleMinAggregateOutputType = {
   cradleId: number | null;
   state: string | null;
   cradleCode: string | null;
-  sizeCategory: $Enums.CradleSizeCategory | null;
-  isOccupied: boolean | null;
-  cradleCategoryId: number | null;
 };
 
 export type CradleMaxAggregateOutputType = {
   cradleId: number | null;
   state: string | null;
   cradleCode: string | null;
-  sizeCategory: $Enums.CradleSizeCategory | null;
-  isOccupied: boolean | null;
-  cradleCategoryId: number | null;
 };
 
 export type CradleCountAggregateOutputType = {
   cradleId: number;
   state: number;
   cradleCode: number;
-  sizeCategory: number;
-  isOccupied: number;
-  cradleCategoryId: number;
   _all: number;
 };
 
 export type CradleAvgAggregateInputType = {
   cradleId?: true;
-  cradleCategoryId?: true;
 };
 
 export type CradleSumAggregateInputType = {
   cradleId?: true;
-  cradleCategoryId?: true;
 };
 
 export type CradleMinAggregateInputType = {
   cradleId?: true;
   state?: true;
   cradleCode?: true;
-  sizeCategory?: true;
-  isOccupied?: true;
-  cradleCategoryId?: true;
 };
 
 export type CradleMaxAggregateInputType = {
   cradleId?: true;
   state?: true;
   cradleCode?: true;
-  sizeCategory?: true;
-  isOccupied?: true;
-  cradleCategoryId?: true;
 };
 
 export type CradleCountAggregateInputType = {
   cradleId?: true;
   state?: true;
   cradleCode?: true;
-  sizeCategory?: true;
-  isOccupied?: true;
-  cradleCategoryId?: true;
   _all?: true;
 };
 
@@ -199,9 +177,6 @@ export type CradleGroupByOutputType = {
   cradleId: number;
   state: string;
   cradleCode: string;
-  sizeCategory: $Enums.CradleSizeCategory;
-  isOccupied: boolean;
-  cradleCategoryId: number;
   _count: CradleCountAggregateOutputType | null;
   _avg: CradleAvgAggregateOutputType | null;
   _sum: CradleSumAggregateOutputType | null;
@@ -229,27 +204,14 @@ export type CradleWhereInput = {
   cradleId?: Prisma.IntFilter<'Cradle'> | number;
   state?: Prisma.StringFilter<'Cradle'> | string;
   cradleCode?: Prisma.StringFilter<'Cradle'> | string;
-  sizeCategory?:
-    | Prisma.EnumCradleSizeCategoryFilter<'Cradle'>
-    | $Enums.CradleSizeCategory;
-  isOccupied?: Prisma.BoolFilter<'Cradle'> | boolean;
-  cradleCategoryId?: Prisma.IntFilter<'Cradle'> | number;
   boatHasBoatSlips?: Prisma.ContractListRelationFilter;
-  cradleCategory?: Prisma.XOR<
-    Prisma.CradleCategoryScalarRelationFilter,
-    Prisma.CradleCategoryWhereInput
-  >;
 };
 
 export type CradleOrderByWithRelationInput = {
   cradleId?: Prisma.SortOrder;
   state?: Prisma.SortOrder;
   cradleCode?: Prisma.SortOrder;
-  sizeCategory?: Prisma.SortOrder;
-  isOccupied?: Prisma.SortOrder;
-  cradleCategoryId?: Prisma.SortOrder;
   boatHasBoatSlips?: Prisma.ContractOrderByRelationAggregateInput;
-  cradleCategory?: Prisma.CradleCategoryOrderByWithRelationInput;
   _relevance?: Prisma.CradleOrderByRelevanceInput;
 };
 
@@ -261,16 +223,7 @@ export type CradleWhereUniqueInput = Prisma.AtLeast<
     NOT?: Prisma.CradleWhereInput | Prisma.CradleWhereInput[];
     state?: Prisma.StringFilter<'Cradle'> | string;
     cradleCode?: Prisma.StringFilter<'Cradle'> | string;
-    sizeCategory?:
-      | Prisma.EnumCradleSizeCategoryFilter<'Cradle'>
-      | $Enums.CradleSizeCategory;
-    isOccupied?: Prisma.BoolFilter<'Cradle'> | boolean;
-    cradleCategoryId?: Prisma.IntFilter<'Cradle'> | number;
     boatHasBoatSlips?: Prisma.ContractListRelationFilter;
-    cradleCategory?: Prisma.XOR<
-      Prisma.CradleCategoryScalarRelationFilter,
-      Prisma.CradleCategoryWhereInput
-    >;
   },
   'cradleId'
 >;
@@ -279,9 +232,6 @@ export type CradleOrderByWithAggregationInput = {
   cradleId?: Prisma.SortOrder;
   state?: Prisma.SortOrder;
   cradleCode?: Prisma.SortOrder;
-  sizeCategory?: Prisma.SortOrder;
-  isOccupied?: Prisma.SortOrder;
-  cradleCategoryId?: Prisma.SortOrder;
   _count?: Prisma.CradleCountOrderByAggregateInput;
   _avg?: Prisma.CradleAvgOrderByAggregateInput;
   _max?: Prisma.CradleMaxOrderByAggregateInput;
@@ -300,85 +250,49 @@ export type CradleScalarWhereWithAggregatesInput = {
   cradleId?: Prisma.IntWithAggregatesFilter<'Cradle'> | number;
   state?: Prisma.StringWithAggregatesFilter<'Cradle'> | string;
   cradleCode?: Prisma.StringWithAggregatesFilter<'Cradle'> | string;
-  sizeCategory?:
-    | Prisma.EnumCradleSizeCategoryWithAggregatesFilter<'Cradle'>
-    | $Enums.CradleSizeCategory;
-  isOccupied?: Prisma.BoolWithAggregatesFilter<'Cradle'> | boolean;
-  cradleCategoryId?: Prisma.IntWithAggregatesFilter<'Cradle'> | number;
 };
 
 export type CradleCreateInput = {
-  cradleId: number;
   state: string;
   cradleCode: string;
-  sizeCategory: $Enums.CradleSizeCategory;
-  isOccupied: boolean;
   boatHasBoatSlips?: Prisma.ContractCreateNestedManyWithoutCradleInput;
-  cradleCategory: Prisma.CradleCategoryCreateNestedOneWithoutCradlesInput;
 };
 
 export type CradleUncheckedCreateInput = {
-  cradleId: number;
+  cradleId?: number;
   state: string;
   cradleCode: string;
-  sizeCategory: $Enums.CradleSizeCategory;
-  isOccupied: boolean;
-  cradleCategoryId: number;
   boatHasBoatSlips?: Prisma.ContractUncheckedCreateNestedManyWithoutCradleInput;
 };
 
 export type CradleUpdateInput = {
-  cradleId?: Prisma.IntFieldUpdateOperationsInput | number;
   state?: Prisma.StringFieldUpdateOperationsInput | string;
   cradleCode?: Prisma.StringFieldUpdateOperationsInput | string;
-  sizeCategory?:
-    | Prisma.EnumCradleSizeCategoryFieldUpdateOperationsInput
-    | $Enums.CradleSizeCategory;
-  isOccupied?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   boatHasBoatSlips?: Prisma.ContractUpdateManyWithoutCradleNestedInput;
-  cradleCategory?: Prisma.CradleCategoryUpdateOneRequiredWithoutCradlesNestedInput;
 };
 
 export type CradleUncheckedUpdateInput = {
   cradleId?: Prisma.IntFieldUpdateOperationsInput | number;
   state?: Prisma.StringFieldUpdateOperationsInput | string;
   cradleCode?: Prisma.StringFieldUpdateOperationsInput | string;
-  sizeCategory?:
-    | Prisma.EnumCradleSizeCategoryFieldUpdateOperationsInput
-    | $Enums.CradleSizeCategory;
-  isOccupied?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-  cradleCategoryId?: Prisma.IntFieldUpdateOperationsInput | number;
   boatHasBoatSlips?: Prisma.ContractUncheckedUpdateManyWithoutCradleNestedInput;
 };
 
 export type CradleCreateManyInput = {
-  cradleId: number;
+  cradleId?: number;
   state: string;
   cradleCode: string;
-  sizeCategory: $Enums.CradleSizeCategory;
-  isOccupied: boolean;
-  cradleCategoryId: number;
 };
 
 export type CradleUpdateManyMutationInput = {
-  cradleId?: Prisma.IntFieldUpdateOperationsInput | number;
   state?: Prisma.StringFieldUpdateOperationsInput | string;
   cradleCode?: Prisma.StringFieldUpdateOperationsInput | string;
-  sizeCategory?:
-    | Prisma.EnumCradleSizeCategoryFieldUpdateOperationsInput
-    | $Enums.CradleSizeCategory;
-  isOccupied?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 
 export type CradleUncheckedUpdateManyInput = {
   cradleId?: Prisma.IntFieldUpdateOperationsInput | number;
   state?: Prisma.StringFieldUpdateOperationsInput | string;
   cradleCode?: Prisma.StringFieldUpdateOperationsInput | string;
-  sizeCategory?:
-    | Prisma.EnumCradleSizeCategoryFieldUpdateOperationsInput
-    | $Enums.CradleSizeCategory;
-  isOccupied?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-  cradleCategoryId?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 
 export type CradleOrderByRelevanceInput = {
@@ -393,146 +307,31 @@ export type CradleCountOrderByAggregateInput = {
   cradleId?: Prisma.SortOrder;
   state?: Prisma.SortOrder;
   cradleCode?: Prisma.SortOrder;
-  sizeCategory?: Prisma.SortOrder;
-  isOccupied?: Prisma.SortOrder;
-  cradleCategoryId?: Prisma.SortOrder;
 };
 
 export type CradleAvgOrderByAggregateInput = {
   cradleId?: Prisma.SortOrder;
-  cradleCategoryId?: Prisma.SortOrder;
 };
 
 export type CradleMaxOrderByAggregateInput = {
   cradleId?: Prisma.SortOrder;
   state?: Prisma.SortOrder;
   cradleCode?: Prisma.SortOrder;
-  sizeCategory?: Prisma.SortOrder;
-  isOccupied?: Prisma.SortOrder;
-  cradleCategoryId?: Prisma.SortOrder;
 };
 
 export type CradleMinOrderByAggregateInput = {
   cradleId?: Prisma.SortOrder;
   state?: Prisma.SortOrder;
   cradleCode?: Prisma.SortOrder;
-  sizeCategory?: Prisma.SortOrder;
-  isOccupied?: Prisma.SortOrder;
-  cradleCategoryId?: Prisma.SortOrder;
 };
 
 export type CradleSumOrderByAggregateInput = {
   cradleId?: Prisma.SortOrder;
-  cradleCategoryId?: Prisma.SortOrder;
-};
-
-export type CradleListRelationFilter = {
-  every?: Prisma.CradleWhereInput;
-  some?: Prisma.CradleWhereInput;
-  none?: Prisma.CradleWhereInput;
-};
-
-export type CradleOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder;
 };
 
 export type CradleScalarRelationFilter = {
   is?: Prisma.CradleWhereInput;
   isNot?: Prisma.CradleWhereInput;
-};
-
-export type EnumCradleSizeCategoryFieldUpdateOperationsInput = {
-  set?: $Enums.CradleSizeCategory;
-};
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean;
-};
-
-export type CradleCreateNestedManyWithoutCradleCategoryInput = {
-  create?:
-    | Prisma.XOR<
-        Prisma.CradleCreateWithoutCradleCategoryInput,
-        Prisma.CradleUncheckedCreateWithoutCradleCategoryInput
-      >
-    | Prisma.CradleCreateWithoutCradleCategoryInput[]
-    | Prisma.CradleUncheckedCreateWithoutCradleCategoryInput[];
-  connectOrCreate?:
-    | Prisma.CradleCreateOrConnectWithoutCradleCategoryInput
-    | Prisma.CradleCreateOrConnectWithoutCradleCategoryInput[];
-  createMany?: Prisma.CradleCreateManyCradleCategoryInputEnvelope;
-  connect?: Prisma.CradleWhereUniqueInput | Prisma.CradleWhereUniqueInput[];
-};
-
-export type CradleUncheckedCreateNestedManyWithoutCradleCategoryInput = {
-  create?:
-    | Prisma.XOR<
-        Prisma.CradleCreateWithoutCradleCategoryInput,
-        Prisma.CradleUncheckedCreateWithoutCradleCategoryInput
-      >
-    | Prisma.CradleCreateWithoutCradleCategoryInput[]
-    | Prisma.CradleUncheckedCreateWithoutCradleCategoryInput[];
-  connectOrCreate?:
-    | Prisma.CradleCreateOrConnectWithoutCradleCategoryInput
-    | Prisma.CradleCreateOrConnectWithoutCradleCategoryInput[];
-  createMany?: Prisma.CradleCreateManyCradleCategoryInputEnvelope;
-  connect?: Prisma.CradleWhereUniqueInput | Prisma.CradleWhereUniqueInput[];
-};
-
-export type CradleUpdateManyWithoutCradleCategoryNestedInput = {
-  create?:
-    | Prisma.XOR<
-        Prisma.CradleCreateWithoutCradleCategoryInput,
-        Prisma.CradleUncheckedCreateWithoutCradleCategoryInput
-      >
-    | Prisma.CradleCreateWithoutCradleCategoryInput[]
-    | Prisma.CradleUncheckedCreateWithoutCradleCategoryInput[];
-  connectOrCreate?:
-    | Prisma.CradleCreateOrConnectWithoutCradleCategoryInput
-    | Prisma.CradleCreateOrConnectWithoutCradleCategoryInput[];
-  upsert?:
-    | Prisma.CradleUpsertWithWhereUniqueWithoutCradleCategoryInput
-    | Prisma.CradleUpsertWithWhereUniqueWithoutCradleCategoryInput[];
-  createMany?: Prisma.CradleCreateManyCradleCategoryInputEnvelope;
-  set?: Prisma.CradleWhereUniqueInput | Prisma.CradleWhereUniqueInput[];
-  disconnect?: Prisma.CradleWhereUniqueInput | Prisma.CradleWhereUniqueInput[];
-  delete?: Prisma.CradleWhereUniqueInput | Prisma.CradleWhereUniqueInput[];
-  connect?: Prisma.CradleWhereUniqueInput | Prisma.CradleWhereUniqueInput[];
-  update?:
-    | Prisma.CradleUpdateWithWhereUniqueWithoutCradleCategoryInput
-    | Prisma.CradleUpdateWithWhereUniqueWithoutCradleCategoryInput[];
-  updateMany?:
-    | Prisma.CradleUpdateManyWithWhereWithoutCradleCategoryInput
-    | Prisma.CradleUpdateManyWithWhereWithoutCradleCategoryInput[];
-  deleteMany?: Prisma.CradleScalarWhereInput | Prisma.CradleScalarWhereInput[];
-};
-
-export type CradleUncheckedUpdateManyWithoutCradleCategoryNestedInput = {
-  create?:
-    | Prisma.XOR<
-        Prisma.CradleCreateWithoutCradleCategoryInput,
-        Prisma.CradleUncheckedCreateWithoutCradleCategoryInput
-      >
-    | Prisma.CradleCreateWithoutCradleCategoryInput[]
-    | Prisma.CradleUncheckedCreateWithoutCradleCategoryInput[];
-  connectOrCreate?:
-    | Prisma.CradleCreateOrConnectWithoutCradleCategoryInput
-    | Prisma.CradleCreateOrConnectWithoutCradleCategoryInput[];
-  upsert?:
-    | Prisma.CradleUpsertWithWhereUniqueWithoutCradleCategoryInput
-    | Prisma.CradleUpsertWithWhereUniqueWithoutCradleCategoryInput[];
-  createMany?: Prisma.CradleCreateManyCradleCategoryInputEnvelope;
-  set?: Prisma.CradleWhereUniqueInput | Prisma.CradleWhereUniqueInput[];
-  disconnect?: Prisma.CradleWhereUniqueInput | Prisma.CradleWhereUniqueInput[];
-  delete?: Prisma.CradleWhereUniqueInput | Prisma.CradleWhereUniqueInput[];
-  connect?: Prisma.CradleWhereUniqueInput | Prisma.CradleWhereUniqueInput[];
-  update?:
-    | Prisma.CradleUpdateWithWhereUniqueWithoutCradleCategoryInput
-    | Prisma.CradleUpdateWithWhereUniqueWithoutCradleCategoryInput[];
-  updateMany?:
-    | Prisma.CradleUpdateManyWithWhereWithoutCradleCategoryInput
-    | Prisma.CradleUpdateManyWithWhereWithoutCradleCategoryInput[];
-  deleteMany?: Prisma.CradleScalarWhereInput | Prisma.CradleScalarWhereInput[];
 };
 
 export type CradleCreateNestedOneWithoutBoatHasBoatSlipsInput = {
@@ -561,97 +360,15 @@ export type CradleUpdateOneRequiredWithoutBoatHasBoatSlipsNestedInput = {
   >;
 };
 
-export type CradleCreateWithoutCradleCategoryInput = {
-  cradleId: number;
-  state: string;
-  cradleCode: string;
-  sizeCategory: $Enums.CradleSizeCategory;
-  isOccupied: boolean;
-  boatHasBoatSlips?: Prisma.ContractCreateNestedManyWithoutCradleInput;
-};
-
-export type CradleUncheckedCreateWithoutCradleCategoryInput = {
-  cradleId: number;
-  state: string;
-  cradleCode: string;
-  sizeCategory: $Enums.CradleSizeCategory;
-  isOccupied: boolean;
-  boatHasBoatSlips?: Prisma.ContractUncheckedCreateNestedManyWithoutCradleInput;
-};
-
-export type CradleCreateOrConnectWithoutCradleCategoryInput = {
-  where: Prisma.CradleWhereUniqueInput;
-  create: Prisma.XOR<
-    Prisma.CradleCreateWithoutCradleCategoryInput,
-    Prisma.CradleUncheckedCreateWithoutCradleCategoryInput
-  >;
-};
-
-export type CradleCreateManyCradleCategoryInputEnvelope = {
-  data:
-    | Prisma.CradleCreateManyCradleCategoryInput
-    | Prisma.CradleCreateManyCradleCategoryInput[];
-  skipDuplicates?: boolean;
-};
-
-export type CradleUpsertWithWhereUniqueWithoutCradleCategoryInput = {
-  where: Prisma.CradleWhereUniqueInput;
-  update: Prisma.XOR<
-    Prisma.CradleUpdateWithoutCradleCategoryInput,
-    Prisma.CradleUncheckedUpdateWithoutCradleCategoryInput
-  >;
-  create: Prisma.XOR<
-    Prisma.CradleCreateWithoutCradleCategoryInput,
-    Prisma.CradleUncheckedCreateWithoutCradleCategoryInput
-  >;
-};
-
-export type CradleUpdateWithWhereUniqueWithoutCradleCategoryInput = {
-  where: Prisma.CradleWhereUniqueInput;
-  data: Prisma.XOR<
-    Prisma.CradleUpdateWithoutCradleCategoryInput,
-    Prisma.CradleUncheckedUpdateWithoutCradleCategoryInput
-  >;
-};
-
-export type CradleUpdateManyWithWhereWithoutCradleCategoryInput = {
-  where: Prisma.CradleScalarWhereInput;
-  data: Prisma.XOR<
-    Prisma.CradleUpdateManyMutationInput,
-    Prisma.CradleUncheckedUpdateManyWithoutCradleCategoryInput
-  >;
-};
-
-export type CradleScalarWhereInput = {
-  AND?: Prisma.CradleScalarWhereInput | Prisma.CradleScalarWhereInput[];
-  OR?: Prisma.CradleScalarWhereInput[];
-  NOT?: Prisma.CradleScalarWhereInput | Prisma.CradleScalarWhereInput[];
-  cradleId?: Prisma.IntFilter<'Cradle'> | number;
-  state?: Prisma.StringFilter<'Cradle'> | string;
-  cradleCode?: Prisma.StringFilter<'Cradle'> | string;
-  sizeCategory?:
-    | Prisma.EnumCradleSizeCategoryFilter<'Cradle'>
-    | $Enums.CradleSizeCategory;
-  isOccupied?: Prisma.BoolFilter<'Cradle'> | boolean;
-  cradleCategoryId?: Prisma.IntFilter<'Cradle'> | number;
-};
-
 export type CradleCreateWithoutBoatHasBoatSlipsInput = {
-  cradleId: number;
   state: string;
   cradleCode: string;
-  sizeCategory: $Enums.CradleSizeCategory;
-  isOccupied: boolean;
-  cradleCategory: Prisma.CradleCategoryCreateNestedOneWithoutCradlesInput;
 };
 
 export type CradleUncheckedCreateWithoutBoatHasBoatSlipsInput = {
-  cradleId: number;
+  cradleId?: number;
   state: string;
   cradleCode: string;
-  sizeCategory: $Enums.CradleSizeCategory;
-  isOccupied: boolean;
-  cradleCategoryId: number;
 };
 
 export type CradleCreateOrConnectWithoutBoatHasBoatSlipsInput = {
@@ -683,65 +400,14 @@ export type CradleUpdateToOneWithWhereWithoutBoatHasBoatSlipsInput = {
 };
 
 export type CradleUpdateWithoutBoatHasBoatSlipsInput = {
-  cradleId?: Prisma.IntFieldUpdateOperationsInput | number;
   state?: Prisma.StringFieldUpdateOperationsInput | string;
   cradleCode?: Prisma.StringFieldUpdateOperationsInput | string;
-  sizeCategory?:
-    | Prisma.EnumCradleSizeCategoryFieldUpdateOperationsInput
-    | $Enums.CradleSizeCategory;
-  isOccupied?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-  cradleCategory?: Prisma.CradleCategoryUpdateOneRequiredWithoutCradlesNestedInput;
 };
 
 export type CradleUncheckedUpdateWithoutBoatHasBoatSlipsInput = {
   cradleId?: Prisma.IntFieldUpdateOperationsInput | number;
   state?: Prisma.StringFieldUpdateOperationsInput | string;
   cradleCode?: Prisma.StringFieldUpdateOperationsInput | string;
-  sizeCategory?:
-    | Prisma.EnumCradleSizeCategoryFieldUpdateOperationsInput
-    | $Enums.CradleSizeCategory;
-  isOccupied?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-  cradleCategoryId?: Prisma.IntFieldUpdateOperationsInput | number;
-};
-
-export type CradleCreateManyCradleCategoryInput = {
-  cradleId: number;
-  state: string;
-  cradleCode: string;
-  sizeCategory: $Enums.CradleSizeCategory;
-  isOccupied: boolean;
-};
-
-export type CradleUpdateWithoutCradleCategoryInput = {
-  cradleId?: Prisma.IntFieldUpdateOperationsInput | number;
-  state?: Prisma.StringFieldUpdateOperationsInput | string;
-  cradleCode?: Prisma.StringFieldUpdateOperationsInput | string;
-  sizeCategory?:
-    | Prisma.EnumCradleSizeCategoryFieldUpdateOperationsInput
-    | $Enums.CradleSizeCategory;
-  isOccupied?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-  boatHasBoatSlips?: Prisma.ContractUpdateManyWithoutCradleNestedInput;
-};
-
-export type CradleUncheckedUpdateWithoutCradleCategoryInput = {
-  cradleId?: Prisma.IntFieldUpdateOperationsInput | number;
-  state?: Prisma.StringFieldUpdateOperationsInput | string;
-  cradleCode?: Prisma.StringFieldUpdateOperationsInput | string;
-  sizeCategory?:
-    | Prisma.EnumCradleSizeCategoryFieldUpdateOperationsInput
-    | $Enums.CradleSizeCategory;
-  isOccupied?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-  boatHasBoatSlips?: Prisma.ContractUncheckedUpdateManyWithoutCradleNestedInput;
-};
-
-export type CradleUncheckedUpdateManyWithoutCradleCategoryInput = {
-  cradleId?: Prisma.IntFieldUpdateOperationsInput | number;
-  state?: Prisma.StringFieldUpdateOperationsInput | string;
-  cradleCode?: Prisma.StringFieldUpdateOperationsInput | string;
-  sizeCategory?:
-    | Prisma.EnumCradleSizeCategoryFieldUpdateOperationsInput
-    | $Enums.CradleSizeCategory;
-  isOccupied?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 
 /**
@@ -790,11 +456,7 @@ export type CradleSelect<
     cradleId?: boolean;
     state?: boolean;
     cradleCode?: boolean;
-    sizeCategory?: boolean;
-    isOccupied?: boolean;
-    cradleCategoryId?: boolean;
     boatHasBoatSlips?: boolean | Prisma.Cradle$boatHasBoatSlipsArgs<ExtArgs>;
-    cradleCategory?: boolean | Prisma.CradleCategoryDefaultArgs<ExtArgs>;
     _count?: boolean | Prisma.CradleCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['cradle']
@@ -804,21 +466,13 @@ export type CradleSelectScalar = {
   cradleId?: boolean;
   state?: boolean;
   cradleCode?: boolean;
-  sizeCategory?: boolean;
-  isOccupied?: boolean;
-  cradleCategoryId?: boolean;
 };
 
 export type CradleOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  | 'cradleId'
-  | 'state'
-  | 'cradleCode'
-  | 'sizeCategory'
-  | 'isOccupied'
-  | 'cradleCategoryId',
+  'cradleId' | 'state' | 'cradleCode',
   ExtArgs['result']['cradle']
 >;
 export type CradleInclude<
@@ -826,7 +480,6 @@ export type CradleInclude<
     runtime.Types.Extensions.DefaultArgs,
 > = {
   boatHasBoatSlips?: boolean | Prisma.Cradle$boatHasBoatSlipsArgs<ExtArgs>;
-  cradleCategory?: boolean | Prisma.CradleCategoryDefaultArgs<ExtArgs>;
   _count?: boolean | Prisma.CradleCountOutputTypeDefaultArgs<ExtArgs>;
 };
 
@@ -837,16 +490,12 @@ export type $CradlePayload<
   name: 'Cradle';
   objects: {
     boatHasBoatSlips: Prisma.$ContractPayload<ExtArgs>[];
-    cradleCategory: Prisma.$CradleCategoryPayload<ExtArgs>;
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
       cradleId: number;
       state: string;
       cradleCode: string;
-      sizeCategory: $Enums.CradleSizeCategory;
-      isOccupied: boolean;
-      cradleCategoryId: number;
     },
     ExtArgs['result']['cradle']
   >;
@@ -1336,20 +985,6 @@ export interface Prisma__CradleClient<
       >
     | Null
   >;
-  cradleCategory<T extends Prisma.CradleCategoryDefaultArgs<ExtArgs> = {}>(
-    args?: Prisma.Subset<T, Prisma.CradleCategoryDefaultArgs<ExtArgs>>,
-  ): Prisma.Prisma__CradleCategoryClient<
-    | runtime.Types.Result.GetResult<
-        Prisma.$CradleCategoryPayload<ExtArgs>,
-        T,
-        'findUniqueOrThrow',
-        GlobalOmitOptions
-      >
-    | Null,
-    Null,
-    ExtArgs,
-    GlobalOmitOptions
-  >;
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1395,9 +1030,6 @@ export interface CradleFieldRefs {
   readonly cradleId: Prisma.FieldRef<'Cradle', 'Int'>;
   readonly state: Prisma.FieldRef<'Cradle', 'String'>;
   readonly cradleCode: Prisma.FieldRef<'Cradle', 'String'>;
-  readonly sizeCategory: Prisma.FieldRef<'Cradle', 'CradleSizeCategory'>;
-  readonly isOccupied: Prisma.FieldRef<'Cradle', 'Boolean'>;
-  readonly cradleCategoryId: Prisma.FieldRef<'Cradle', 'Int'>;
 }
 
 // Custom InputTypes

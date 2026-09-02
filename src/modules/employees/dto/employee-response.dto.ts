@@ -1,5 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
-
 export class EmployeeResponseDto {
   publicId!: string;
 
@@ -18,9 +16,6 @@ export class EmployeeResponseDto {
   employeeNumber!: string;
 
   employeeType!: string;
-
-  @ApiProperty({ nullable: true })
-  licenseNumber!: string | null;
 
   isEmployee!: boolean;
 

@@ -39,8 +39,7 @@ export type EmployeeMinAggregateOutputType = {
   firstName: string | null;
   lastName: string | null;
   employeeNumber: string | null;
-  employeeType: string | null;
-  licenseNumber: string | null;
+  employeeType: $Enums.EmployeeType | null;
 };
 
 export type EmployeeMaxAggregateOutputType = {
@@ -48,8 +47,7 @@ export type EmployeeMaxAggregateOutputType = {
   firstName: string | null;
   lastName: string | null;
   employeeNumber: string | null;
-  employeeType: string | null;
-  licenseNumber: string | null;
+  employeeType: $Enums.EmployeeType | null;
 };
 
 export type EmployeeCountAggregateOutputType = {
@@ -58,7 +56,6 @@ export type EmployeeCountAggregateOutputType = {
   lastName: number;
   employeeNumber: number;
   employeeType: number;
-  licenseNumber: number;
   _all: number;
 };
 
@@ -76,7 +73,6 @@ export type EmployeeMinAggregateInputType = {
   lastName?: true;
   employeeNumber?: true;
   employeeType?: true;
-  licenseNumber?: true;
 };
 
 export type EmployeeMaxAggregateInputType = {
@@ -85,7 +81,6 @@ export type EmployeeMaxAggregateInputType = {
   lastName?: true;
   employeeNumber?: true;
   employeeType?: true;
-  licenseNumber?: true;
 };
 
 export type EmployeeCountAggregateInputType = {
@@ -94,7 +89,6 @@ export type EmployeeCountAggregateInputType = {
   lastName?: true;
   employeeNumber?: true;
   employeeType?: true;
-  licenseNumber?: true;
   _all?: true;
 };
 
@@ -196,8 +190,7 @@ export type EmployeeGroupByOutputType = {
   firstName: string;
   lastName: string;
   employeeNumber: string;
-  employeeType: string;
-  licenseNumber: string | null;
+  employeeType: $Enums.EmployeeType;
   _count: EmployeeCountAggregateOutputType | null;
   _avg: EmployeeAvgAggregateOutputType | null;
   _sum: EmployeeSumAggregateOutputType | null;
@@ -226,10 +219,11 @@ export type EmployeeWhereInput = {
   firstName?: Prisma.StringFilter<'Employee'> | string;
   lastName?: Prisma.StringFilter<'Employee'> | string;
   employeeNumber?: Prisma.StringFilter<'Employee'> | string;
-  employeeType?: Prisma.StringFilter<'Employee'> | string;
-  licenseNumber?: Prisma.StringNullableFilter<'Employee'> | string | null;
+  employeeType?:
+    | Prisma.EnumEmployeeTypeFilter<'Employee'>
+    | $Enums.EmployeeType;
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
-  activities?: Prisma.EmployeesActivitiesListRelationFilter;
+  serviceRequests?: Prisma.ServiceRequestListRelationFilter;
 };
 
 export type EmployeeOrderByWithRelationInput = {
@@ -238,9 +232,8 @@ export type EmployeeOrderByWithRelationInput = {
   lastName?: Prisma.SortOrder;
   employeeNumber?: Prisma.SortOrder;
   employeeType?: Prisma.SortOrder;
-  licenseNumber?: Prisma.SortOrderInput | Prisma.SortOrder;
   user?: Prisma.UserOrderByWithRelationInput;
-  activities?: Prisma.EmployeesActivitiesOrderByRelationAggregateInput;
+  serviceRequests?: Prisma.ServiceRequestOrderByRelationAggregateInput;
   _relevance?: Prisma.EmployeeOrderByRelevanceInput;
 };
 
@@ -248,17 +241,18 @@ export type EmployeeWhereUniqueInput = Prisma.AtLeast<
   {
     userId?: number;
     employeeNumber?: string;
-    licenseNumber?: string;
     AND?: Prisma.EmployeeWhereInput | Prisma.EmployeeWhereInput[];
     OR?: Prisma.EmployeeWhereInput[];
     NOT?: Prisma.EmployeeWhereInput | Prisma.EmployeeWhereInput[];
     firstName?: Prisma.StringFilter<'Employee'> | string;
     lastName?: Prisma.StringFilter<'Employee'> | string;
-    employeeType?: Prisma.StringFilter<'Employee'> | string;
+    employeeType?:
+      | Prisma.EnumEmployeeTypeFilter<'Employee'>
+      | $Enums.EmployeeType;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
-    activities?: Prisma.EmployeesActivitiesListRelationFilter;
+    serviceRequests?: Prisma.ServiceRequestListRelationFilter;
   },
-  'userId' | 'employeeNumber' | 'licenseNumber'
+  'userId' | 'employeeNumber'
 >;
 
 export type EmployeeOrderByWithAggregationInput = {
@@ -267,7 +261,6 @@ export type EmployeeOrderByWithAggregationInput = {
   lastName?: Prisma.SortOrder;
   employeeNumber?: Prisma.SortOrder;
   employeeType?: Prisma.SortOrder;
-  licenseNumber?: Prisma.SortOrderInput | Prisma.SortOrder;
   _count?: Prisma.EmployeeCountOrderByAggregateInput;
   _avg?: Prisma.EmployeeAvgOrderByAggregateInput;
   _max?: Prisma.EmployeeMaxOrderByAggregateInput;
@@ -287,21 +280,18 @@ export type EmployeeScalarWhereWithAggregatesInput = {
   firstName?: Prisma.StringWithAggregatesFilter<'Employee'> | string;
   lastName?: Prisma.StringWithAggregatesFilter<'Employee'> | string;
   employeeNumber?: Prisma.StringWithAggregatesFilter<'Employee'> | string;
-  employeeType?: Prisma.StringWithAggregatesFilter<'Employee'> | string;
-  licenseNumber?:
-    | Prisma.StringNullableWithAggregatesFilter<'Employee'>
-    | string
-    | null;
+  employeeType?:
+    | Prisma.EnumEmployeeTypeWithAggregatesFilter<'Employee'>
+    | $Enums.EmployeeType;
 };
 
 export type EmployeeCreateInput = {
   firstName: string;
   lastName: string;
   employeeNumber: string;
-  employeeType: string;
-  licenseNumber?: string | null;
+  employeeType: $Enums.EmployeeType;
   user: Prisma.UserCreateNestedOneWithoutEmployeeInput;
-  activities?: Prisma.EmployeesActivitiesCreateNestedManyWithoutEmployeeInput;
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutEmployeeInput;
 };
 
 export type EmployeeUncheckedCreateInput = {
@@ -309,22 +299,19 @@ export type EmployeeUncheckedCreateInput = {
   firstName: string;
   lastName: string;
   employeeNumber: string;
-  employeeType: string;
-  licenseNumber?: string | null;
-  activities?: Prisma.EmployeesActivitiesUncheckedCreateNestedManyWithoutEmployeeInput;
+  employeeType: $Enums.EmployeeType;
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutEmployeeInput;
 };
 
 export type EmployeeUpdateInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
-  licenseNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
+  employeeType?:
+    | Prisma.EnumEmployeeTypeFieldUpdateOperationsInput
+    | $Enums.EmployeeType;
   user?: Prisma.UserUpdateOneRequiredWithoutEmployeeNestedInput;
-  activities?: Prisma.EmployeesActivitiesUpdateManyWithoutEmployeeNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutEmployeeNestedInput;
 };
 
 export type EmployeeUncheckedUpdateInput = {
@@ -332,12 +319,10 @@ export type EmployeeUncheckedUpdateInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
-  licenseNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
-  activities?: Prisma.EmployeesActivitiesUncheckedUpdateManyWithoutEmployeeNestedInput;
+  employeeType?:
+    | Prisma.EnumEmployeeTypeFieldUpdateOperationsInput
+    | $Enums.EmployeeType;
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutEmployeeNestedInput;
 };
 
 export type EmployeeCreateManyInput = {
@@ -345,19 +330,16 @@ export type EmployeeCreateManyInput = {
   firstName: string;
   lastName: string;
   employeeNumber: string;
-  employeeType: string;
-  licenseNumber?: string | null;
+  employeeType: $Enums.EmployeeType;
 };
 
 export type EmployeeUpdateManyMutationInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
-  licenseNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
+  employeeType?:
+    | Prisma.EnumEmployeeTypeFieldUpdateOperationsInput
+    | $Enums.EmployeeType;
 };
 
 export type EmployeeUncheckedUpdateManyInput = {
@@ -365,11 +347,9 @@ export type EmployeeUncheckedUpdateManyInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
-  licenseNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
+  employeeType?:
+    | Prisma.EnumEmployeeTypeFieldUpdateOperationsInput
+    | $Enums.EmployeeType;
 };
 
 export type EmployeeNullableScalarRelationFilter = {
@@ -391,7 +371,6 @@ export type EmployeeCountOrderByAggregateInput = {
   lastName?: Prisma.SortOrder;
   employeeNumber?: Prisma.SortOrder;
   employeeType?: Prisma.SortOrder;
-  licenseNumber?: Prisma.SortOrder;
 };
 
 export type EmployeeAvgOrderByAggregateInput = {
@@ -404,7 +383,6 @@ export type EmployeeMaxOrderByAggregateInput = {
   lastName?: Prisma.SortOrder;
   employeeNumber?: Prisma.SortOrder;
   employeeType?: Prisma.SortOrder;
-  licenseNumber?: Prisma.SortOrder;
 };
 
 export type EmployeeMinOrderByAggregateInput = {
@@ -413,7 +391,6 @@ export type EmployeeMinOrderByAggregateInput = {
   lastName?: Prisma.SortOrder;
   employeeNumber?: Prisma.SortOrder;
   employeeType?: Prisma.SortOrder;
-  licenseNumber?: Prisma.SortOrder;
 };
 
 export type EmployeeSumOrderByAggregateInput = {
@@ -481,33 +458,33 @@ export type EmployeeUncheckedUpdateOneWithoutUserNestedInput = {
   >;
 };
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null;
+export type EnumEmployeeTypeFieldUpdateOperationsInput = {
+  set?: $Enums.EmployeeType;
 };
 
-export type EmployeeCreateNestedOneWithoutActivitiesInput = {
+export type EmployeeCreateNestedOneWithoutServiceRequestsInput = {
   create?: Prisma.XOR<
-    Prisma.EmployeeCreateWithoutActivitiesInput,
-    Prisma.EmployeeUncheckedCreateWithoutActivitiesInput
+    Prisma.EmployeeCreateWithoutServiceRequestsInput,
+    Prisma.EmployeeUncheckedCreateWithoutServiceRequestsInput
   >;
-  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutActivitiesInput;
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutServiceRequestsInput;
   connect?: Prisma.EmployeeWhereUniqueInput;
 };
 
-export type EmployeeUpdateOneRequiredWithoutActivitiesNestedInput = {
+export type EmployeeUpdateOneRequiredWithoutServiceRequestsNestedInput = {
   create?: Prisma.XOR<
-    Prisma.EmployeeCreateWithoutActivitiesInput,
-    Prisma.EmployeeUncheckedCreateWithoutActivitiesInput
+    Prisma.EmployeeCreateWithoutServiceRequestsInput,
+    Prisma.EmployeeUncheckedCreateWithoutServiceRequestsInput
   >;
-  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutActivitiesInput;
-  upsert?: Prisma.EmployeeUpsertWithoutActivitiesInput;
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutServiceRequestsInput;
+  upsert?: Prisma.EmployeeUpsertWithoutServiceRequestsInput;
   connect?: Prisma.EmployeeWhereUniqueInput;
   update?: Prisma.XOR<
     Prisma.XOR<
-      Prisma.EmployeeUpdateToOneWithWhereWithoutActivitiesInput,
-      Prisma.EmployeeUpdateWithoutActivitiesInput
+      Prisma.EmployeeUpdateToOneWithWhereWithoutServiceRequestsInput,
+      Prisma.EmployeeUpdateWithoutServiceRequestsInput
     >,
-    Prisma.EmployeeUncheckedUpdateWithoutActivitiesInput
+    Prisma.EmployeeUncheckedUpdateWithoutServiceRequestsInput
   >;
 };
 
@@ -515,18 +492,16 @@ export type EmployeeCreateWithoutUserInput = {
   firstName: string;
   lastName: string;
   employeeNumber: string;
-  employeeType: string;
-  licenseNumber?: string | null;
-  activities?: Prisma.EmployeesActivitiesCreateNestedManyWithoutEmployeeInput;
+  employeeType: $Enums.EmployeeType;
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutEmployeeInput;
 };
 
 export type EmployeeUncheckedCreateWithoutUserInput = {
   firstName: string;
   lastName: string;
   employeeNumber: string;
-  employeeType: string;
-  licenseNumber?: string | null;
-  activities?: Prisma.EmployeesActivitiesUncheckedCreateNestedManyWithoutEmployeeInput;
+  employeeType: $Enums.EmployeeType;
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutEmployeeInput;
 };
 
 export type EmployeeCreateOrConnectWithoutUserInput = {
@@ -561,94 +536,84 @@ export type EmployeeUpdateWithoutUserInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
-  licenseNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
-  activities?: Prisma.EmployeesActivitiesUpdateManyWithoutEmployeeNestedInput;
+  employeeType?:
+    | Prisma.EnumEmployeeTypeFieldUpdateOperationsInput
+    | $Enums.EmployeeType;
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutEmployeeNestedInput;
 };
 
 export type EmployeeUncheckedUpdateWithoutUserInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
-  licenseNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
-  activities?: Prisma.EmployeesActivitiesUncheckedUpdateManyWithoutEmployeeNestedInput;
+  employeeType?:
+    | Prisma.EnumEmployeeTypeFieldUpdateOperationsInput
+    | $Enums.EmployeeType;
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutEmployeeNestedInput;
 };
 
-export type EmployeeCreateWithoutActivitiesInput = {
+export type EmployeeCreateWithoutServiceRequestsInput = {
   firstName: string;
   lastName: string;
   employeeNumber: string;
-  employeeType: string;
-  licenseNumber?: string | null;
+  employeeType: $Enums.EmployeeType;
   user: Prisma.UserCreateNestedOneWithoutEmployeeInput;
 };
 
-export type EmployeeUncheckedCreateWithoutActivitiesInput = {
+export type EmployeeUncheckedCreateWithoutServiceRequestsInput = {
   userId: number;
   firstName: string;
   lastName: string;
   employeeNumber: string;
-  employeeType: string;
-  licenseNumber?: string | null;
+  employeeType: $Enums.EmployeeType;
 };
 
-export type EmployeeCreateOrConnectWithoutActivitiesInput = {
+export type EmployeeCreateOrConnectWithoutServiceRequestsInput = {
   where: Prisma.EmployeeWhereUniqueInput;
   create: Prisma.XOR<
-    Prisma.EmployeeCreateWithoutActivitiesInput,
-    Prisma.EmployeeUncheckedCreateWithoutActivitiesInput
+    Prisma.EmployeeCreateWithoutServiceRequestsInput,
+    Prisma.EmployeeUncheckedCreateWithoutServiceRequestsInput
   >;
 };
 
-export type EmployeeUpsertWithoutActivitiesInput = {
+export type EmployeeUpsertWithoutServiceRequestsInput = {
   update: Prisma.XOR<
-    Prisma.EmployeeUpdateWithoutActivitiesInput,
-    Prisma.EmployeeUncheckedUpdateWithoutActivitiesInput
+    Prisma.EmployeeUpdateWithoutServiceRequestsInput,
+    Prisma.EmployeeUncheckedUpdateWithoutServiceRequestsInput
   >;
   create: Prisma.XOR<
-    Prisma.EmployeeCreateWithoutActivitiesInput,
-    Prisma.EmployeeUncheckedCreateWithoutActivitiesInput
+    Prisma.EmployeeCreateWithoutServiceRequestsInput,
+    Prisma.EmployeeUncheckedCreateWithoutServiceRequestsInput
   >;
   where?: Prisma.EmployeeWhereInput;
 };
 
-export type EmployeeUpdateToOneWithWhereWithoutActivitiesInput = {
+export type EmployeeUpdateToOneWithWhereWithoutServiceRequestsInput = {
   where?: Prisma.EmployeeWhereInput;
   data: Prisma.XOR<
-    Prisma.EmployeeUpdateWithoutActivitiesInput,
-    Prisma.EmployeeUncheckedUpdateWithoutActivitiesInput
+    Prisma.EmployeeUpdateWithoutServiceRequestsInput,
+    Prisma.EmployeeUncheckedUpdateWithoutServiceRequestsInput
   >;
 };
 
-export type EmployeeUpdateWithoutActivitiesInput = {
+export type EmployeeUpdateWithoutServiceRequestsInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
-  licenseNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
+  employeeType?:
+    | Prisma.EnumEmployeeTypeFieldUpdateOperationsInput
+    | $Enums.EmployeeType;
   user?: Prisma.UserUpdateOneRequiredWithoutEmployeeNestedInput;
 };
 
-export type EmployeeUncheckedUpdateWithoutActivitiesInput = {
+export type EmployeeUncheckedUpdateWithoutServiceRequestsInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
   firstName?: Prisma.StringFieldUpdateOperationsInput | string;
   lastName?: Prisma.StringFieldUpdateOperationsInput | string;
   employeeNumber?: Prisma.StringFieldUpdateOperationsInput | string;
-  employeeType?: Prisma.StringFieldUpdateOperationsInput | string;
-  licenseNumber?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
+  employeeType?:
+    | Prisma.EnumEmployeeTypeFieldUpdateOperationsInput
+    | $Enums.EmployeeType;
 };
 
 /**
@@ -656,14 +621,14 @@ export type EmployeeUncheckedUpdateWithoutActivitiesInput = {
  */
 
 export type EmployeeCountOutputType = {
-  activities: number;
+  serviceRequests: number;
 };
 
 export type EmployeeCountOutputTypeSelect<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
-  activities?: boolean | EmployeeCountOutputTypeCountActivitiesArgs;
+  serviceRequests?: boolean | EmployeeCountOutputTypeCountServiceRequestsArgs;
 };
 
 /**
@@ -682,11 +647,11 @@ export type EmployeeCountOutputTypeDefaultArgs<
 /**
  * EmployeeCountOutputType without action
  */
-export type EmployeeCountOutputTypeCountActivitiesArgs<
+export type EmployeeCountOutputTypeCountServiceRequestsArgs<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
-  where?: Prisma.EmployeesActivitiesWhereInput;
+  where?: Prisma.ServiceRequestWhereInput;
 };
 
 export type EmployeeSelect<
@@ -699,9 +664,8 @@ export type EmployeeSelect<
     lastName?: boolean;
     employeeNumber?: boolean;
     employeeType?: boolean;
-    licenseNumber?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
-    activities?: boolean | Prisma.Employee$activitiesArgs<ExtArgs>;
+    serviceRequests?: boolean | Prisma.Employee$serviceRequestsArgs<ExtArgs>;
     _count?: boolean | Prisma.EmployeeCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['employee']
@@ -713,19 +677,13 @@ export type EmployeeSelectScalar = {
   lastName?: boolean;
   employeeNumber?: boolean;
   employeeType?: boolean;
-  licenseNumber?: boolean;
 };
 
 export type EmployeeOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  | 'userId'
-  | 'firstName'
-  | 'lastName'
-  | 'employeeNumber'
-  | 'employeeType'
-  | 'licenseNumber',
+  'userId' | 'firstName' | 'lastName' | 'employeeNumber' | 'employeeType',
   ExtArgs['result']['employee']
 >;
 export type EmployeeInclude<
@@ -733,7 +691,7 @@ export type EmployeeInclude<
     runtime.Types.Extensions.DefaultArgs,
 > = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
-  activities?: boolean | Prisma.Employee$activitiesArgs<ExtArgs>;
+  serviceRequests?: boolean | Prisma.Employee$serviceRequestsArgs<ExtArgs>;
   _count?: boolean | Prisma.EmployeeCountOutputTypeDefaultArgs<ExtArgs>;
 };
 
@@ -744,7 +702,7 @@ export type $EmployeePayload<
   name: 'Employee';
   objects: {
     user: Prisma.$UserPayload<ExtArgs>;
-    activities: Prisma.$EmployeesActivitiesPayload<ExtArgs>[];
+    serviceRequests: Prisma.$ServiceRequestPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -752,8 +710,7 @@ export type $EmployeePayload<
       firstName: string;
       lastName: string;
       employeeNumber: string;
-      employeeType: string;
-      licenseNumber: string | null;
+      employeeType: $Enums.EmployeeType;
     },
     ExtArgs['result']['employee']
   >;
@@ -1246,11 +1203,11 @@ export interface Prisma__EmployeeClient<
     ExtArgs,
     GlobalOmitOptions
   >;
-  activities<T extends Prisma.Employee$activitiesArgs<ExtArgs> = {}>(
-    args?: Prisma.Subset<T, Prisma.Employee$activitiesArgs<ExtArgs>>,
+  serviceRequests<T extends Prisma.Employee$serviceRequestsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Employee$serviceRequestsArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<
     | runtime.Types.Result.GetResult<
-        Prisma.$EmployeesActivitiesPayload<ExtArgs>,
+        Prisma.$ServiceRequestPayload<ExtArgs>,
         T,
         'findMany',
         GlobalOmitOptions
@@ -1303,8 +1260,7 @@ export interface EmployeeFieldRefs {
   readonly firstName: Prisma.FieldRef<'Employee', 'String'>;
   readonly lastName: Prisma.FieldRef<'Employee', 'String'>;
   readonly employeeNumber: Prisma.FieldRef<'Employee', 'String'>;
-  readonly employeeType: Prisma.FieldRef<'Employee', 'String'>;
-  readonly licenseNumber: Prisma.FieldRef<'Employee', 'String'>;
+  readonly employeeType: Prisma.FieldRef<'Employee', 'EmployeeType'>;
 }
 
 // Custom InputTypes
@@ -1709,34 +1665,34 @@ export type EmployeeDeleteManyArgs<
 };
 
 /**
- * Employee.activities
+ * Employee.serviceRequests
  */
-export type Employee$activitiesArgs<
+export type Employee$serviceRequestsArgs<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
   /**
-   * Select specific fields to fetch from the EmployeesActivities
+   * Select specific fields to fetch from the ServiceRequest
    */
-  select?: Prisma.EmployeesActivitiesSelect<ExtArgs> | null;
+  select?: Prisma.ServiceRequestSelect<ExtArgs> | null;
   /**
-   * Omit specific fields from the EmployeesActivities
+   * Omit specific fields from the ServiceRequest
    */
-  omit?: Prisma.EmployeesActivitiesOmit<ExtArgs> | null;
+  omit?: Prisma.ServiceRequestOmit<ExtArgs> | null;
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.EmployeesActivitiesInclude<ExtArgs> | null;
-  where?: Prisma.EmployeesActivitiesWhereInput;
+  include?: Prisma.ServiceRequestInclude<ExtArgs> | null;
+  where?: Prisma.ServiceRequestWhereInput;
   orderBy?:
-    | Prisma.EmployeesActivitiesOrderByWithRelationInput
-    | Prisma.EmployeesActivitiesOrderByWithRelationInput[];
-  cursor?: Prisma.EmployeesActivitiesWhereUniqueInput;
+    | Prisma.ServiceRequestOrderByWithRelationInput
+    | Prisma.ServiceRequestOrderByWithRelationInput[];
+  cursor?: Prisma.ServiceRequestWhereUniqueInput;
   take?: number;
   skip?: number;
   distinct?:
-    | Prisma.EmployeesActivitiesScalarFieldEnum
-    | Prisma.EmployeesActivitiesScalarFieldEnum[];
+    | Prisma.ServiceRequestScalarFieldEnum
+    | Prisma.ServiceRequestScalarFieldEnum[];
 };
 
 /**

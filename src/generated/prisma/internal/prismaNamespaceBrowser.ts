@@ -55,22 +55,16 @@ export const AnyNull = runtime.AnyNull;
 
 export const ModelName = {
   Boat: 'Boat',
-  Activity: 'Activity',
   BoatType: 'BoatType',
   BoatDeparture: 'BoatDeparture',
   Cradle: 'Cradle',
-  CradleCategory: 'CradleCategory',
-  CradleTariff: 'CradleTariff',
   Contract: 'Contract',
   User: 'User',
   Employee: 'Employee',
   Member: 'Member',
-  EmployeesActivities: 'EmployeesActivities',
-  Course: 'Course',
-  CourseSchedule: 'CourseSchedule',
-  CoursePrice: 'CoursePrice',
-  Enrollment: 'Enrollment',
-  Installment: 'Installment',
+  PasswordResetToken: 'PasswordResetToken',
+  ServiceRequest: 'ServiceRequest',
+  ServiceType: 'ServiceType',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -90,7 +84,7 @@ export type TransactionIsolationLevel =
   (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
 
 export const BoatScalarFieldEnum = {
-  hin: 'hin',
+  boatId: 'boatId',
   publicId: 'publicId',
   name: 'name',
   description: 'description',
@@ -100,17 +94,6 @@ export const BoatScalarFieldEnum = {
 
 export type BoatScalarFieldEnum =
   (typeof BoatScalarFieldEnum)[keyof typeof BoatScalarFieldEnum];
-
-export const ActivityScalarFieldEnum = {
-  activityId: 'activityId',
-  publicId: 'publicId',
-  name: 'name',
-  description: 'description',
-  boatTypeId: 'boatTypeId',
-} as const;
-
-export type ActivityScalarFieldEnum =
-  (typeof ActivityScalarFieldEnum)[keyof typeof ActivityScalarFieldEnum];
 
 export const BoatTypeScalarFieldEnum = {
   boatTypeId: 'boatTypeId',
@@ -124,9 +107,9 @@ export type BoatTypeScalarFieldEnum =
 export const BoatDepartureScalarFieldEnum = {
   exitedAt: 'exitedAt',
   boatId: 'boatId',
-  publicId: 'publicId',
   estimatedReturnDatetime: 'estimatedReturnDatetime',
   realReturnDatetime: 'realReturnDatetime',
+  serviceRequestId: 'serviceRequestId',
 } as const;
 
 export type BoatDepartureScalarFieldEnum =
@@ -136,33 +119,13 @@ export const CradleScalarFieldEnum = {
   cradleId: 'cradleId',
   state: 'state',
   cradleCode: 'cradleCode',
-  sizeCategory: 'sizeCategory',
-  isOccupied: 'isOccupied',
-  cradleCategoryId: 'cradleCategoryId',
 } as const;
 
 export type CradleScalarFieldEnum =
   (typeof CradleScalarFieldEnum)[keyof typeof CradleScalarFieldEnum];
 
-export const CradleCategoryScalarFieldEnum = {
-  cradleCategoryId: 'cradleCategoryId',
-  name: 'name',
-  hierarchyLevel: 'hierarchyLevel',
-} as const;
-
-export type CradleCategoryScalarFieldEnum =
-  (typeof CradleCategoryScalarFieldEnum)[keyof typeof CradleCategoryScalarFieldEnum];
-
-export const CradleTariffScalarFieldEnum = {
-  cradleCategoryId: 'cradleCategoryId',
-  startDate: 'startDate',
-  monthlyPrice: 'monthlyPrice',
-} as const;
-
-export type CradleTariffScalarFieldEnum =
-  (typeof CradleTariffScalarFieldEnum)[keyof typeof CradleTariffScalarFieldEnum];
-
 export const ContractScalarFieldEnum = {
+  contractId: 'contractId',
   startDatetime: 'startDatetime',
   boatId: 'boatId',
   endDatetime: 'endDatetime',
@@ -193,7 +156,6 @@ export const EmployeeScalarFieldEnum = {
   lastName: 'lastName',
   employeeNumber: 'employeeNumber',
   employeeType: 'employeeType',
-  licenseNumber: 'licenseNumber',
 } as const;
 
 export type EmployeeScalarFieldEnum =
@@ -209,73 +171,43 @@ export const MemberScalarFieldEnum = {
 export type MemberScalarFieldEnum =
   (typeof MemberScalarFieldEnum)[keyof typeof MemberScalarFieldEnum];
 
-export const EmployeesActivitiesScalarFieldEnum = {
-  employeeId: 'employeeId',
-  activityId: 'activityId',
-} as const;
-
-export type EmployeesActivitiesScalarFieldEnum =
-  (typeof EmployeesActivitiesScalarFieldEnum)[keyof typeof EmployeesActivitiesScalarFieldEnum];
-
-export const CourseScalarFieldEnum = {
-  courseId: 'courseId',
-  publicId: 'publicId',
-  capacity: 'capacity',
-  start_date: 'start_date',
-  end_date: 'end_date',
-  name: 'name',
-  activityId: 'activityId',
-  employeeId: 'employeeId',
-} as const;
-
-export type CourseScalarFieldEnum =
-  (typeof CourseScalarFieldEnum)[keyof typeof CourseScalarFieldEnum];
-
-export const CourseScheduleScalarFieldEnum = {
-  weekday: 'weekday',
-  startTime: 'startTime',
-  endTime: 'endTime',
-  courseId: 'courseId',
-} as const;
-
-export type CourseScheduleScalarFieldEnum =
-  (typeof CourseScheduleScalarFieldEnum)[keyof typeof CourseScheduleScalarFieldEnum];
-
-export const CoursePriceScalarFieldEnum = {
-  startDate: 'startDate',
-  enrollmentPrice: 'enrollmentPrice',
-  installmentPrice: 'installmentPrice',
-  courseId: 'courseId',
-} as const;
-
-export type CoursePriceScalarFieldEnum =
-  (typeof CoursePriceScalarFieldEnum)[keyof typeof CoursePriceScalarFieldEnum];
-
-export const EnrollmentScalarFieldEnum = {
-  memberId: 'memberId',
-  courseId: 'courseId',
-  registered_at: 'registered_at',
-  status: 'status',
-} as const;
-
-export type EnrollmentScalarFieldEnum =
-  (typeof EnrollmentScalarFieldEnum)[keyof typeof EnrollmentScalarFieldEnum];
-
-export const InstallmentScalarFieldEnum = {
-  installmentId: 'installmentId',
-  publicId: 'publicId',
-  paymentDate: 'paymentDate',
-  installmentStatus: 'installmentStatus',
-  installmentType: 'installmentType',
-  amount: 'amount',
+export const PasswordResetTokenScalarFieldEnum = {
+  passwordResetTokenId: 'passwordResetTokenId',
   userId: 'userId',
-  courseId: 'courseId',
-  startDatetime: 'startDatetime',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  used: 'used',
+  createdAt: 'createdAt',
+} as const;
+
+export type PasswordResetTokenScalarFieldEnum =
+  (typeof PasswordResetTokenScalarFieldEnum)[keyof typeof PasswordResetTokenScalarFieldEnum];
+
+export const ServiceRequestScalarFieldEnum = {
+  serviceRequestId: 'serviceRequestId',
+  status: 'status',
+  requestedDatetime: 'requestedDatetime',
+  observations: 'observations',
+  internalComment: 'internalComment',
+  createdAt: 'createdAt',
+  serviceTypeId: 'serviceTypeId',
+  requestedByUserId: 'requestedByUserId',
+  assignedEmployeeId: 'assignedEmployeeId',
   boatId: 'boatId',
 } as const;
 
-export type InstallmentScalarFieldEnum =
-  (typeof InstallmentScalarFieldEnum)[keyof typeof InstallmentScalarFieldEnum];
+export type ServiceRequestScalarFieldEnum =
+  (typeof ServiceRequestScalarFieldEnum)[keyof typeof ServiceRequestScalarFieldEnum];
+
+export const ServiceTypeScalarFieldEnum = {
+  serviceTypeId: 'serviceTypeId',
+  name: 'name',
+  description: 'description',
+  isActive: 'isActive',
+} as const;
+
+export type ServiceTypeScalarFieldEnum =
+  (typeof ServiceTypeScalarFieldEnum)[keyof typeof ServiceTypeScalarFieldEnum];
 
 export const SortOrder = {
   asc: 'asc',
@@ -293,18 +225,8 @@ export const BoatOrderByRelevanceFieldEnum = {
 export type BoatOrderByRelevanceFieldEnum =
   (typeof BoatOrderByRelevanceFieldEnum)[keyof typeof BoatOrderByRelevanceFieldEnum];
 
-export const ActivityOrderByRelevanceFieldEnum = {
-  publicId: 'publicId',
-  name: 'name',
-  description: 'description',
-} as const;
-
-export type ActivityOrderByRelevanceFieldEnum =
-  (typeof ActivityOrderByRelevanceFieldEnum)[keyof typeof ActivityOrderByRelevanceFieldEnum];
-
 export const BoatTypeOrderByRelevanceFieldEnum = {
   name: 'name',
-  requiredOperation: 'requiredOperation',
 } as const;
 
 export type BoatTypeOrderByRelevanceFieldEnum =
@@ -317,13 +239,6 @@ export const NullsOrder = {
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
 
-export const BoatDepartureOrderByRelevanceFieldEnum = {
-  publicId: 'publicId',
-} as const;
-
-export type BoatDepartureOrderByRelevanceFieldEnum =
-  (typeof BoatDepartureOrderByRelevanceFieldEnum)[keyof typeof BoatDepartureOrderByRelevanceFieldEnum];
-
 export const CradleOrderByRelevanceFieldEnum = {
   state: 'state',
   cradleCode: 'cradleCode',
@@ -331,13 +246,6 @@ export const CradleOrderByRelevanceFieldEnum = {
 
 export type CradleOrderByRelevanceFieldEnum =
   (typeof CradleOrderByRelevanceFieldEnum)[keyof typeof CradleOrderByRelevanceFieldEnum];
-
-export const CradleCategoryOrderByRelevanceFieldEnum = {
-  name: 'name',
-} as const;
-
-export type CradleCategoryOrderByRelevanceFieldEnum =
-  (typeof CradleCategoryOrderByRelevanceFieldEnum)[keyof typeof CradleCategoryOrderByRelevanceFieldEnum];
 
 export const UserOrderByRelevanceFieldEnum = {
   publicId: 'publicId',
@@ -355,8 +263,6 @@ export const EmployeeOrderByRelevanceFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   employeeNumber: 'employeeNumber',
-  employeeType: 'employeeType',
-  licenseNumber: 'licenseNumber',
 } as const;
 
 export type EmployeeOrderByRelevanceFieldEnum =
@@ -371,24 +277,25 @@ export const MemberOrderByRelevanceFieldEnum = {
 export type MemberOrderByRelevanceFieldEnum =
   (typeof MemberOrderByRelevanceFieldEnum)[keyof typeof MemberOrderByRelevanceFieldEnum];
 
-export const CourseOrderByRelevanceFieldEnum = {
-  publicId: 'publicId',
+export const PasswordResetTokenOrderByRelevanceFieldEnum = {
+  tokenHash: 'tokenHash',
+} as const;
+
+export type PasswordResetTokenOrderByRelevanceFieldEnum =
+  (typeof PasswordResetTokenOrderByRelevanceFieldEnum)[keyof typeof PasswordResetTokenOrderByRelevanceFieldEnum];
+
+export const ServiceRequestOrderByRelevanceFieldEnum = {
+  observations: 'observations',
+  internalComment: 'internalComment',
+} as const;
+
+export type ServiceRequestOrderByRelevanceFieldEnum =
+  (typeof ServiceRequestOrderByRelevanceFieldEnum)[keyof typeof ServiceRequestOrderByRelevanceFieldEnum];
+
+export const ServiceTypeOrderByRelevanceFieldEnum = {
   name: 'name',
+  description: 'description',
 } as const;
 
-export type CourseOrderByRelevanceFieldEnum =
-  (typeof CourseOrderByRelevanceFieldEnum)[keyof typeof CourseOrderByRelevanceFieldEnum];
-
-export const CourseScheduleOrderByRelevanceFieldEnum = {
-  weekday: 'weekday',
-} as const;
-
-export type CourseScheduleOrderByRelevanceFieldEnum =
-  (typeof CourseScheduleOrderByRelevanceFieldEnum)[keyof typeof CourseScheduleOrderByRelevanceFieldEnum];
-
-export const InstallmentOrderByRelevanceFieldEnum = {
-  publicId: 'publicId',
-} as const;
-
-export type InstallmentOrderByRelevanceFieldEnum =
-  (typeof InstallmentOrderByRelevanceFieldEnum)[keyof typeof InstallmentOrderByRelevanceFieldEnum];
+export type ServiceTypeOrderByRelevanceFieldEnum =
+  (typeof ServiceTypeOrderByRelevanceFieldEnum)[keyof typeof ServiceTypeOrderByRelevanceFieldEnum];

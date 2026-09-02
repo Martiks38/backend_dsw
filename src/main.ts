@@ -15,18 +15,20 @@ async function bootstrap() {
     .setDescription('API para la gestión del club náutico')
     .setVersion('1.0')
     .addTag('socios')
+    .addTag('empleados')
     .addTag('embarcaciones')
-    .addTag('cursos')
     .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
+  app.setGlobalPrefix('api');
+
   app.use(cookieParser());
 
   app.enableCors({
-    origin: '*',
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   });
 
@@ -38,6 +40,6 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();

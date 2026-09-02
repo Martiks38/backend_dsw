@@ -214,7 +214,7 @@ export type MemberWhereInput = {
   businessName?: Prisma.StringNullableFilter<'Member'> | string | null;
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
   boat?: Prisma.BoatListRelationFilter;
-  enrollments?: Prisma.EnrollmentListRelationFilter;
+  serviceRequests?: Prisma.ServiceRequestListRelationFilter;
 };
 
 export type MemberOrderByWithRelationInput = {
@@ -224,7 +224,7 @@ export type MemberOrderByWithRelationInput = {
   businessName?: Prisma.SortOrderInput | Prisma.SortOrder;
   user?: Prisma.UserOrderByWithRelationInput;
   boat?: Prisma.BoatOrderByRelationAggregateInput;
-  enrollments?: Prisma.EnrollmentOrderByRelationAggregateInput;
+  serviceRequests?: Prisma.ServiceRequestOrderByRelationAggregateInput;
   _relevance?: Prisma.MemberOrderByRelevanceInput;
 };
 
@@ -239,7 +239,7 @@ export type MemberWhereUniqueInput = Prisma.AtLeast<
     businessName?: Prisma.StringNullableFilter<'Member'> | string | null;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     boat?: Prisma.BoatListRelationFilter;
-    enrollments?: Prisma.EnrollmentListRelationFilter;
+    serviceRequests?: Prisma.ServiceRequestListRelationFilter;
   },
   'userId'
 >;
@@ -285,7 +285,7 @@ export type MemberCreateInput = {
   businessName?: string | null;
   user: Prisma.UserCreateNestedOneWithoutMemberInput;
   boat?: Prisma.BoatCreateNestedManyWithoutMemberInput;
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutMemberInput;
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutMemberInput;
 };
 
 export type MemberUncheckedCreateInput = {
@@ -294,7 +294,7 @@ export type MemberUncheckedCreateInput = {
   lastName?: string | null;
   businessName?: string | null;
   boat?: Prisma.BoatUncheckedCreateNestedManyWithoutMemberInput;
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutMemberInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutMemberInput;
 };
 
 export type MemberUpdateInput = {
@@ -306,7 +306,7 @@ export type MemberUpdateInput = {
     | null;
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput;
   boat?: Prisma.BoatUpdateManyWithoutMemberNestedInput;
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutMemberNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutMemberNestedInput;
 };
 
 export type MemberUncheckedUpdateInput = {
@@ -318,7 +318,7 @@ export type MemberUncheckedUpdateInput = {
     | string
     | null;
   boat?: Prisma.BoatUncheckedUpdateManyWithoutMemberNestedInput;
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutMemberNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutMemberNestedInput;
 };
 
 export type MemberCreateManyInput = {
@@ -476,29 +476,33 @@ export type MemberUncheckedUpdateOneWithoutUserNestedInput = {
   >;
 };
 
-export type MemberCreateNestedOneWithoutEnrollmentsInput = {
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null;
+};
+
+export type MemberCreateNestedOneWithoutServiceRequestsInput = {
   create?: Prisma.XOR<
-    Prisma.MemberCreateWithoutEnrollmentsInput,
-    Prisma.MemberUncheckedCreateWithoutEnrollmentsInput
+    Prisma.MemberCreateWithoutServiceRequestsInput,
+    Prisma.MemberUncheckedCreateWithoutServiceRequestsInput
   >;
-  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutEnrollmentsInput;
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutServiceRequestsInput;
   connect?: Prisma.MemberWhereUniqueInput;
 };
 
-export type MemberUpdateOneRequiredWithoutEnrollmentsNestedInput = {
+export type MemberUpdateOneRequiredWithoutServiceRequestsNestedInput = {
   create?: Prisma.XOR<
-    Prisma.MemberCreateWithoutEnrollmentsInput,
-    Prisma.MemberUncheckedCreateWithoutEnrollmentsInput
+    Prisma.MemberCreateWithoutServiceRequestsInput,
+    Prisma.MemberUncheckedCreateWithoutServiceRequestsInput
   >;
-  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutEnrollmentsInput;
-  upsert?: Prisma.MemberUpsertWithoutEnrollmentsInput;
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutServiceRequestsInput;
+  upsert?: Prisma.MemberUpsertWithoutServiceRequestsInput;
   connect?: Prisma.MemberWhereUniqueInput;
   update?: Prisma.XOR<
     Prisma.XOR<
-      Prisma.MemberUpdateToOneWithWhereWithoutEnrollmentsInput,
-      Prisma.MemberUpdateWithoutEnrollmentsInput
+      Prisma.MemberUpdateToOneWithWhereWithoutServiceRequestsInput,
+      Prisma.MemberUpdateWithoutServiceRequestsInput
     >,
-    Prisma.MemberUncheckedUpdateWithoutEnrollmentsInput
+    Prisma.MemberUncheckedUpdateWithoutServiceRequestsInput
   >;
 };
 
@@ -507,7 +511,7 @@ export type MemberCreateWithoutBoatInput = {
   lastName?: string | null;
   businessName?: string | null;
   user: Prisma.UserCreateNestedOneWithoutMemberInput;
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutMemberInput;
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutMemberInput;
 };
 
 export type MemberUncheckedCreateWithoutBoatInput = {
@@ -515,7 +519,7 @@ export type MemberUncheckedCreateWithoutBoatInput = {
   firstName?: string | null;
   lastName?: string | null;
   businessName?: string | null;
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutMemberInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutMemberInput;
 };
 
 export type MemberCreateOrConnectWithoutBoatInput = {
@@ -554,7 +558,7 @@ export type MemberUpdateWithoutBoatInput = {
     | string
     | null;
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput;
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutMemberNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutMemberNestedInput;
 };
 
 export type MemberUncheckedUpdateWithoutBoatInput = {
@@ -565,7 +569,7 @@ export type MemberUncheckedUpdateWithoutBoatInput = {
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
     | null;
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutMemberNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutMemberNestedInput;
 };
 
 export type MemberCreateWithoutUserInput = {
@@ -573,7 +577,7 @@ export type MemberCreateWithoutUserInput = {
   lastName?: string | null;
   businessName?: string | null;
   boat?: Prisma.BoatCreateNestedManyWithoutMemberInput;
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutMemberInput;
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutMemberInput;
 };
 
 export type MemberUncheckedCreateWithoutUserInput = {
@@ -581,7 +585,7 @@ export type MemberUncheckedCreateWithoutUserInput = {
   lastName?: string | null;
   businessName?: string | null;
   boat?: Prisma.BoatUncheckedCreateNestedManyWithoutMemberInput;
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutMemberInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutMemberInput;
 };
 
 export type MemberCreateOrConnectWithoutUserInput = {
@@ -620,7 +624,7 @@ export type MemberUpdateWithoutUserInput = {
     | string
     | null;
   boat?: Prisma.BoatUpdateManyWithoutMemberNestedInput;
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutMemberNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutMemberNestedInput;
 };
 
 export type MemberUncheckedUpdateWithoutUserInput = {
@@ -631,10 +635,10 @@ export type MemberUncheckedUpdateWithoutUserInput = {
     | string
     | null;
   boat?: Prisma.BoatUncheckedUpdateManyWithoutMemberNestedInput;
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutMemberNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutMemberNestedInput;
 };
 
-export type MemberCreateWithoutEnrollmentsInput = {
+export type MemberCreateWithoutServiceRequestsInput = {
   firstName?: string | null;
   lastName?: string | null;
   businessName?: string | null;
@@ -642,7 +646,7 @@ export type MemberCreateWithoutEnrollmentsInput = {
   boat?: Prisma.BoatCreateNestedManyWithoutMemberInput;
 };
 
-export type MemberUncheckedCreateWithoutEnrollmentsInput = {
+export type MemberUncheckedCreateWithoutServiceRequestsInput = {
   userId: number;
   firstName?: string | null;
   lastName?: string | null;
@@ -650,35 +654,35 @@ export type MemberUncheckedCreateWithoutEnrollmentsInput = {
   boat?: Prisma.BoatUncheckedCreateNestedManyWithoutMemberInput;
 };
 
-export type MemberCreateOrConnectWithoutEnrollmentsInput = {
+export type MemberCreateOrConnectWithoutServiceRequestsInput = {
   where: Prisma.MemberWhereUniqueInput;
   create: Prisma.XOR<
-    Prisma.MemberCreateWithoutEnrollmentsInput,
-    Prisma.MemberUncheckedCreateWithoutEnrollmentsInput
+    Prisma.MemberCreateWithoutServiceRequestsInput,
+    Prisma.MemberUncheckedCreateWithoutServiceRequestsInput
   >;
 };
 
-export type MemberUpsertWithoutEnrollmentsInput = {
+export type MemberUpsertWithoutServiceRequestsInput = {
   update: Prisma.XOR<
-    Prisma.MemberUpdateWithoutEnrollmentsInput,
-    Prisma.MemberUncheckedUpdateWithoutEnrollmentsInput
+    Prisma.MemberUpdateWithoutServiceRequestsInput,
+    Prisma.MemberUncheckedUpdateWithoutServiceRequestsInput
   >;
   create: Prisma.XOR<
-    Prisma.MemberCreateWithoutEnrollmentsInput,
-    Prisma.MemberUncheckedCreateWithoutEnrollmentsInput
+    Prisma.MemberCreateWithoutServiceRequestsInput,
+    Prisma.MemberUncheckedCreateWithoutServiceRequestsInput
   >;
   where?: Prisma.MemberWhereInput;
 };
 
-export type MemberUpdateToOneWithWhereWithoutEnrollmentsInput = {
+export type MemberUpdateToOneWithWhereWithoutServiceRequestsInput = {
   where?: Prisma.MemberWhereInput;
   data: Prisma.XOR<
-    Prisma.MemberUpdateWithoutEnrollmentsInput,
-    Prisma.MemberUncheckedUpdateWithoutEnrollmentsInput
+    Prisma.MemberUpdateWithoutServiceRequestsInput,
+    Prisma.MemberUncheckedUpdateWithoutServiceRequestsInput
   >;
 };
 
-export type MemberUpdateWithoutEnrollmentsInput = {
+export type MemberUpdateWithoutServiceRequestsInput = {
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   businessName?:
@@ -689,7 +693,7 @@ export type MemberUpdateWithoutEnrollmentsInput = {
   boat?: Prisma.BoatUpdateManyWithoutMemberNestedInput;
 };
 
-export type MemberUncheckedUpdateWithoutEnrollmentsInput = {
+export type MemberUncheckedUpdateWithoutServiceRequestsInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -706,7 +710,7 @@ export type MemberUncheckedUpdateWithoutEnrollmentsInput = {
 
 export type MemberCountOutputType = {
   boat: number;
-  enrollments: number;
+  serviceRequests: number;
 };
 
 export type MemberCountOutputTypeSelect<
@@ -714,7 +718,7 @@ export type MemberCountOutputTypeSelect<
     runtime.Types.Extensions.DefaultArgs,
 > = {
   boat?: boolean | MemberCountOutputTypeCountBoatArgs;
-  enrollments?: boolean | MemberCountOutputTypeCountEnrollmentsArgs;
+  serviceRequests?: boolean | MemberCountOutputTypeCountServiceRequestsArgs;
 };
 
 /**
@@ -743,11 +747,11 @@ export type MemberCountOutputTypeCountBoatArgs<
 /**
  * MemberCountOutputType without action
  */
-export type MemberCountOutputTypeCountEnrollmentsArgs<
+export type MemberCountOutputTypeCountServiceRequestsArgs<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
-  where?: Prisma.EnrollmentWhereInput;
+  where?: Prisma.ServiceRequestWhereInput;
 };
 
 export type MemberSelect<
@@ -761,7 +765,7 @@ export type MemberSelect<
     businessName?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     boat?: boolean | Prisma.Member$boatArgs<ExtArgs>;
-    enrollments?: boolean | Prisma.Member$enrollmentsArgs<ExtArgs>;
+    serviceRequests?: boolean | Prisma.Member$serviceRequestsArgs<ExtArgs>;
     _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['member']
@@ -787,7 +791,7 @@ export type MemberInclude<
 > = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
   boat?: boolean | Prisma.Member$boatArgs<ExtArgs>;
-  enrollments?: boolean | Prisma.Member$enrollmentsArgs<ExtArgs>;
+  serviceRequests?: boolean | Prisma.Member$serviceRequestsArgs<ExtArgs>;
   _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>;
 };
 
@@ -799,7 +803,7 @@ export type $MemberPayload<
   objects: {
     user: Prisma.$UserPayload<ExtArgs>;
     boat: Prisma.$BoatPayload<ExtArgs>[];
-    enrollments: Prisma.$EnrollmentPayload<ExtArgs>[];
+    serviceRequests: Prisma.$ServiceRequestPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -1310,11 +1314,11 @@ export interface Prisma__MemberClient<
       >
     | Null
   >;
-  enrollments<T extends Prisma.Member$enrollmentsArgs<ExtArgs> = {}>(
-    args?: Prisma.Subset<T, Prisma.Member$enrollmentsArgs<ExtArgs>>,
+  serviceRequests<T extends Prisma.Member$serviceRequestsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Member$serviceRequestsArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<
     | runtime.Types.Result.GetResult<
-        Prisma.$EnrollmentPayload<ExtArgs>,
+        Prisma.$ServiceRequestPayload<ExtArgs>,
         T,
         'findMany',
         GlobalOmitOptions
@@ -1794,34 +1798,34 @@ export type Member$boatArgs<
 };
 
 /**
- * Member.enrollments
+ * Member.serviceRequests
  */
-export type Member$enrollmentsArgs<
+export type Member$serviceRequestsArgs<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
   /**
-   * Select specific fields to fetch from the Enrollment
+   * Select specific fields to fetch from the ServiceRequest
    */
-  select?: Prisma.EnrollmentSelect<ExtArgs> | null;
+  select?: Prisma.ServiceRequestSelect<ExtArgs> | null;
   /**
-   * Omit specific fields from the Enrollment
+   * Omit specific fields from the ServiceRequest
    */
-  omit?: Prisma.EnrollmentOmit<ExtArgs> | null;
+  omit?: Prisma.ServiceRequestOmit<ExtArgs> | null;
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.EnrollmentInclude<ExtArgs> | null;
-  where?: Prisma.EnrollmentWhereInput;
+  include?: Prisma.ServiceRequestInclude<ExtArgs> | null;
+  where?: Prisma.ServiceRequestWhereInput;
   orderBy?:
-    | Prisma.EnrollmentOrderByWithRelationInput
-    | Prisma.EnrollmentOrderByWithRelationInput[];
-  cursor?: Prisma.EnrollmentWhereUniqueInput;
+    | Prisma.ServiceRequestOrderByWithRelationInput
+    | Prisma.ServiceRequestOrderByWithRelationInput[];
+  cursor?: Prisma.ServiceRequestWhereUniqueInput;
   take?: number;
   skip?: number;
   distinct?:
-    | Prisma.EnrollmentScalarFieldEnum
-    | Prisma.EnrollmentScalarFieldEnum[];
+    | Prisma.ServiceRequestScalarFieldEnum
+    | Prisma.ServiceRequestScalarFieldEnum[];
 };
 
 /**

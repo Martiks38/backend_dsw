@@ -27,19 +27,19 @@ export type AggregateBoat = {
 };
 
 export type BoatAvgAggregateOutputType = {
-  hin: number | null;
+  boatId: number | null;
   boatTypeId: number | null;
   userId: number | null;
 };
 
 export type BoatSumAggregateOutputType = {
-  hin: number | null;
+  boatId: number | null;
   boatTypeId: number | null;
   userId: number | null;
 };
 
 export type BoatMinAggregateOutputType = {
-  hin: number | null;
+  boatId: number | null;
   publicId: string | null;
   name: string | null;
   description: string | null;
@@ -48,7 +48,7 @@ export type BoatMinAggregateOutputType = {
 };
 
 export type BoatMaxAggregateOutputType = {
-  hin: number | null;
+  boatId: number | null;
   publicId: string | null;
   name: string | null;
   description: string | null;
@@ -57,7 +57,7 @@ export type BoatMaxAggregateOutputType = {
 };
 
 export type BoatCountAggregateOutputType = {
-  hin: number;
+  boatId: number;
   publicId: number;
   name: number;
   description: number;
@@ -67,19 +67,19 @@ export type BoatCountAggregateOutputType = {
 };
 
 export type BoatAvgAggregateInputType = {
-  hin?: true;
+  boatId?: true;
   boatTypeId?: true;
   userId?: true;
 };
 
 export type BoatSumAggregateInputType = {
-  hin?: true;
+  boatId?: true;
   boatTypeId?: true;
   userId?: true;
 };
 
 export type BoatMinAggregateInputType = {
-  hin?: true;
+  boatId?: true;
   publicId?: true;
   name?: true;
   description?: true;
@@ -88,7 +88,7 @@ export type BoatMinAggregateInputType = {
 };
 
 export type BoatMaxAggregateInputType = {
-  hin?: true;
+  boatId?: true;
   publicId?: true;
   name?: true;
   description?: true;
@@ -97,7 +97,7 @@ export type BoatMaxAggregateInputType = {
 };
 
 export type BoatCountAggregateInputType = {
-  hin?: true;
+  boatId?: true;
   publicId?: true;
   name?: true;
   description?: true;
@@ -200,7 +200,7 @@ export type BoatGroupByArgs<
 };
 
 export type BoatGroupByOutputType = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
@@ -230,7 +230,7 @@ export type BoatWhereInput = {
   AND?: Prisma.BoatWhereInput | Prisma.BoatWhereInput[];
   OR?: Prisma.BoatWhereInput[];
   NOT?: Prisma.BoatWhereInput | Prisma.BoatWhereInput[];
-  hin?: Prisma.IntFilter<'Boat'> | number;
+  boatId?: Prisma.IntFilter<'Boat'> | number;
   publicId?: Prisma.StringFilter<'Boat'> | string;
   name?: Prisma.StringFilter<'Boat'> | string;
   description?: Prisma.StringFilter<'Boat'> | string;
@@ -246,10 +246,11 @@ export type BoatWhereInput = {
   >;
   contracts?: Prisma.ContractListRelationFilter;
   departures?: Prisma.BoatDepartureListRelationFilter;
+  serviceRequests?: Prisma.ServiceRequestListRelationFilter;
 };
 
 export type BoatOrderByWithRelationInput = {
-  hin?: Prisma.SortOrder;
+  boatId?: Prisma.SortOrder;
   publicId?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
@@ -259,12 +260,13 @@ export type BoatOrderByWithRelationInput = {
   member?: Prisma.MemberOrderByWithRelationInput;
   contracts?: Prisma.ContractOrderByRelationAggregateInput;
   departures?: Prisma.BoatDepartureOrderByRelationAggregateInput;
+  serviceRequests?: Prisma.ServiceRequestOrderByRelationAggregateInput;
   _relevance?: Prisma.BoatOrderByRelevanceInput;
 };
 
 export type BoatWhereUniqueInput = Prisma.AtLeast<
   {
-    hin?: number;
+    boatId?: number;
     publicId?: string;
     AND?: Prisma.BoatWhereInput | Prisma.BoatWhereInput[];
     OR?: Prisma.BoatWhereInput[];
@@ -283,12 +285,13 @@ export type BoatWhereUniqueInput = Prisma.AtLeast<
     >;
     contracts?: Prisma.ContractListRelationFilter;
     departures?: Prisma.BoatDepartureListRelationFilter;
+    serviceRequests?: Prisma.ServiceRequestListRelationFilter;
   },
-  'hin' | 'publicId'
+  'boatId' | 'publicId'
 >;
 
 export type BoatOrderByWithAggregationInput = {
-  hin?: Prisma.SortOrder;
+  boatId?: Prisma.SortOrder;
   publicId?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
@@ -309,7 +312,7 @@ export type BoatScalarWhereWithAggregatesInput = {
   NOT?:
     | Prisma.BoatScalarWhereWithAggregatesInput
     | Prisma.BoatScalarWhereWithAggregatesInput[];
-  hin?: Prisma.IntWithAggregatesFilter<'Boat'> | number;
+  boatId?: Prisma.IntWithAggregatesFilter<'Boat'> | number;
   publicId?: Prisma.StringWithAggregatesFilter<'Boat'> | string;
   name?: Prisma.StringWithAggregatesFilter<'Boat'> | string;
   description?: Prisma.StringWithAggregatesFilter<'Boat'> | string;
@@ -318,7 +321,7 @@ export type BoatScalarWhereWithAggregatesInput = {
 };
 
 export type BoatCreateInput = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
@@ -326,10 +329,11 @@ export type BoatCreateInput = {
   member: Prisma.MemberCreateNestedOneWithoutBoatInput;
   contracts?: Prisma.ContractCreateNestedManyWithoutBoatInput;
   departures?: Prisma.BoatDepartureCreateNestedManyWithoutBoatInput;
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutBoatInput;
 };
 
 export type BoatUncheckedCreateInput = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
@@ -337,10 +341,11 @@ export type BoatUncheckedCreateInput = {
   userId: number;
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutBoatInput;
   departures?: Prisma.BoatDepartureUncheckedCreateNestedManyWithoutBoatInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutBoatInput;
 };
 
 export type BoatUpdateInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -348,10 +353,11 @@ export type BoatUpdateInput = {
   member?: Prisma.MemberUpdateOneRequiredWithoutBoatNestedInput;
   contracts?: Prisma.ContractUpdateManyWithoutBoatNestedInput;
   departures?: Prisma.BoatDepartureUpdateManyWithoutBoatNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutBoatNestedInput;
 };
 
 export type BoatUncheckedUpdateInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -359,10 +365,11 @@ export type BoatUncheckedUpdateInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutBoatNestedInput;
   departures?: Prisma.BoatDepartureUncheckedUpdateManyWithoutBoatNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutBoatNestedInput;
 };
 
 export type BoatCreateManyInput = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
@@ -371,14 +378,14 @@ export type BoatCreateManyInput = {
 };
 
 export type BoatUpdateManyMutationInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
 };
 
 export type BoatUncheckedUpdateManyInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -395,7 +402,7 @@ export type BoatOrderByRelevanceInput = {
 };
 
 export type BoatCountOrderByAggregateInput = {
-  hin?: Prisma.SortOrder;
+  boatId?: Prisma.SortOrder;
   publicId?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
@@ -404,13 +411,13 @@ export type BoatCountOrderByAggregateInput = {
 };
 
 export type BoatAvgOrderByAggregateInput = {
-  hin?: Prisma.SortOrder;
+  boatId?: Prisma.SortOrder;
   boatTypeId?: Prisma.SortOrder;
   userId?: Prisma.SortOrder;
 };
 
 export type BoatMaxOrderByAggregateInput = {
-  hin?: Prisma.SortOrder;
+  boatId?: Prisma.SortOrder;
   publicId?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
@@ -419,7 +426,7 @@ export type BoatMaxOrderByAggregateInput = {
 };
 
 export type BoatMinOrderByAggregateInput = {
-  hin?: Prisma.SortOrder;
+  boatId?: Prisma.SortOrder;
   publicId?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
@@ -428,7 +435,7 @@ export type BoatMinOrderByAggregateInput = {
 };
 
 export type BoatSumOrderByAggregateInput = {
-  hin?: Prisma.SortOrder;
+  boatId?: Prisma.SortOrder;
   boatTypeId?: Prisma.SortOrder;
   userId?: Prisma.SortOrder;
 };
@@ -684,24 +691,52 @@ export type BoatUncheckedUpdateManyWithoutMemberNestedInput = {
   deleteMany?: Prisma.BoatScalarWhereInput | Prisma.BoatScalarWhereInput[];
 };
 
+export type BoatCreateNestedOneWithoutServiceRequestsInput = {
+  create?: Prisma.XOR<
+    Prisma.BoatCreateWithoutServiceRequestsInput,
+    Prisma.BoatUncheckedCreateWithoutServiceRequestsInput
+  >;
+  connectOrCreate?: Prisma.BoatCreateOrConnectWithoutServiceRequestsInput;
+  connect?: Prisma.BoatWhereUniqueInput;
+};
+
+export type BoatUpdateOneRequiredWithoutServiceRequestsNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.BoatCreateWithoutServiceRequestsInput,
+    Prisma.BoatUncheckedCreateWithoutServiceRequestsInput
+  >;
+  connectOrCreate?: Prisma.BoatCreateOrConnectWithoutServiceRequestsInput;
+  upsert?: Prisma.BoatUpsertWithoutServiceRequestsInput;
+  connect?: Prisma.BoatWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.BoatUpdateToOneWithWhereWithoutServiceRequestsInput,
+      Prisma.BoatUpdateWithoutServiceRequestsInput
+    >,
+    Prisma.BoatUncheckedUpdateWithoutServiceRequestsInput
+  >;
+};
+
 export type BoatCreateWithoutBoatTypeInput = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
   member: Prisma.MemberCreateNestedOneWithoutBoatInput;
   contracts?: Prisma.ContractCreateNestedManyWithoutBoatInput;
   departures?: Prisma.BoatDepartureCreateNestedManyWithoutBoatInput;
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutBoatInput;
 };
 
 export type BoatUncheckedCreateWithoutBoatTypeInput = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
   userId: number;
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutBoatInput;
   departures?: Prisma.BoatDepartureUncheckedCreateNestedManyWithoutBoatInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutBoatInput;
 };
 
 export type BoatCreateOrConnectWithoutBoatTypeInput = {
@@ -751,7 +786,7 @@ export type BoatScalarWhereInput = {
   AND?: Prisma.BoatScalarWhereInput | Prisma.BoatScalarWhereInput[];
   OR?: Prisma.BoatScalarWhereInput[];
   NOT?: Prisma.BoatScalarWhereInput | Prisma.BoatScalarWhereInput[];
-  hin?: Prisma.IntFilter<'Boat'> | number;
+  boatId?: Prisma.IntFilter<'Boat'> | number;
   publicId?: Prisma.StringFilter<'Boat'> | string;
   name?: Prisma.StringFilter<'Boat'> | string;
   description?: Prisma.StringFilter<'Boat'> | string;
@@ -760,23 +795,25 @@ export type BoatScalarWhereInput = {
 };
 
 export type BoatCreateWithoutDeparturesInput = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
   boatType: Prisma.BoatTypeCreateNestedOneWithoutBoatsInput;
   member: Prisma.MemberCreateNestedOneWithoutBoatInput;
   contracts?: Prisma.ContractCreateNestedManyWithoutBoatInput;
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutBoatInput;
 };
 
 export type BoatUncheckedCreateWithoutDeparturesInput = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
   boatTypeId: number;
   userId: number;
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutBoatInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutBoatInput;
 };
 
 export type BoatCreateOrConnectWithoutDeparturesInput = {
@@ -808,43 +845,47 @@ export type BoatUpdateToOneWithWhereWithoutDeparturesInput = {
 };
 
 export type BoatUpdateWithoutDeparturesInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   boatType?: Prisma.BoatTypeUpdateOneRequiredWithoutBoatsNestedInput;
   member?: Prisma.MemberUpdateOneRequiredWithoutBoatNestedInput;
   contracts?: Prisma.ContractUpdateManyWithoutBoatNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutBoatNestedInput;
 };
 
 export type BoatUncheckedUpdateWithoutDeparturesInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   boatTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutBoatNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutBoatNestedInput;
 };
 
 export type BoatCreateWithoutContractsInput = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
   boatType: Prisma.BoatTypeCreateNestedOneWithoutBoatsInput;
   member: Prisma.MemberCreateNestedOneWithoutBoatInput;
   departures?: Prisma.BoatDepartureCreateNestedManyWithoutBoatInput;
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutBoatInput;
 };
 
 export type BoatUncheckedCreateWithoutContractsInput = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
   boatTypeId: number;
   userId: number;
   departures?: Prisma.BoatDepartureUncheckedCreateNestedManyWithoutBoatInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutBoatInput;
 };
 
 export type BoatCreateOrConnectWithoutContractsInput = {
@@ -876,43 +917,47 @@ export type BoatUpdateToOneWithWhereWithoutContractsInput = {
 };
 
 export type BoatUpdateWithoutContractsInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   boatType?: Prisma.BoatTypeUpdateOneRequiredWithoutBoatsNestedInput;
   member?: Prisma.MemberUpdateOneRequiredWithoutBoatNestedInput;
   departures?: Prisma.BoatDepartureUpdateManyWithoutBoatNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutBoatNestedInput;
 };
 
 export type BoatUncheckedUpdateWithoutContractsInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   boatTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
   departures?: Prisma.BoatDepartureUncheckedUpdateManyWithoutBoatNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutBoatNestedInput;
 };
 
 export type BoatCreateWithoutMemberInput = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
   boatType: Prisma.BoatTypeCreateNestedOneWithoutBoatsInput;
   contracts?: Prisma.ContractCreateNestedManyWithoutBoatInput;
   departures?: Prisma.BoatDepartureCreateNestedManyWithoutBoatInput;
+  serviceRequests?: Prisma.ServiceRequestCreateNestedManyWithoutBoatInput;
 };
 
 export type BoatUncheckedCreateWithoutMemberInput = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
   boatTypeId: number;
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutBoatInput;
   departures?: Prisma.BoatDepartureUncheckedCreateNestedManyWithoutBoatInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedCreateNestedManyWithoutBoatInput;
 };
 
 export type BoatCreateOrConnectWithoutMemberInput = {
@@ -956,8 +1001,80 @@ export type BoatUpdateManyWithWhereWithoutMemberInput = {
   >;
 };
 
+export type BoatCreateWithoutServiceRequestsInput = {
+  boatId: number;
+  publicId: string;
+  name: string;
+  description: string;
+  boatType: Prisma.BoatTypeCreateNestedOneWithoutBoatsInput;
+  member: Prisma.MemberCreateNestedOneWithoutBoatInput;
+  contracts?: Prisma.ContractCreateNestedManyWithoutBoatInput;
+  departures?: Prisma.BoatDepartureCreateNestedManyWithoutBoatInput;
+};
+
+export type BoatUncheckedCreateWithoutServiceRequestsInput = {
+  boatId: number;
+  publicId: string;
+  name: string;
+  description: string;
+  boatTypeId: number;
+  userId: number;
+  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutBoatInput;
+  departures?: Prisma.BoatDepartureUncheckedCreateNestedManyWithoutBoatInput;
+};
+
+export type BoatCreateOrConnectWithoutServiceRequestsInput = {
+  where: Prisma.BoatWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.BoatCreateWithoutServiceRequestsInput,
+    Prisma.BoatUncheckedCreateWithoutServiceRequestsInput
+  >;
+};
+
+export type BoatUpsertWithoutServiceRequestsInput = {
+  update: Prisma.XOR<
+    Prisma.BoatUpdateWithoutServiceRequestsInput,
+    Prisma.BoatUncheckedUpdateWithoutServiceRequestsInput
+  >;
+  create: Prisma.XOR<
+    Prisma.BoatCreateWithoutServiceRequestsInput,
+    Prisma.BoatUncheckedCreateWithoutServiceRequestsInput
+  >;
+  where?: Prisma.BoatWhereInput;
+};
+
+export type BoatUpdateToOneWithWhereWithoutServiceRequestsInput = {
+  where?: Prisma.BoatWhereInput;
+  data: Prisma.XOR<
+    Prisma.BoatUpdateWithoutServiceRequestsInput,
+    Prisma.BoatUncheckedUpdateWithoutServiceRequestsInput
+  >;
+};
+
+export type BoatUpdateWithoutServiceRequestsInput = {
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
+  publicId?: Prisma.StringFieldUpdateOperationsInput | string;
+  name?: Prisma.StringFieldUpdateOperationsInput | string;
+  description?: Prisma.StringFieldUpdateOperationsInput | string;
+  boatType?: Prisma.BoatTypeUpdateOneRequiredWithoutBoatsNestedInput;
+  member?: Prisma.MemberUpdateOneRequiredWithoutBoatNestedInput;
+  contracts?: Prisma.ContractUpdateManyWithoutBoatNestedInput;
+  departures?: Prisma.BoatDepartureUpdateManyWithoutBoatNestedInput;
+};
+
+export type BoatUncheckedUpdateWithoutServiceRequestsInput = {
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
+  publicId?: Prisma.StringFieldUpdateOperationsInput | string;
+  name?: Prisma.StringFieldUpdateOperationsInput | string;
+  description?: Prisma.StringFieldUpdateOperationsInput | string;
+  boatTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
+  userId?: Prisma.IntFieldUpdateOperationsInput | number;
+  contracts?: Prisma.ContractUncheckedUpdateManyWithoutBoatNestedInput;
+  departures?: Prisma.BoatDepartureUncheckedUpdateManyWithoutBoatNestedInput;
+};
+
 export type BoatCreateManyBoatTypeInput = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
@@ -965,27 +1082,29 @@ export type BoatCreateManyBoatTypeInput = {
 };
 
 export type BoatUpdateWithoutBoatTypeInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   member?: Prisma.MemberUpdateOneRequiredWithoutBoatNestedInput;
   contracts?: Prisma.ContractUpdateManyWithoutBoatNestedInput;
   departures?: Prisma.BoatDepartureUpdateManyWithoutBoatNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutBoatNestedInput;
 };
 
 export type BoatUncheckedUpdateWithoutBoatTypeInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutBoatNestedInput;
   departures?: Prisma.BoatDepartureUncheckedUpdateManyWithoutBoatNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutBoatNestedInput;
 };
 
 export type BoatUncheckedUpdateManyWithoutBoatTypeInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -993,7 +1112,7 @@ export type BoatUncheckedUpdateManyWithoutBoatTypeInput = {
 };
 
 export type BoatCreateManyMemberInput = {
-  hin: number;
+  boatId: number;
   publicId: string;
   name: string;
   description: string;
@@ -1001,27 +1120,29 @@ export type BoatCreateManyMemberInput = {
 };
 
 export type BoatUpdateWithoutMemberInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   boatType?: Prisma.BoatTypeUpdateOneRequiredWithoutBoatsNestedInput;
   contracts?: Prisma.ContractUpdateManyWithoutBoatNestedInput;
   departures?: Prisma.BoatDepartureUpdateManyWithoutBoatNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUpdateManyWithoutBoatNestedInput;
 };
 
 export type BoatUncheckedUpdateWithoutMemberInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   boatTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutBoatNestedInput;
   departures?: Prisma.BoatDepartureUncheckedUpdateManyWithoutBoatNestedInput;
+  serviceRequests?: Prisma.ServiceRequestUncheckedUpdateManyWithoutBoatNestedInput;
 };
 
 export type BoatUncheckedUpdateManyWithoutMemberInput = {
-  hin?: Prisma.IntFieldUpdateOperationsInput | number;
+  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1035,6 +1156,7 @@ export type BoatUncheckedUpdateManyWithoutMemberInput = {
 export type BoatCountOutputType = {
   contracts: number;
   departures: number;
+  serviceRequests: number;
 };
 
 export type BoatCountOutputTypeSelect<
@@ -1043,6 +1165,7 @@ export type BoatCountOutputTypeSelect<
 > = {
   contracts?: boolean | BoatCountOutputTypeCountContractsArgs;
   departures?: boolean | BoatCountOutputTypeCountDeparturesArgs;
+  serviceRequests?: boolean | BoatCountOutputTypeCountServiceRequestsArgs;
 };
 
 /**
@@ -1078,12 +1201,22 @@ export type BoatCountOutputTypeCountDeparturesArgs<
   where?: Prisma.BoatDepartureWhereInput;
 };
 
+/**
+ * BoatCountOutputType without action
+ */
+export type BoatCountOutputTypeCountServiceRequestsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.ServiceRequestWhereInput;
+};
+
 export type BoatSelect<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetSelect<
   {
-    hin?: boolean;
+    boatId?: boolean;
     publicId?: boolean;
     name?: boolean;
     description?: boolean;
@@ -1093,13 +1226,14 @@ export type BoatSelect<
     member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>;
     contracts?: boolean | Prisma.Boat$contractsArgs<ExtArgs>;
     departures?: boolean | Prisma.Boat$departuresArgs<ExtArgs>;
+    serviceRequests?: boolean | Prisma.Boat$serviceRequestsArgs<ExtArgs>;
     _count?: boolean | Prisma.BoatCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['boat']
 >;
 
 export type BoatSelectScalar = {
-  hin?: boolean;
+  boatId?: boolean;
   publicId?: boolean;
   name?: boolean;
   description?: boolean;
@@ -1111,7 +1245,7 @@ export type BoatOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  'hin' | 'publicId' | 'name' | 'description' | 'boatTypeId' | 'userId',
+  'boatId' | 'publicId' | 'name' | 'description' | 'boatTypeId' | 'userId',
   ExtArgs['result']['boat']
 >;
 export type BoatInclude<
@@ -1122,6 +1256,7 @@ export type BoatInclude<
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>;
   contracts?: boolean | Prisma.Boat$contractsArgs<ExtArgs>;
   departures?: boolean | Prisma.Boat$departuresArgs<ExtArgs>;
+  serviceRequests?: boolean | Prisma.Boat$serviceRequestsArgs<ExtArgs>;
   _count?: boolean | Prisma.BoatCountOutputTypeDefaultArgs<ExtArgs>;
 };
 
@@ -1135,10 +1270,11 @@ export type $BoatPayload<
     member: Prisma.$MemberPayload<ExtArgs>;
     contracts: Prisma.$ContractPayload<ExtArgs>[];
     departures: Prisma.$BoatDeparturePayload<ExtArgs>[];
+    serviceRequests: Prisma.$ServiceRequestPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
-      hin: number;
+      boatId: number;
       publicId: string;
       name: string;
       description: string;
@@ -1288,8 +1424,8 @@ export interface BoatDelegate<
    * // Get first 10 Boats
    * const boats = await prisma.boat.findMany({ take: 10 })
    *
-   * // Only select the `hin`
-   * const boatWithHinOnly = await prisma.boat.findMany({ select: { hin: true } })
+   * // Only select the `boatId`
+   * const boatWithBoatIdOnly = await prisma.boat.findMany({ select: { boatId: true } })
    *
    */
   findMany<T extends BoatFindManyArgs>(
@@ -1672,6 +1808,17 @@ export interface Prisma__BoatClient<
       >
     | Null
   >;
+  serviceRequests<T extends Prisma.Boat$serviceRequestsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Boat$serviceRequestsArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$ServiceRequestPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1714,7 +1861,7 @@ export interface Prisma__BoatClient<
  * Fields of the Boat model
  */
 export interface BoatFieldRefs {
-  readonly hin: Prisma.FieldRef<'Boat', 'Int'>;
+  readonly boatId: Prisma.FieldRef<'Boat', 'Int'>;
   readonly publicId: Prisma.FieldRef<'Boat', 'String'>;
   readonly name: Prisma.FieldRef<'Boat', 'String'>;
   readonly description: Prisma.FieldRef<'Boat', 'String'>;
@@ -2169,6 +2316,37 @@ export type Boat$departuresArgs<
   distinct?:
     | Prisma.BoatDepartureScalarFieldEnum
     | Prisma.BoatDepartureScalarFieldEnum[];
+};
+
+/**
+ * Boat.serviceRequests
+ */
+export type Boat$serviceRequestsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the ServiceRequest
+   */
+  select?: Prisma.ServiceRequestSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the ServiceRequest
+   */
+  omit?: Prisma.ServiceRequestOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ServiceRequestInclude<ExtArgs> | null;
+  where?: Prisma.ServiceRequestWhereInput;
+  orderBy?:
+    | Prisma.ServiceRequestOrderByWithRelationInput
+    | Prisma.ServiceRequestOrderByWithRelationInput[];
+  cursor?: Prisma.ServiceRequestWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?:
+    | Prisma.ServiceRequestScalarFieldEnum
+    | Prisma.ServiceRequestScalarFieldEnum[];
 };
 
 /**
