@@ -11,12 +11,12 @@ import {
 } from '@nestjs/common';
 import type { CookieOptions, Response } from 'express';
 
+import type { AuthenticatedRequest } from './auth.interface';
 import { AuthService } from './auth.service';
 import { ForgotPasswordDto } from './dto/forgotPassword.dto';
 import { LoginDto } from './dto/login.dto';
 import { ResetPasswordDto } from './dto/resetPassword.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import type { AuthenticatedRequest } from './guards/roles.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -29,32 +29,34 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const user = await this.authService.validateCredentials(loginDto);
-    const token = this.authService.generateToken(user);
+    const token = await this.authService.generateToken(user.id);
 
     const cookieOptions: CookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 1000 * 60 * 60 * 24,
+      path: '/',
     };
+
+    if (loginDto.remember) {
+      cookieOptions.maxAge = 1000 * 60 * 60 * 24; // 1 día
+    }
 
     res.cookie('access_token', token, cookieOptions);
 
-    return {
-      message: 'Login exitoso',
-    };
+    return { user };
   }
 
   @Get('me')
   @UseGuards(JwtAuthGuard)
-  me(@Req() req: AuthenticatedRequest) {
+  getProfile(@Req() req: AuthenticatedRequest) {
     return req.user;
   }
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie('access_token');
+    res.clearCookie('access_token', { path: '/' });
     return { message: 'Sesión cerrada' };
   }
 
