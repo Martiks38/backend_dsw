@@ -4,14 +4,17 @@ import { PassportStrategy } from '@nestjs/passport';
 import type { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
+import { getDisplayName } from '@/common/utils/getUserName.util';
 import { getUserRole } from '@/common/utils/getUserRole.util';
 import { PrismaService } from '@/prisma/prisma.service';
 
+import type { AuthenticatedUser } from '../auth.interface';
+
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt-strategy') {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
-    private configService: ConfigService,
-    private prisma: PrismaService,
+    configService: ConfigService,
+    private readonly prisma: PrismaService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
@@ -22,16 +25,17 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt-strategy') {
     });
   }
 
-  async validate(payload: { sub: string; role: string }) {
+  async validate(payload: { sub: string }): Promise<AuthenticatedUser> {
     const user = await this.prisma.user.findUnique({
       where: { publicId: payload.sub },
       select: {
         publicId: true,
         isActive: true,
         employee: {
-          select: {
-            employeeType: true,
-          },
+          select: { employeeType: true, firstName: true, lastName: true },
+        },
+        member: {
+          select: { firstName: true, lastName: true, businessName: true },
         },
       },
     });
@@ -40,11 +44,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt-strategy') {
       throw new UnauthorizedException('Usuario inactivo o inexistente');
     }
 
-    const role = getUserRole(user);
-
     return {
-      publicId: user.publicId,
-      role,
+      sub: user.publicId,
+      role: getUserRole(user),
+      name: getDisplayName(user),
     };
   }
 }
