@@ -5,7 +5,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PrismaMariaDb } from '@prisma/adapter-mariadb';
+import { PrismaPg } from '@prisma/adapter-pg';
 
 import { PrismaClient } from '../generated/prisma/client';
 
@@ -18,7 +18,7 @@ export class PrismaService
 
   constructor(configService: ConfigService) {
     const databaseUrl = configService.get<string>('DATABASE_URL');
-    const adapter = new PrismaMariaDb(databaseUrl!);
+    const adapter = new PrismaPg({ connectionString: databaseUrl });
     super({ adapter });
   }
 

@@ -829,6 +829,38 @@ export type ContractSelect<
   ExtArgs['result']['contract']
 >;
 
+export type ContractSelectCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    contractId?: boolean;
+    startDatetime?: boolean;
+    boatId?: boolean;
+    endDatetime?: boolean;
+    cradleId?: boolean;
+    boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
+    cradle?: boolean | Prisma.CradleDefaultArgs<ExtArgs>;
+  },
+  ExtArgs['result']['contract']
+>;
+
+export type ContractSelectUpdateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    contractId?: boolean;
+    startDatetime?: boolean;
+    boatId?: boolean;
+    endDatetime?: boolean;
+    cradleId?: boolean;
+    boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
+    cradle?: boolean | Prisma.CradleDefaultArgs<ExtArgs>;
+  },
+  ExtArgs['result']['contract']
+>;
+
 export type ContractSelectScalar = {
   contractId?: boolean;
   startDatetime?: boolean;
@@ -845,6 +877,20 @@ export type ContractOmit<
   ExtArgs['result']['contract']
 >;
 export type ContractInclude<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
+  cradle?: boolean | Prisma.CradleDefaultArgs<ExtArgs>;
+};
+export type ContractIncludeCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
+  cradle?: boolean | Prisma.CradleDefaultArgs<ExtArgs>;
+};
+export type ContractIncludeUpdateManyAndReturn<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
@@ -1070,6 +1116,39 @@ export interface ContractDelegate<
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
 
   /**
+   * Create many Contracts and returns the data saved in the database.
+   * @param {ContractCreateManyAndReturnArgs} args - Arguments to create many Contracts.
+   * @example
+   * // Create many Contracts
+   * const contract = await prisma.contract.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Create many Contracts and only return the `contractId`
+   * const contractWithContractIdOnly = await prisma.contract.createManyAndReturn({
+   *   select: { contractId: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  createManyAndReturn<T extends ContractCreateManyAndReturnArgs>(
+    args?: Prisma.SelectSubset<T, ContractCreateManyAndReturnArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$ContractPayload<ExtArgs>,
+      T,
+      'createManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
+
+  /**
    * Delete a Contract.
    * @param {ContractDeleteArgs} args - Arguments to delete one Contract.
    * @example
@@ -1160,6 +1239,45 @@ export interface ContractDelegate<
   updateMany<T extends ContractUpdateManyArgs>(
     args: Prisma.SelectSubset<T, ContractUpdateManyArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
+
+  /**
+   * Update zero or more Contracts and returns the data updated in the database.
+   * @param {ContractUpdateManyAndReturnArgs} args - Arguments to update many Contracts.
+   * @example
+   * // Update many Contracts
+   * const contract = await prisma.contract.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Update zero or more Contracts and only return the `contractId`
+   * const contractWithContractIdOnly = await prisma.contract.updateManyAndReturn({
+   *   select: { contractId: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  updateManyAndReturn<T extends ContractUpdateManyAndReturnArgs>(
+    args: Prisma.SelectSubset<T, ContractUpdateManyAndReturnArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$ContractPayload<ExtArgs>,
+      T,
+      'updateManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
 
   /**
    * Create or update one Contract.
@@ -1688,6 +1806,32 @@ export type ContractCreateManyArgs<
 };
 
 /**
+ * Contract createManyAndReturn
+ */
+export type ContractCreateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Contract
+   */
+  select?: Prisma.ContractSelectCreateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Contract
+   */
+  omit?: Prisma.ContractOmit<ExtArgs> | null;
+  /**
+   * The data used to create many Contracts.
+   */
+  data: Prisma.ContractCreateManyInput | Prisma.ContractCreateManyInput[];
+  skipDuplicates?: boolean;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContractIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+
+/**
  * Contract update
  */
 export type ContractUpdateArgs<
@@ -1741,6 +1885,42 @@ export type ContractUpdateManyArgs<
    * Limit how many Contracts to update.
    */
   limit?: number;
+};
+
+/**
+ * Contract updateManyAndReturn
+ */
+export type ContractUpdateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Contract
+   */
+  select?: Prisma.ContractSelectUpdateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Contract
+   */
+  omit?: Prisma.ContractOmit<ExtArgs> | null;
+  /**
+   * The data used to update Contracts.
+   */
+  data: Prisma.XOR<
+    Prisma.ContractUpdateManyMutationInput,
+    Prisma.ContractUncheckedUpdateManyInput
+  >;
+  /**
+   * Filter which Contracts to update
+   */
+  where?: Prisma.ContractWhereInput;
+  /**
+   * Limit how many Contracts to update.
+   */
+  limit?: number;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContractIncludeUpdateManyAndReturn<ExtArgs> | null;
 };
 
 /**

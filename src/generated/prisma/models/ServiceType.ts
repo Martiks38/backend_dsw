@@ -221,7 +221,6 @@ export type ServiceTypeOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder;
   isActive?: Prisma.SortOrder;
   serviceRequests?: Prisma.ServiceRequestOrderByRelationAggregateInput;
-  _relevance?: Prisma.ServiceTypeOrderByRelevanceInput;
 };
 
 export type ServiceTypeWhereUniqueInput = Prisma.AtLeast<
@@ -320,14 +319,6 @@ export type ServiceTypeUncheckedUpdateManyInput = {
 export type ServiceTypeScalarRelationFilter = {
   is?: Prisma.ServiceTypeWhereInput;
   isNot?: Prisma.ServiceTypeWhereInput;
-};
-
-export type ServiceTypeOrderByRelevanceInput = {
-  fields:
-    | Prisma.ServiceTypeOrderByRelevanceFieldEnum
-    | Prisma.ServiceTypeOrderByRelevanceFieldEnum[];
-  sort: Prisma.SortOrder;
-  search: string;
 };
 
 export type ServiceTypeCountOrderByAggregateInput = {
@@ -494,6 +485,32 @@ export type ServiceTypeSelect<
   ExtArgs['result']['serviceType']
 >;
 
+export type ServiceTypeSelectCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    serviceTypeId?: boolean;
+    name?: boolean;
+    description?: boolean;
+    isActive?: boolean;
+  },
+  ExtArgs['result']['serviceType']
+>;
+
+export type ServiceTypeSelectUpdateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    serviceTypeId?: boolean;
+    name?: boolean;
+    description?: boolean;
+    isActive?: boolean;
+  },
+  ExtArgs['result']['serviceType']
+>;
+
 export type ServiceTypeSelectScalar = {
   serviceTypeId?: boolean;
   name?: boolean;
@@ -515,6 +532,14 @@ export type ServiceTypeInclude<
   serviceRequests?: boolean | Prisma.ServiceType$serviceRequestsArgs<ExtArgs>;
   _count?: boolean | Prisma.ServiceTypeCountOutputTypeDefaultArgs<ExtArgs>;
 };
+export type ServiceTypeIncludeCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {};
+export type ServiceTypeIncludeUpdateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {};
 
 export type $ServiceTypePayload<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
@@ -735,6 +760,39 @@ export interface ServiceTypeDelegate<
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
 
   /**
+   * Create many ServiceTypes and returns the data saved in the database.
+   * @param {ServiceTypeCreateManyAndReturnArgs} args - Arguments to create many ServiceTypes.
+   * @example
+   * // Create many ServiceTypes
+   * const serviceType = await prisma.serviceType.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Create many ServiceTypes and only return the `serviceTypeId`
+   * const serviceTypeWithServiceTypeIdOnly = await prisma.serviceType.createManyAndReturn({
+   *   select: { serviceTypeId: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  createManyAndReturn<T extends ServiceTypeCreateManyAndReturnArgs>(
+    args?: Prisma.SelectSubset<T, ServiceTypeCreateManyAndReturnArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$ServiceTypePayload<ExtArgs>,
+      T,
+      'createManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
+
+  /**
    * Delete a ServiceType.
    * @param {ServiceTypeDeleteArgs} args - Arguments to delete one ServiceType.
    * @example
@@ -825,6 +883,45 @@ export interface ServiceTypeDelegate<
   updateMany<T extends ServiceTypeUpdateManyArgs>(
     args: Prisma.SelectSubset<T, ServiceTypeUpdateManyArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
+
+  /**
+   * Update zero or more ServiceTypes and returns the data updated in the database.
+   * @param {ServiceTypeUpdateManyAndReturnArgs} args - Arguments to update many ServiceTypes.
+   * @example
+   * // Update many ServiceTypes
+   * const serviceType = await prisma.serviceType.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Update zero or more ServiceTypes and only return the `serviceTypeId`
+   * const serviceTypeWithServiceTypeIdOnly = await prisma.serviceType.updateManyAndReturn({
+   *   select: { serviceTypeId: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  updateManyAndReturn<T extends ServiceTypeUpdateManyAndReturnArgs>(
+    args: Prisma.SelectSubset<T, ServiceTypeUpdateManyAndReturnArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$ServiceTypePayload<ExtArgs>,
+      T,
+      'updateManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
 
   /**
    * Create or update one ServiceType.
@@ -1343,6 +1440,28 @@ export type ServiceTypeCreateManyArgs<
 };
 
 /**
+ * ServiceType createManyAndReturn
+ */
+export type ServiceTypeCreateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the ServiceType
+   */
+  select?: Prisma.ServiceTypeSelectCreateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the ServiceType
+   */
+  omit?: Prisma.ServiceTypeOmit<ExtArgs> | null;
+  /**
+   * The data used to create many ServiceTypes.
+   */
+  data: Prisma.ServiceTypeCreateManyInput | Prisma.ServiceTypeCreateManyInput[];
+  skipDuplicates?: boolean;
+};
+
+/**
  * ServiceType update
  */
 export type ServiceTypeUpdateArgs<
@@ -1381,6 +1500,38 @@ export type ServiceTypeUpdateManyArgs<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
+  /**
+   * The data used to update ServiceTypes.
+   */
+  data: Prisma.XOR<
+    Prisma.ServiceTypeUpdateManyMutationInput,
+    Prisma.ServiceTypeUncheckedUpdateManyInput
+  >;
+  /**
+   * Filter which ServiceTypes to update
+   */
+  where?: Prisma.ServiceTypeWhereInput;
+  /**
+   * Limit how many ServiceTypes to update.
+   */
+  limit?: number;
+};
+
+/**
+ * ServiceType updateManyAndReturn
+ */
+export type ServiceTypeUpdateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the ServiceType
+   */
+  select?: Prisma.ServiceTypeSelectUpdateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the ServiceType
+   */
+  omit?: Prisma.ServiceTypeOmit<ExtArgs> | null;
   /**
    * The data used to update ServiceTypes.
    */

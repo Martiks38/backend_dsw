@@ -105,6 +105,7 @@ export type BoatTypeScalarFieldEnum =
   (typeof BoatTypeScalarFieldEnum)[keyof typeof BoatTypeScalarFieldEnum];
 
 export const BoatDepartureScalarFieldEnum = {
+  boatDepartureId: 'boatDepartureId',
   exitedAt: 'exitedAt',
   boatId: 'boatId',
   estimatedReturnDatetime: 'estimatedReturnDatetime',
@@ -190,6 +191,9 @@ export const ServiceRequestScalarFieldEnum = {
   observations: 'observations',
   internalComment: 'internalComment',
   createdAt: 'createdAt',
+  scheduledDate: 'scheduledDate',
+  scheduledTime: 'scheduledTime',
+  sector: 'sector',
   serviceTypeId: 'serviceTypeId',
   requestedByUserId: 'requestedByUserId',
   assignedEmployeeId: 'assignedEmployeeId',
@@ -216,21 +220,12 @@ export const SortOrder = {
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
 
-export const BoatOrderByRelevanceFieldEnum = {
-  publicId: 'publicId',
-  name: 'name',
-  description: 'description',
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive',
 } as const;
 
-export type BoatOrderByRelevanceFieldEnum =
-  (typeof BoatOrderByRelevanceFieldEnum)[keyof typeof BoatOrderByRelevanceFieldEnum];
-
-export const BoatTypeOrderByRelevanceFieldEnum = {
-  name: 'name',
-} as const;
-
-export type BoatTypeOrderByRelevanceFieldEnum =
-  (typeof BoatTypeOrderByRelevanceFieldEnum)[keyof typeof BoatTypeOrderByRelevanceFieldEnum];
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
 
 export const NullsOrder = {
   first: 'first',
@@ -238,64 +233,3 @@ export const NullsOrder = {
 } as const;
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
-
-export const CradleOrderByRelevanceFieldEnum = {
-  state: 'state',
-  cradleCode: 'cradleCode',
-} as const;
-
-export type CradleOrderByRelevanceFieldEnum =
-  (typeof CradleOrderByRelevanceFieldEnum)[keyof typeof CradleOrderByRelevanceFieldEnum];
-
-export const UserOrderByRelevanceFieldEnum = {
-  publicId: 'publicId',
-  email: 'email',
-  password: 'password',
-  phoneNumber: 'phoneNumber',
-  documentType: 'documentType',
-  documentNumber: 'documentNumber',
-} as const;
-
-export type UserOrderByRelevanceFieldEnum =
-  (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum];
-
-export const EmployeeOrderByRelevanceFieldEnum = {
-  firstName: 'firstName',
-  lastName: 'lastName',
-  employeeNumber: 'employeeNumber',
-} as const;
-
-export type EmployeeOrderByRelevanceFieldEnum =
-  (typeof EmployeeOrderByRelevanceFieldEnum)[keyof typeof EmployeeOrderByRelevanceFieldEnum];
-
-export const MemberOrderByRelevanceFieldEnum = {
-  firstName: 'firstName',
-  lastName: 'lastName',
-  businessName: 'businessName',
-} as const;
-
-export type MemberOrderByRelevanceFieldEnum =
-  (typeof MemberOrderByRelevanceFieldEnum)[keyof typeof MemberOrderByRelevanceFieldEnum];
-
-export const PasswordResetTokenOrderByRelevanceFieldEnum = {
-  tokenHash: 'tokenHash',
-} as const;
-
-export type PasswordResetTokenOrderByRelevanceFieldEnum =
-  (typeof PasswordResetTokenOrderByRelevanceFieldEnum)[keyof typeof PasswordResetTokenOrderByRelevanceFieldEnum];
-
-export const ServiceRequestOrderByRelevanceFieldEnum = {
-  observations: 'observations',
-  internalComment: 'internalComment',
-} as const;
-
-export type ServiceRequestOrderByRelevanceFieldEnum =
-  (typeof ServiceRequestOrderByRelevanceFieldEnum)[keyof typeof ServiceRequestOrderByRelevanceFieldEnum];
-
-export const ServiceTypeOrderByRelevanceFieldEnum = {
-  name: 'name',
-  description: 'description',
-} as const;
-
-export type ServiceTypeOrderByRelevanceFieldEnum =
-  (typeof ServiceTypeOrderByRelevanceFieldEnum)[keyof typeof ServiceTypeOrderByRelevanceFieldEnum];

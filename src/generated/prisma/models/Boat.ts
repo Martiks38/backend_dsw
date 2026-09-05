@@ -261,7 +261,6 @@ export type BoatOrderByWithRelationInput = {
   contracts?: Prisma.ContractOrderByRelationAggregateInput;
   departures?: Prisma.BoatDepartureOrderByRelationAggregateInput;
   serviceRequests?: Prisma.ServiceRequestOrderByRelationAggregateInput;
-  _relevance?: Prisma.BoatOrderByRelevanceInput;
 };
 
 export type BoatWhereUniqueInput = Prisma.AtLeast<
@@ -391,14 +390,6 @@ export type BoatUncheckedUpdateManyInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   boatTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   userId?: Prisma.IntFieldUpdateOperationsInput | number;
-};
-
-export type BoatOrderByRelevanceInput = {
-  fields:
-    | Prisma.BoatOrderByRelevanceFieldEnum
-    | Prisma.BoatOrderByRelevanceFieldEnum[];
-  sort: Prisma.SortOrder;
-  search: string;
 };
 
 export type BoatCountOrderByAggregateInput = {
@@ -1232,6 +1223,40 @@ export type BoatSelect<
   ExtArgs['result']['boat']
 >;
 
+export type BoatSelectCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    boatId?: boolean;
+    publicId?: boolean;
+    name?: boolean;
+    description?: boolean;
+    boatTypeId?: boolean;
+    userId?: boolean;
+    boatType?: boolean | Prisma.BoatTypeDefaultArgs<ExtArgs>;
+    member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>;
+  },
+  ExtArgs['result']['boat']
+>;
+
+export type BoatSelectUpdateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    boatId?: boolean;
+    publicId?: boolean;
+    name?: boolean;
+    description?: boolean;
+    boatTypeId?: boolean;
+    userId?: boolean;
+    boatType?: boolean | Prisma.BoatTypeDefaultArgs<ExtArgs>;
+    member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>;
+  },
+  ExtArgs['result']['boat']
+>;
+
 export type BoatSelectScalar = {
   boatId?: boolean;
   publicId?: boolean;
@@ -1258,6 +1283,20 @@ export type BoatInclude<
   departures?: boolean | Prisma.Boat$departuresArgs<ExtArgs>;
   serviceRequests?: boolean | Prisma.Boat$serviceRequestsArgs<ExtArgs>;
   _count?: boolean | Prisma.BoatCountOutputTypeDefaultArgs<ExtArgs>;
+};
+export type BoatIncludeCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  boatType?: boolean | Prisma.BoatTypeDefaultArgs<ExtArgs>;
+  member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>;
+};
+export type BoatIncludeUpdateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  boatType?: boolean | Prisma.BoatTypeDefaultArgs<ExtArgs>;
+  member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>;
 };
 
 export type $BoatPayload<
@@ -1482,6 +1521,39 @@ export interface BoatDelegate<
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
 
   /**
+   * Create many Boats and returns the data saved in the database.
+   * @param {BoatCreateManyAndReturnArgs} args - Arguments to create many Boats.
+   * @example
+   * // Create many Boats
+   * const boat = await prisma.boat.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Create many Boats and only return the `boatId`
+   * const boatWithBoatIdOnly = await prisma.boat.createManyAndReturn({
+   *   select: { boatId: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  createManyAndReturn<T extends BoatCreateManyAndReturnArgs>(
+    args?: Prisma.SelectSubset<T, BoatCreateManyAndReturnArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$BoatPayload<ExtArgs>,
+      T,
+      'createManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
+
+  /**
    * Delete a Boat.
    * @param {BoatDeleteArgs} args - Arguments to delete one Boat.
    * @example
@@ -1572,6 +1644,45 @@ export interface BoatDelegate<
   updateMany<T extends BoatUpdateManyArgs>(
     args: Prisma.SelectSubset<T, BoatUpdateManyArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
+
+  /**
+   * Update zero or more Boats and returns the data updated in the database.
+   * @param {BoatUpdateManyAndReturnArgs} args - Arguments to update many Boats.
+   * @example
+   * // Update many Boats
+   * const boat = await prisma.boat.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Update zero or more Boats and only return the `boatId`
+   * const boatWithBoatIdOnly = await prisma.boat.updateManyAndReturn({
+   *   select: { boatId: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  updateManyAndReturn<T extends BoatUpdateManyAndReturnArgs>(
+    args: Prisma.SelectSubset<T, BoatUpdateManyAndReturnArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$BoatPayload<ExtArgs>,
+      T,
+      'updateManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
 
   /**
    * Create or update one Boat.
@@ -2131,6 +2242,32 @@ export type BoatCreateManyArgs<
 };
 
 /**
+ * Boat createManyAndReturn
+ */
+export type BoatCreateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Boat
+   */
+  select?: Prisma.BoatSelectCreateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Boat
+   */
+  omit?: Prisma.BoatOmit<ExtArgs> | null;
+  /**
+   * The data used to create many Boats.
+   */
+  data: Prisma.BoatCreateManyInput | Prisma.BoatCreateManyInput[];
+  skipDuplicates?: boolean;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BoatIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+
+/**
  * Boat update
  */
 export type BoatUpdateArgs<
@@ -2181,6 +2318,42 @@ export type BoatUpdateManyArgs<
    * Limit how many Boats to update.
    */
   limit?: number;
+};
+
+/**
+ * Boat updateManyAndReturn
+ */
+export type BoatUpdateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Boat
+   */
+  select?: Prisma.BoatSelectUpdateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Boat
+   */
+  omit?: Prisma.BoatOmit<ExtArgs> | null;
+  /**
+   * The data used to update Boats.
+   */
+  data: Prisma.XOR<
+    Prisma.BoatUpdateManyMutationInput,
+    Prisma.BoatUncheckedUpdateManyInput
+  >;
+  /**
+   * Filter which Boats to update
+   */
+  where?: Prisma.BoatWhereInput;
+  /**
+   * Limit how many Boats to update.
+   */
+  limit?: number;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BoatIncludeUpdateManyAndReturn<ExtArgs> | null;
 };
 
 /**

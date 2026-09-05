@@ -11,6 +11,7 @@
 export const ServiceStatus = {
   PENDING: 'PENDING',
   IN_PROGRESS: 'IN_PROGRESS',
+  SCHEDULED: 'SCHEDULED',
   COMPLETED: 'COMPLETED',
   CANCELED: 'CANCELED',
 } as const;

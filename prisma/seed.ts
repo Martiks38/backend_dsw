@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-import { PrismaMariaDb } from '@prisma/adapter-mariadb';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { nanoid } from 'nanoid';
 
 import { hashPassword } from '../src/common/utils/hashPassword.util';
@@ -17,7 +17,7 @@ if (!databaseUrl) {
   throw new Error('DATABASE_URL no está definida en .env');
 }
 
-const adapter = new PrismaMariaDb(databaseUrl);
+const adapter = new PrismaPg({ connectionString: databaseUrl });
 const prisma = new PrismaClient({ adapter });
 
 function daysFromNow(days: number): Date {
@@ -232,29 +232,51 @@ async function main() {
 
   console.log('🧾 Creando solicitudes de servicio...');
   const serviceRequests = [];
-  for (let i = 0; i < 5; i++) {
-    const boat = boats[i];
+  const sectores = ['Muelle Norte', 'Muelle Sur', 'Rampa Central'];
+
+  for (let i = 0; i < 8; i++) {
+    const boat = boats[i % boats.length];
     const member = members[i % members.length];
-    const employee = employees[i % employees.length];
     const serviceType = serviceTypes[i % serviceTypes.length];
+
+    // Ciclo de estados de ejemplo: pendiente, programada, completada, pendiente...
+    const statusCycle = [
+      ServiceStatus.PENDING,
+      ServiceStatus.SCHEDULED,
+      ServiceStatus.COMPLETED,
+      ServiceStatus.PENDING,
+    ];
+    const status = statusCycle[i % statusCycle.length];
+    const isPending = status === ServiceStatus.PENDING;
+    const employee = employees[i % employees.length];
+
     const serviceRequest = await prisma.serviceRequest.create({
       data: {
-        status: i % 4 === 0 ? ServiceStatus.COMPLETED : ServiceStatus.PENDING,
+        status,
         requestedDatetime: daysFromNow(-10 + i),
         observations: `Solicitud de servicio para ${boat.name}`,
         serviceTypeId: serviceType.serviceTypeId,
         requestedByUserId: member.userId,
-        assignedEmployeeId: employee.userId,
         boatId: boat.boatId,
+
+        // Sin asignar hasta que se programe: null si sigue pendiente
+        assignedEmployeeId: isPending ? null : employee.userId,
+        scheduledDate: isPending ? null : daysFromNow(2 + i),
+        scheduledTime: isPending ? null : '10:00',
+        sector: isPending ? null : sectores[i % sectores.length],
       },
     });
     serviceRequests.push(serviceRequest);
   }
 
   console.log('🌊 Creando salidas de embarcaciones...');
-  for (let i = 0; i < 5; i++) {
-    const boat = boats[i];
-    const serviceRequest = serviceRequests[i];
+  // Solo tiene sentido una salida para solicitudes ya programadas/en curso/completadas
+  const scheduledOrLaterRequests = serviceRequests.filter(
+    (sr) => sr.status !== ServiceStatus.PENDING,
+  );
+
+  for (const [i, serviceRequest] of scheduledOrLaterRequests.entries()) {
+    const boat = boats.find((b) => b.boatId === serviceRequest.boatId)!;
     const exitedAt = daysFromNow(-10 + i);
     await prisma.boatDeparture.create({
       data: {
@@ -264,7 +286,7 @@ async function main() {
           exitedAt.getTime() + 4 * 60 * 60 * 1000,
         ),
         realReturnDatetime:
-          i % 2 === 0
+          serviceRequest.status === ServiceStatus.COMPLETED
             ? new Date(exitedAt.getTime() + 3.5 * 60 * 60 * 1000)
             : null,
         serviceRequestId: serviceRequest.serviceRequestId,

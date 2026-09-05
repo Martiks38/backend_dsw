@@ -27,16 +27,19 @@ export type AggregateBoatDeparture = {
 };
 
 export type BoatDepartureAvgAggregateOutputType = {
+  boatDepartureId: number | null;
   boatId: number | null;
   serviceRequestId: number | null;
 };
 
 export type BoatDepartureSumAggregateOutputType = {
+  boatDepartureId: number | null;
   boatId: number | null;
   serviceRequestId: number | null;
 };
 
 export type BoatDepartureMinAggregateOutputType = {
+  boatDepartureId: number | null;
   exitedAt: Date | null;
   boatId: number | null;
   estimatedReturnDatetime: Date | null;
@@ -45,6 +48,7 @@ export type BoatDepartureMinAggregateOutputType = {
 };
 
 export type BoatDepartureMaxAggregateOutputType = {
+  boatDepartureId: number | null;
   exitedAt: Date | null;
   boatId: number | null;
   estimatedReturnDatetime: Date | null;
@@ -53,6 +57,7 @@ export type BoatDepartureMaxAggregateOutputType = {
 };
 
 export type BoatDepartureCountAggregateOutputType = {
+  boatDepartureId: number;
   exitedAt: number;
   boatId: number;
   estimatedReturnDatetime: number;
@@ -62,16 +67,19 @@ export type BoatDepartureCountAggregateOutputType = {
 };
 
 export type BoatDepartureAvgAggregateInputType = {
+  boatDepartureId?: true;
   boatId?: true;
   serviceRequestId?: true;
 };
 
 export type BoatDepartureSumAggregateInputType = {
+  boatDepartureId?: true;
   boatId?: true;
   serviceRequestId?: true;
 };
 
 export type BoatDepartureMinAggregateInputType = {
+  boatDepartureId?: true;
   exitedAt?: true;
   boatId?: true;
   estimatedReturnDatetime?: true;
@@ -80,6 +88,7 @@ export type BoatDepartureMinAggregateInputType = {
 };
 
 export type BoatDepartureMaxAggregateInputType = {
+  boatDepartureId?: true;
   exitedAt?: true;
   boatId?: true;
   estimatedReturnDatetime?: true;
@@ -88,6 +97,7 @@ export type BoatDepartureMaxAggregateInputType = {
 };
 
 export type BoatDepartureCountAggregateInputType = {
+  boatDepartureId?: true;
   exitedAt?: true;
   boatId?: true;
   estimatedReturnDatetime?: true;
@@ -194,6 +204,7 @@ export type BoatDepartureGroupByArgs<
 };
 
 export type BoatDepartureGroupByOutputType = {
+  boatDepartureId: number;
   exitedAt: Date;
   boatId: number;
   estimatedReturnDatetime: Date;
@@ -224,6 +235,7 @@ export type BoatDepartureWhereInput = {
   AND?: Prisma.BoatDepartureWhereInput | Prisma.BoatDepartureWhereInput[];
   OR?: Prisma.BoatDepartureWhereInput[];
   NOT?: Prisma.BoatDepartureWhereInput | Prisma.BoatDepartureWhereInput[];
+  boatDepartureId?: Prisma.IntFilter<'BoatDeparture'> | number;
   exitedAt?: Prisma.DateTimeFilter<'BoatDeparture'> | Date | string;
   boatId?: Prisma.IntFilter<'BoatDeparture'> | number;
   estimatedReturnDatetime?:
@@ -244,6 +256,7 @@ export type BoatDepartureWhereInput = {
 };
 
 export type BoatDepartureOrderByWithRelationInput = {
+  boatDepartureId?: Prisma.SortOrder;
   exitedAt?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   estimatedReturnDatetime?: Prisma.SortOrder;
@@ -255,8 +268,8 @@ export type BoatDepartureOrderByWithRelationInput = {
 
 export type BoatDepartureWhereUniqueInput = Prisma.AtLeast<
   {
+    boatDepartureId?: number;
     serviceRequestId?: number;
-    exitedAt_boatId?: Prisma.BoatDepartureExitedAtBoatIdCompoundUniqueInput;
     AND?: Prisma.BoatDepartureWhereInput | Prisma.BoatDepartureWhereInput[];
     OR?: Prisma.BoatDepartureWhereInput[];
     NOT?: Prisma.BoatDepartureWhereInput | Prisma.BoatDepartureWhereInput[];
@@ -277,10 +290,11 @@ export type BoatDepartureWhereUniqueInput = Prisma.AtLeast<
       Prisma.ServiceRequestWhereInput
     >;
   },
-  'exitedAt_boatId' | 'serviceRequestId'
+  'boatDepartureId' | 'serviceRequestId'
 >;
 
 export type BoatDepartureOrderByWithAggregationInput = {
+  boatDepartureId?: Prisma.SortOrder;
   exitedAt?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   estimatedReturnDatetime?: Prisma.SortOrder;
@@ -301,6 +315,7 @@ export type BoatDepartureScalarWhereWithAggregatesInput = {
   NOT?:
     | Prisma.BoatDepartureScalarWhereWithAggregatesInput
     | Prisma.BoatDepartureScalarWhereWithAggregatesInput[];
+  boatDepartureId?: Prisma.IntWithAggregatesFilter<'BoatDeparture'> | number;
   exitedAt?:
     | Prisma.DateTimeWithAggregatesFilter<'BoatDeparture'>
     | Date
@@ -327,6 +342,7 @@ export type BoatDepartureCreateInput = {
 };
 
 export type BoatDepartureUncheckedCreateInput = {
+  boatDepartureId?: number;
   exitedAt: Date | string;
   boatId: number;
   estimatedReturnDatetime: Date | string;
@@ -350,6 +366,7 @@ export type BoatDepartureUpdateInput = {
 };
 
 export type BoatDepartureUncheckedUpdateInput = {
+  boatDepartureId?: Prisma.IntFieldUpdateOperationsInput | number;
   exitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   estimatedReturnDatetime?:
@@ -365,6 +382,7 @@ export type BoatDepartureUncheckedUpdateInput = {
 };
 
 export type BoatDepartureCreateManyInput = {
+  boatDepartureId?: number;
   exitedAt: Date | string;
   boatId: number;
   estimatedReturnDatetime: Date | string;
@@ -386,6 +404,7 @@ export type BoatDepartureUpdateManyMutationInput = {
 };
 
 export type BoatDepartureUncheckedUpdateManyInput = {
+  boatDepartureId?: Prisma.IntFieldUpdateOperationsInput | number;
   exitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   estimatedReturnDatetime?:
@@ -410,12 +429,8 @@ export type BoatDepartureOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder;
 };
 
-export type BoatDepartureExitedAtBoatIdCompoundUniqueInput = {
-  exitedAt: Date | string;
-  boatId: number;
-};
-
 export type BoatDepartureCountOrderByAggregateInput = {
+  boatDepartureId?: Prisma.SortOrder;
   exitedAt?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   estimatedReturnDatetime?: Prisma.SortOrder;
@@ -424,11 +439,13 @@ export type BoatDepartureCountOrderByAggregateInput = {
 };
 
 export type BoatDepartureAvgOrderByAggregateInput = {
+  boatDepartureId?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   serviceRequestId?: Prisma.SortOrder;
 };
 
 export type BoatDepartureMaxOrderByAggregateInput = {
+  boatDepartureId?: Prisma.SortOrder;
   exitedAt?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   estimatedReturnDatetime?: Prisma.SortOrder;
@@ -437,6 +454,7 @@ export type BoatDepartureMaxOrderByAggregateInput = {
 };
 
 export type BoatDepartureMinOrderByAggregateInput = {
+  boatDepartureId?: Prisma.SortOrder;
   exitedAt?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   estimatedReturnDatetime?: Prisma.SortOrder;
@@ -445,6 +463,7 @@ export type BoatDepartureMinOrderByAggregateInput = {
 };
 
 export type BoatDepartureSumOrderByAggregateInput = {
+  boatDepartureId?: Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   serviceRequestId?: Prisma.SortOrder;
 };
@@ -636,6 +655,7 @@ export type BoatDepartureCreateWithoutBoatInput = {
 };
 
 export type BoatDepartureUncheckedCreateWithoutBoatInput = {
+  boatDepartureId?: number;
   exitedAt: Date | string;
   estimatedReturnDatetime: Date | string;
   realReturnDatetime?: Date | string | null;
@@ -693,6 +713,7 @@ export type BoatDepartureScalarWhereInput = {
   NOT?:
     | Prisma.BoatDepartureScalarWhereInput
     | Prisma.BoatDepartureScalarWhereInput[];
+  boatDepartureId?: Prisma.IntFilter<'BoatDeparture'> | number;
   exitedAt?: Prisma.DateTimeFilter<'BoatDeparture'> | Date | string;
   boatId?: Prisma.IntFilter<'BoatDeparture'> | number;
   estimatedReturnDatetime?:
@@ -715,6 +736,7 @@ export type BoatDepartureCreateWithoutServiceRequestInput = {
 };
 
 export type BoatDepartureUncheckedCreateWithoutServiceRequestInput = {
+  boatDepartureId?: number;
   exitedAt: Date | string;
   boatId: number;
   estimatedReturnDatetime: Date | string;
@@ -764,6 +786,7 @@ export type BoatDepartureUpdateWithoutServiceRequestInput = {
 };
 
 export type BoatDepartureUncheckedUpdateWithoutServiceRequestInput = {
+  boatDepartureId?: Prisma.IntFieldUpdateOperationsInput | number;
   exitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   estimatedReturnDatetime?:
@@ -778,6 +801,7 @@ export type BoatDepartureUncheckedUpdateWithoutServiceRequestInput = {
 };
 
 export type BoatDepartureCreateManyBoatInput = {
+  boatDepartureId?: number;
   exitedAt: Date | string;
   estimatedReturnDatetime: Date | string;
   realReturnDatetime?: Date | string | null;
@@ -799,6 +823,7 @@ export type BoatDepartureUpdateWithoutBoatInput = {
 };
 
 export type BoatDepartureUncheckedUpdateWithoutBoatInput = {
+  boatDepartureId?: Prisma.IntFieldUpdateOperationsInput | number;
   exitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   estimatedReturnDatetime?:
     | Prisma.DateTimeFieldUpdateOperationsInput
@@ -813,6 +838,7 @@ export type BoatDepartureUncheckedUpdateWithoutBoatInput = {
 };
 
 export type BoatDepartureUncheckedUpdateManyWithoutBoatInput = {
+  boatDepartureId?: Prisma.IntFieldUpdateOperationsInput | number;
   exitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   estimatedReturnDatetime?:
     | Prisma.DateTimeFieldUpdateOperationsInput
@@ -831,6 +857,41 @@ export type BoatDepartureSelect<
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetSelect<
   {
+    boatDepartureId?: boolean;
+    exitedAt?: boolean;
+    boatId?: boolean;
+    estimatedReturnDatetime?: boolean;
+    realReturnDatetime?: boolean;
+    serviceRequestId?: boolean;
+    boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
+    serviceRequest?: boolean | Prisma.ServiceRequestDefaultArgs<ExtArgs>;
+  },
+  ExtArgs['result']['boatDeparture']
+>;
+
+export type BoatDepartureSelectCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    boatDepartureId?: boolean;
+    exitedAt?: boolean;
+    boatId?: boolean;
+    estimatedReturnDatetime?: boolean;
+    realReturnDatetime?: boolean;
+    serviceRequestId?: boolean;
+    boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
+    serviceRequest?: boolean | Prisma.ServiceRequestDefaultArgs<ExtArgs>;
+  },
+  ExtArgs['result']['boatDeparture']
+>;
+
+export type BoatDepartureSelectUpdateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    boatDepartureId?: boolean;
     exitedAt?: boolean;
     boatId?: boolean;
     estimatedReturnDatetime?: boolean;
@@ -843,6 +904,7 @@ export type BoatDepartureSelect<
 >;
 
 export type BoatDepartureSelectScalar = {
+  boatDepartureId?: boolean;
   exitedAt?: boolean;
   boatId?: boolean;
   estimatedReturnDatetime?: boolean;
@@ -854,6 +916,7 @@ export type BoatDepartureOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
+  | 'boatDepartureId'
   | 'exitedAt'
   | 'boatId'
   | 'estimatedReturnDatetime'
@@ -862,6 +925,20 @@ export type BoatDepartureOmit<
   ExtArgs['result']['boatDeparture']
 >;
 export type BoatDepartureInclude<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
+  serviceRequest?: boolean | Prisma.ServiceRequestDefaultArgs<ExtArgs>;
+};
+export type BoatDepartureIncludeCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
+  serviceRequest?: boolean | Prisma.ServiceRequestDefaultArgs<ExtArgs>;
+};
+export type BoatDepartureIncludeUpdateManyAndReturn<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
@@ -880,6 +957,7 @@ export type $BoatDeparturePayload<
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
+      boatDepartureId: number;
       exitedAt: Date;
       boatId: number;
       estimatedReturnDatetime: Date;
@@ -1032,8 +1110,8 @@ export interface BoatDepartureDelegate<
    * // Get first 10 BoatDepartures
    * const boatDepartures = await prisma.boatDeparture.findMany({ take: 10 })
    *
-   * // Only select the `exitedAt`
-   * const boatDepartureWithExitedAtOnly = await prisma.boatDeparture.findMany({ select: { exitedAt: true } })
+   * // Only select the `boatDepartureId`
+   * const boatDepartureWithBoatDepartureIdOnly = await prisma.boatDeparture.findMany({ select: { boatDepartureId: true } })
    *
    */
   findMany<T extends BoatDepartureFindManyArgs>(
@@ -1088,6 +1166,42 @@ export interface BoatDepartureDelegate<
   createMany<T extends BoatDepartureCreateManyArgs>(
     args?: Prisma.SelectSubset<T, BoatDepartureCreateManyArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
+
+  /**
+   * Create many BoatDepartures and returns the data saved in the database.
+   * @param {BoatDepartureCreateManyAndReturnArgs} args - Arguments to create many BoatDepartures.
+   * @example
+   * // Create many BoatDepartures
+   * const boatDeparture = await prisma.boatDeparture.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Create many BoatDepartures and only return the `boatDepartureId`
+   * const boatDepartureWithBoatDepartureIdOnly = await prisma.boatDeparture.createManyAndReturn({
+   *   select: { boatDepartureId: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  createManyAndReturn<T extends BoatDepartureCreateManyAndReturnArgs>(
+    args?: Prisma.SelectSubset<
+      T,
+      BoatDepartureCreateManyAndReturnArgs<ExtArgs>
+    >,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$BoatDeparturePayload<ExtArgs>,
+      T,
+      'createManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
 
   /**
    * Delete a BoatDeparture.
@@ -1180,6 +1294,45 @@ export interface BoatDepartureDelegate<
   updateMany<T extends BoatDepartureUpdateManyArgs>(
     args: Prisma.SelectSubset<T, BoatDepartureUpdateManyArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
+
+  /**
+   * Update zero or more BoatDepartures and returns the data updated in the database.
+   * @param {BoatDepartureUpdateManyAndReturnArgs} args - Arguments to update many BoatDepartures.
+   * @example
+   * // Update many BoatDepartures
+   * const boatDeparture = await prisma.boatDeparture.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Update zero or more BoatDepartures and only return the `boatDepartureId`
+   * const boatDepartureWithBoatDepartureIdOnly = await prisma.boatDeparture.updateManyAndReturn({
+   *   select: { boatDepartureId: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  updateManyAndReturn<T extends BoatDepartureUpdateManyAndReturnArgs>(
+    args: Prisma.SelectSubset<T, BoatDepartureUpdateManyAndReturnArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$BoatDeparturePayload<ExtArgs>,
+      T,
+      'updateManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
 
   /**
    * Create or update one BoatDeparture.
@@ -1439,6 +1592,7 @@ export interface Prisma__BoatDepartureClient<
  * Fields of the BoatDeparture model
  */
 export interface BoatDepartureFieldRefs {
+  readonly boatDepartureId: Prisma.FieldRef<'BoatDeparture', 'Int'>;
   readonly exitedAt: Prisma.FieldRef<'BoatDeparture', 'DateTime'>;
   readonly boatId: Prisma.FieldRef<'BoatDeparture', 'Int'>;
   readonly estimatedReturnDatetime: Prisma.FieldRef<
@@ -1722,6 +1876,34 @@ export type BoatDepartureCreateManyArgs<
 };
 
 /**
+ * BoatDeparture createManyAndReturn
+ */
+export type BoatDepartureCreateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the BoatDeparture
+   */
+  select?: Prisma.BoatDepartureSelectCreateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the BoatDeparture
+   */
+  omit?: Prisma.BoatDepartureOmit<ExtArgs> | null;
+  /**
+   * The data used to create many BoatDepartures.
+   */
+  data:
+    | Prisma.BoatDepartureCreateManyInput
+    | Prisma.BoatDepartureCreateManyInput[];
+  skipDuplicates?: boolean;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BoatDepartureIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+
+/**
  * BoatDeparture update
  */
 export type BoatDepartureUpdateArgs<
@@ -1775,6 +1957,42 @@ export type BoatDepartureUpdateManyArgs<
    * Limit how many BoatDepartures to update.
    */
   limit?: number;
+};
+
+/**
+ * BoatDeparture updateManyAndReturn
+ */
+export type BoatDepartureUpdateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the BoatDeparture
+   */
+  select?: Prisma.BoatDepartureSelectUpdateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the BoatDeparture
+   */
+  omit?: Prisma.BoatDepartureOmit<ExtArgs> | null;
+  /**
+   * The data used to update BoatDepartures.
+   */
+  data: Prisma.XOR<
+    Prisma.BoatDepartureUpdateManyMutationInput,
+    Prisma.BoatDepartureUncheckedUpdateManyInput
+  >;
+  /**
+   * Filter which BoatDepartures to update
+   */
+  where?: Prisma.BoatDepartureWhereInput;
+  /**
+   * Limit how many BoatDepartures to update.
+   */
+  limit?: number;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BoatDepartureIncludeUpdateManyAndReturn<ExtArgs> | null;
 };
 
 /**

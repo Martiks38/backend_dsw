@@ -5,12 +5,13 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
 }
 
 enum ServiceStatus {
   PENDING
   IN_PROGRESS
+  SCHEDULED
   COMPLETED
   CANCELED
 }
@@ -26,14 +27,14 @@ enum OperationType {
 }
 
 model Boat {
-  boatId Int @id
+  boatId Int @id @map("boat_id")
 
-  publicId    String @unique
+  publicId    String @unique @map("public_id")
   name        String
   description String
 
-  boatTypeId Int
-  userId     Int
+  boatTypeId Int @map("boat_type_id")
+  userId     Int @map("user_id")
 
   boatType BoatType @relation(fields: [boatTypeId], references: [boatTypeId])
   member   Member   @relation(fields: [userId], references: [userId])
@@ -46,10 +47,10 @@ model Boat {
 }
 
 model BoatType {
-  boatTypeId Int @id @default(autoincrement())
+  boatTypeId Int @id @default(autoincrement()) @map("boat_type_id")
 
   name              String
-  requiredOperation OperationType
+  requiredOperation OperationType @map("required_operation")
 
   boats Boat[]
 
@@ -57,25 +58,25 @@ model BoatType {
 }
 
 model BoatDeparture {
-  exitedAt DateTime
-  boatId   Int
+  boatDepartureId Int      @id @default(autoincrement()) @map("boat_departure_id")
+  exitedAt        DateTime @map("exited_at")
+  boatId          Int      @map("boat_id")
 
-  estimatedReturnDatetime DateTime
-  realReturnDatetime      DateTime?
+  estimatedReturnDatetime DateTime  @map("estimated_return_datetime")
+  realReturnDatetime      DateTime? @map("real_return_datetime")
 
   boat Boat @relation(fields: [boatId], references: [boatId])
 
-  serviceRequestId Int            @unique
+  serviceRequestId Int            @unique @map("service_request_id")
   serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [serviceRequestId])
 
-  @@id([exitedAt, boatId])
   @@map("boat_departures")
 }
 
 model Cradle {
-  cradleId   Int    @id @default(autoincrement())
+  cradleId   Int    @id @default(autoincrement()) @map("cradle_id")
   state      String
-  cradleCode String
+  cradleCode String @map("cradle_code")
 
   boatHasBoatSlips Contract[]
 
@@ -83,13 +84,13 @@ model Cradle {
 }
 
 model Contract {
-  contractId    Int      @id @default(autoincrement())
-  startDatetime DateTime
-  boatId        Int
+  contractId    Int      @id @default(autoincrement()) @map("contract_id")
+  startDatetime DateTime @map("start_datetime")
+  boatId        Int      @map("boat_id")
 
-  endDatetime DateTime?
+  endDatetime DateTime? @map("end_datetime")
 
-  cradleId Int
+  cradleId Int @map("cradle_id")
 
   boat   Boat   @relation(fields: [boatId], references: [boatId])
   cradle Cradle @relation(fields: [cradleId], references: [cradleId])
@@ -98,16 +99,16 @@ model Contract {
 }
 
 model User {
-  userId Int @id @default(autoincrement())
+  userId Int @id @default(autoincrement()) @map("user_id")
 
-  publicId       String  @unique
+  publicId       String  @unique @map("public_id")
   email          String  @unique
   password       String
-  phoneNumber    String
-  documentType   String
-  documentNumber String
-  isActive       Boolean @default(true)
-  isEmployee     Boolean @default(false)
+  phoneNumber    String  @map("phone_number")
+  documentType   String  @map("document_type")
+  documentNumber String  @map("document_number")
+  isActive       Boolean @default(true) @map("is_active")
+  isEmployee     Boolean @default(false) @map("is_employee")
 
   passwordResetTokens PasswordResetToken[]
 
@@ -119,12 +120,12 @@ model User {
 }
 
 model Employee {
-  userId Int @id
+  userId Int @id @map("user_id")
 
-  firstName      String
-  lastName       String
-  employeeNumber String       @unique
-  employeeType   EmployeeType
+  firstName      String       @map("first_name")
+  lastName       String       @map("last_name")
+  employeeNumber String       @unique @map("employee_number")
+  employeeType   EmployeeType @map("employee_type")
 
   user            User             @relation(fields: [userId], references: [userId])
   serviceRequests ServiceRequest[]
@@ -133,11 +134,11 @@ model Employee {
 }
 
 model Member {
-  userId Int @id
+  userId Int @id @map("user_id")
 
-  firstName    String?
-  lastName     String?
-  businessName String?
+  firstName    String? @map("first_name")
+  lastName     String? @map("last_name")
+  businessName String? @map("business_name")
 
   user User @relation(fields: [userId], references: [userId])
 
@@ -161,12 +162,16 @@ model PasswordResetToken {
 }
 
 model ServiceRequest {
-  serviceRequestId  Int           @id @default(autoincrement())
+  serviceRequestId  Int           @id @default(autoincrement()) @map("service_request_id")
   status            ServiceStatus @default(PENDING)
-  requestedDatetime DateTime
+  requestedDatetime DateTime      @map("requested_datetime")
   observations      String?
-  internalComment   String?
-  createdAt         DateTime      @default(now())
+  internalComment   String?       @map("internal_comment")
+  createdAt         DateTime      @default(now()) @map("created_at")
+
+  scheduledDate DateTime? @map("scheduled_date")
+  scheduledTime String?   @map("scheduled_time")
+  sector        String?
 
   boatDeparture BoatDeparture?
 
@@ -176,20 +181,21 @@ model ServiceRequest {
   requestedByUserId Int    @map("requested_by_user_id")
   member            Member @relation(fields: [requestedByUserId], references: [userId])
 
-  assignedEmployeeId Int      @map("assigned_employee_id")
-  employee           Employee @relation(fields: [assignedEmployeeId], references: [userId])
+  assignedEmployeeId Int?      @map("assigned_employee_id")
+  employee           Employee? @relation(fields: [assignedEmployeeId], references: [userId])
 
-  boatId Int
+  boatId Int  @map("boat_id")
   boat   Boat @relation(fields: [boatId], references: [boatId])
 
+  @@index([assignedEmployeeId, scheduledDate])
   @@map("service_requests")
 }
 
 model ServiceType {
-  serviceTypeId Int     @id @default(autoincrement())
+  serviceTypeId Int     @id @default(autoincrement()) @map("service_type_id")
   name          String
   description   String?
-  isActive      Boolean @default(true)
+  isActive      Boolean @default(true) @map("is_active")
 
   serviceRequests ServiceRequest[]
 

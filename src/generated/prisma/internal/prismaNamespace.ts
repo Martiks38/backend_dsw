@@ -93,12 +93,12 @@ export type PrismaVersion = {
 };
 
 /**
- * Prisma Client JS version: 7.9.1
- * Query Engine version: e922089b7d7502aff4249d5da3420f6fa55fc6ad
+ * Prisma Client JS version: 8.1.0-dev.2
+ * Query Engine version: 0edf323efd1d98336f3f0a68684b56f689b900d3
  */
 export const prismaVersion: PrismaVersion = {
-  client: '7.9.1',
-  engine: 'e922089b7d7502aff4249d5da3420f6fa55fc6ad',
+  client: '8.1.0-dev.2',
+  engine: '0edf323efd1d98336f3f0a68684b56f689b900d3',
 };
 
 /**
@@ -507,6 +507,10 @@ export type TypeMap<
           args: Prisma.BoatCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
+        createManyAndReturn: {
+          args: Prisma.BoatCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoatPayload>[];
+        };
         delete: {
           args: Prisma.BoatDeleteArgs<ExtArgs>;
           result: runtime.Types.Utils.PayloadToResult<Prisma.$BoatPayload>;
@@ -522,6 +526,10 @@ export type TypeMap<
         updateMany: {
           args: Prisma.BoatUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.BoatUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoatPayload>[];
         };
         upsert: {
           args: Prisma.BoatUpsertArgs<ExtArgs>;
@@ -575,6 +583,10 @@ export type TypeMap<
           args: Prisma.BoatTypeCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
+        createManyAndReturn: {
+          args: Prisma.BoatTypeCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoatTypePayload>[];
+        };
         delete: {
           args: Prisma.BoatTypeDeleteArgs<ExtArgs>;
           result: runtime.Types.Utils.PayloadToResult<Prisma.$BoatTypePayload>;
@@ -590,6 +602,10 @@ export type TypeMap<
         updateMany: {
           args: Prisma.BoatTypeUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.BoatTypeUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoatTypePayload>[];
         };
         upsert: {
           args: Prisma.BoatTypeUpsertArgs<ExtArgs>;
@@ -643,6 +659,10 @@ export type TypeMap<
           args: Prisma.BoatDepartureCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
+        createManyAndReturn: {
+          args: Prisma.BoatDepartureCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoatDeparturePayload>[];
+        };
         delete: {
           args: Prisma.BoatDepartureDeleteArgs<ExtArgs>;
           result: runtime.Types.Utils.PayloadToResult<Prisma.$BoatDeparturePayload>;
@@ -658,6 +678,10 @@ export type TypeMap<
         updateMany: {
           args: Prisma.BoatDepartureUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.BoatDepartureUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoatDeparturePayload>[];
         };
         upsert: {
           args: Prisma.BoatDepartureUpsertArgs<ExtArgs>;
@@ -711,6 +735,10 @@ export type TypeMap<
           args: Prisma.CradleCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
+        createManyAndReturn: {
+          args: Prisma.CradleCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradlePayload>[];
+        };
         delete: {
           args: Prisma.CradleDeleteArgs<ExtArgs>;
           result: runtime.Types.Utils.PayloadToResult<Prisma.$CradlePayload>;
@@ -726,6 +754,10 @@ export type TypeMap<
         updateMany: {
           args: Prisma.CradleUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.CradleUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CradlePayload>[];
         };
         upsert: {
           args: Prisma.CradleUpsertArgs<ExtArgs>;
@@ -779,6 +811,10 @@ export type TypeMap<
           args: Prisma.ContractCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
+        createManyAndReturn: {
+          args: Prisma.ContractCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPayload>[];
+        };
         delete: {
           args: Prisma.ContractDeleteArgs<ExtArgs>;
           result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPayload>;
@@ -794,6 +830,10 @@ export type TypeMap<
         updateMany: {
           args: Prisma.ContractUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.ContractUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPayload>[];
         };
         upsert: {
           args: Prisma.ContractUpsertArgs<ExtArgs>;
@@ -847,6 +887,10 @@ export type TypeMap<
           args: Prisma.UserCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
+        createManyAndReturn: {
+          args: Prisma.UserCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>[];
+        };
         delete: {
           args: Prisma.UserDeleteArgs<ExtArgs>;
           result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>;
@@ -862,6 +906,10 @@ export type TypeMap<
         updateMany: {
           args: Prisma.UserUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.UserUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>[];
         };
         upsert: {
           args: Prisma.UserUpsertArgs<ExtArgs>;
@@ -915,6 +963,10 @@ export type TypeMap<
           args: Prisma.EmployeeCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
+        createManyAndReturn: {
+          args: Prisma.EmployeeCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>[];
+        };
         delete: {
           args: Prisma.EmployeeDeleteArgs<ExtArgs>;
           result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>;
@@ -930,6 +982,10 @@ export type TypeMap<
         updateMany: {
           args: Prisma.EmployeeUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.EmployeeUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>[];
         };
         upsert: {
           args: Prisma.EmployeeUpsertArgs<ExtArgs>;
@@ -983,6 +1039,10 @@ export type TypeMap<
           args: Prisma.MemberCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
+        createManyAndReturn: {
+          args: Prisma.MemberCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MemberPayload>[];
+        };
         delete: {
           args: Prisma.MemberDeleteArgs<ExtArgs>;
           result: runtime.Types.Utils.PayloadToResult<Prisma.$MemberPayload>;
@@ -998,6 +1058,10 @@ export type TypeMap<
         updateMany: {
           args: Prisma.MemberUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.MemberUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MemberPayload>[];
         };
         upsert: {
           args: Prisma.MemberUpsertArgs<ExtArgs>;
@@ -1051,6 +1115,10 @@ export type TypeMap<
           args: Prisma.PasswordResetTokenCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
+        createManyAndReturn: {
+          args: Prisma.PasswordResetTokenCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>[];
+        };
         delete: {
           args: Prisma.PasswordResetTokenDeleteArgs<ExtArgs>;
           result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>;
@@ -1066,6 +1134,10 @@ export type TypeMap<
         updateMany: {
           args: Prisma.PasswordResetTokenUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.PasswordResetTokenUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>[];
         };
         upsert: {
           args: Prisma.PasswordResetTokenUpsertArgs<ExtArgs>;
@@ -1119,6 +1191,10 @@ export type TypeMap<
           args: Prisma.ServiceRequestCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
+        createManyAndReturn: {
+          args: Prisma.ServiceRequestCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequestPayload>[];
+        };
         delete: {
           args: Prisma.ServiceRequestDeleteArgs<ExtArgs>;
           result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequestPayload>;
@@ -1134,6 +1210,10 @@ export type TypeMap<
         updateMany: {
           args: Prisma.ServiceRequestUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.ServiceRequestUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequestPayload>[];
         };
         upsert: {
           args: Prisma.ServiceRequestUpsertArgs<ExtArgs>;
@@ -1187,6 +1267,10 @@ export type TypeMap<
           args: Prisma.ServiceTypeCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
+        createManyAndReturn: {
+          args: Prisma.ServiceTypeCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceTypePayload>[];
+        };
         delete: {
           args: Prisma.ServiceTypeDeleteArgs<ExtArgs>;
           result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceTypePayload>;
@@ -1202,6 +1286,10 @@ export type TypeMap<
         updateMany: {
           args: Prisma.ServiceTypeUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.ServiceTypeUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceTypePayload>[];
         };
         upsert: {
           args: Prisma.ServiceTypeUpsertArgs<ExtArgs>;
@@ -1284,6 +1372,7 @@ export type BoatTypeScalarFieldEnum =
   (typeof BoatTypeScalarFieldEnum)[keyof typeof BoatTypeScalarFieldEnum];
 
 export const BoatDepartureScalarFieldEnum = {
+  boatDepartureId: 'boatDepartureId',
   exitedAt: 'exitedAt',
   boatId: 'boatId',
   estimatedReturnDatetime: 'estimatedReturnDatetime',
@@ -1369,6 +1458,9 @@ export const ServiceRequestScalarFieldEnum = {
   observations: 'observations',
   internalComment: 'internalComment',
   createdAt: 'createdAt',
+  scheduledDate: 'scheduledDate',
+  scheduledTime: 'scheduledTime',
+  sector: 'sector',
   serviceTypeId: 'serviceTypeId',
   requestedByUserId: 'requestedByUserId',
   assignedEmployeeId: 'assignedEmployeeId',
@@ -1395,21 +1487,12 @@ export const SortOrder = {
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
 
-export const BoatOrderByRelevanceFieldEnum = {
-  publicId: 'publicId',
-  name: 'name',
-  description: 'description',
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive',
 } as const;
 
-export type BoatOrderByRelevanceFieldEnum =
-  (typeof BoatOrderByRelevanceFieldEnum)[keyof typeof BoatOrderByRelevanceFieldEnum];
-
-export const BoatTypeOrderByRelevanceFieldEnum = {
-  name: 'name',
-} as const;
-
-export type BoatTypeOrderByRelevanceFieldEnum =
-  (typeof BoatTypeOrderByRelevanceFieldEnum)[keyof typeof BoatTypeOrderByRelevanceFieldEnum];
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
 
 export const NullsOrder = {
   first: 'first',
@@ -1417,67 +1500,6 @@ export const NullsOrder = {
 } as const;
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
-
-export const CradleOrderByRelevanceFieldEnum = {
-  state: 'state',
-  cradleCode: 'cradleCode',
-} as const;
-
-export type CradleOrderByRelevanceFieldEnum =
-  (typeof CradleOrderByRelevanceFieldEnum)[keyof typeof CradleOrderByRelevanceFieldEnum];
-
-export const UserOrderByRelevanceFieldEnum = {
-  publicId: 'publicId',
-  email: 'email',
-  password: 'password',
-  phoneNumber: 'phoneNumber',
-  documentType: 'documentType',
-  documentNumber: 'documentNumber',
-} as const;
-
-export type UserOrderByRelevanceFieldEnum =
-  (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum];
-
-export const EmployeeOrderByRelevanceFieldEnum = {
-  firstName: 'firstName',
-  lastName: 'lastName',
-  employeeNumber: 'employeeNumber',
-} as const;
-
-export type EmployeeOrderByRelevanceFieldEnum =
-  (typeof EmployeeOrderByRelevanceFieldEnum)[keyof typeof EmployeeOrderByRelevanceFieldEnum];
-
-export const MemberOrderByRelevanceFieldEnum = {
-  firstName: 'firstName',
-  lastName: 'lastName',
-  businessName: 'businessName',
-} as const;
-
-export type MemberOrderByRelevanceFieldEnum =
-  (typeof MemberOrderByRelevanceFieldEnum)[keyof typeof MemberOrderByRelevanceFieldEnum];
-
-export const PasswordResetTokenOrderByRelevanceFieldEnum = {
-  tokenHash: 'tokenHash',
-} as const;
-
-export type PasswordResetTokenOrderByRelevanceFieldEnum =
-  (typeof PasswordResetTokenOrderByRelevanceFieldEnum)[keyof typeof PasswordResetTokenOrderByRelevanceFieldEnum];
-
-export const ServiceRequestOrderByRelevanceFieldEnum = {
-  observations: 'observations',
-  internalComment: 'internalComment',
-} as const;
-
-export type ServiceRequestOrderByRelevanceFieldEnum =
-  (typeof ServiceRequestOrderByRelevanceFieldEnum)[keyof typeof ServiceRequestOrderByRelevanceFieldEnum];
-
-export const ServiceTypeOrderByRelevanceFieldEnum = {
-  name: 'name',
-  description: 'description',
-} as const;
-
-export type ServiceTypeOrderByRelevanceFieldEnum =
-  (typeof ServiceTypeOrderByRelevanceFieldEnum)[keyof typeof ServiceTypeOrderByRelevanceFieldEnum];
 
 /**
  * Field references
@@ -1492,11 +1514,27 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<
 >;
 
 /**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'Int[]'
+>;
+
+/**
  * Reference to a field of type 'String'
  */
 export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<
   $PrismaModel,
   'String'
+>;
+
+/**
+ * Reference to a field of type 'String[]'
+ */
+export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'String[]'
 >;
 
 /**
@@ -1508,11 +1546,25 @@ export type EnumOperationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
 >;
 
 /**
+ * Reference to a field of type 'OperationType[]'
+ */
+export type ListEnumOperationTypeFieldRefInput<$PrismaModel> =
+  FieldRefInputType<$PrismaModel, 'OperationType[]'>;
+
+/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<
   $PrismaModel,
   'DateTime'
+>;
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'DateTime[]'
 >;
 
 /**
@@ -1532,6 +1584,14 @@ export type EnumEmployeeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
 >;
 
 /**
+ * Reference to a field of type 'EmployeeType[]'
+ */
+export type ListEnumEmployeeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'EmployeeType[]'
+>;
+
+/**
  * Reference to a field of type 'ServiceStatus'
  */
 export type EnumServiceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
@@ -1540,11 +1600,25 @@ export type EnumServiceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
 >;
 
 /**
+ * Reference to a field of type 'ServiceStatus[]'
+ */
+export type ListEnumServiceStatusFieldRefInput<$PrismaModel> =
+  FieldRefInputType<$PrismaModel, 'ServiceStatus[]'>;
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<
   $PrismaModel,
   'Float'
+>;
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'Float[]'
 >;
 
 /**

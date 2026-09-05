@@ -212,7 +212,6 @@ export type CradleOrderByWithRelationInput = {
   state?: Prisma.SortOrder;
   cradleCode?: Prisma.SortOrder;
   boatHasBoatSlips?: Prisma.ContractOrderByRelationAggregateInput;
-  _relevance?: Prisma.CradleOrderByRelevanceInput;
 };
 
 export type CradleWhereUniqueInput = Prisma.AtLeast<
@@ -293,14 +292,6 @@ export type CradleUncheckedUpdateManyInput = {
   cradleId?: Prisma.IntFieldUpdateOperationsInput | number;
   state?: Prisma.StringFieldUpdateOperationsInput | string;
   cradleCode?: Prisma.StringFieldUpdateOperationsInput | string;
-};
-
-export type CradleOrderByRelevanceInput = {
-  fields:
-    | Prisma.CradleOrderByRelevanceFieldEnum
-    | Prisma.CradleOrderByRelevanceFieldEnum[];
-  sort: Prisma.SortOrder;
-  search: string;
 };
 
 export type CradleCountOrderByAggregateInput = {
@@ -462,6 +453,30 @@ export type CradleSelect<
   ExtArgs['result']['cradle']
 >;
 
+export type CradleSelectCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    cradleId?: boolean;
+    state?: boolean;
+    cradleCode?: boolean;
+  },
+  ExtArgs['result']['cradle']
+>;
+
+export type CradleSelectUpdateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    cradleId?: boolean;
+    state?: boolean;
+    cradleCode?: boolean;
+  },
+  ExtArgs['result']['cradle']
+>;
+
 export type CradleSelectScalar = {
   cradleId?: boolean;
   state?: boolean;
@@ -482,6 +497,14 @@ export type CradleInclude<
   boatHasBoatSlips?: boolean | Prisma.Cradle$boatHasBoatSlipsArgs<ExtArgs>;
   _count?: boolean | Prisma.CradleCountOutputTypeDefaultArgs<ExtArgs>;
 };
+export type CradleIncludeCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {};
+export type CradleIncludeUpdateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {};
 
 export type $CradlePayload<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
@@ -698,6 +721,39 @@ export interface CradleDelegate<
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
 
   /**
+   * Create many Cradles and returns the data saved in the database.
+   * @param {CradleCreateManyAndReturnArgs} args - Arguments to create many Cradles.
+   * @example
+   * // Create many Cradles
+   * const cradle = await prisma.cradle.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Create many Cradles and only return the `cradleId`
+   * const cradleWithCradleIdOnly = await prisma.cradle.createManyAndReturn({
+   *   select: { cradleId: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  createManyAndReturn<T extends CradleCreateManyAndReturnArgs>(
+    args?: Prisma.SelectSubset<T, CradleCreateManyAndReturnArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$CradlePayload<ExtArgs>,
+      T,
+      'createManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
+
+  /**
    * Delete a Cradle.
    * @param {CradleDeleteArgs} args - Arguments to delete one Cradle.
    * @example
@@ -788,6 +844,45 @@ export interface CradleDelegate<
   updateMany<T extends CradleUpdateManyArgs>(
     args: Prisma.SelectSubset<T, CradleUpdateManyArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
+
+  /**
+   * Update zero or more Cradles and returns the data updated in the database.
+   * @param {CradleUpdateManyAndReturnArgs} args - Arguments to update many Cradles.
+   * @example
+   * // Update many Cradles
+   * const cradle = await prisma.cradle.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Update zero or more Cradles and only return the `cradleId`
+   * const cradleWithCradleIdOnly = await prisma.cradle.updateManyAndReturn({
+   *   select: { cradleId: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  updateManyAndReturn<T extends CradleUpdateManyAndReturnArgs>(
+    args: Prisma.SelectSubset<T, CradleUpdateManyAndReturnArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$CradlePayload<ExtArgs>,
+      T,
+      'updateManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
 
   /**
    * Create or update one Cradle.
@@ -1294,6 +1389,28 @@ export type CradleCreateManyArgs<
 };
 
 /**
+ * Cradle createManyAndReturn
+ */
+export type CradleCreateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Cradle
+   */
+  select?: Prisma.CradleSelectCreateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Cradle
+   */
+  omit?: Prisma.CradleOmit<ExtArgs> | null;
+  /**
+   * The data used to create many Cradles.
+   */
+  data: Prisma.CradleCreateManyInput | Prisma.CradleCreateManyInput[];
+  skipDuplicates?: boolean;
+};
+
+/**
  * Cradle update
  */
 export type CradleUpdateArgs<
@@ -1329,6 +1446,38 @@ export type CradleUpdateManyArgs<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
+  /**
+   * The data used to update Cradles.
+   */
+  data: Prisma.XOR<
+    Prisma.CradleUpdateManyMutationInput,
+    Prisma.CradleUncheckedUpdateManyInput
+  >;
+  /**
+   * Filter which Cradles to update
+   */
+  where?: Prisma.CradleWhereInput;
+  /**
+   * Limit how many Cradles to update.
+   */
+  limit?: number;
+};
+
+/**
+ * Cradle updateManyAndReturn
+ */
+export type CradleUpdateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Cradle
+   */
+  select?: Prisma.CradleSelectUpdateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Cradle
+   */
+  omit?: Prisma.CradleOmit<ExtArgs> | null;
   /**
    * The data used to update Cradles.
    */

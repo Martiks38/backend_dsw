@@ -49,6 +49,9 @@ export type ServiceRequestMinAggregateOutputType = {
   observations: string | null;
   internalComment: string | null;
   createdAt: Date | null;
+  scheduledDate: Date | null;
+  scheduledTime: string | null;
+  sector: string | null;
   serviceTypeId: number | null;
   requestedByUserId: number | null;
   assignedEmployeeId: number | null;
@@ -62,6 +65,9 @@ export type ServiceRequestMaxAggregateOutputType = {
   observations: string | null;
   internalComment: string | null;
   createdAt: Date | null;
+  scheduledDate: Date | null;
+  scheduledTime: string | null;
+  sector: string | null;
   serviceTypeId: number | null;
   requestedByUserId: number | null;
   assignedEmployeeId: number | null;
@@ -75,6 +81,9 @@ export type ServiceRequestCountAggregateOutputType = {
   observations: number;
   internalComment: number;
   createdAt: number;
+  scheduledDate: number;
+  scheduledTime: number;
+  sector: number;
   serviceTypeId: number;
   requestedByUserId: number;
   assignedEmployeeId: number;
@@ -105,6 +114,9 @@ export type ServiceRequestMinAggregateInputType = {
   observations?: true;
   internalComment?: true;
   createdAt?: true;
+  scheduledDate?: true;
+  scheduledTime?: true;
+  sector?: true;
   serviceTypeId?: true;
   requestedByUserId?: true;
   assignedEmployeeId?: true;
@@ -118,6 +130,9 @@ export type ServiceRequestMaxAggregateInputType = {
   observations?: true;
   internalComment?: true;
   createdAt?: true;
+  scheduledDate?: true;
+  scheduledTime?: true;
+  sector?: true;
   serviceTypeId?: true;
   requestedByUserId?: true;
   assignedEmployeeId?: true;
@@ -131,6 +146,9 @@ export type ServiceRequestCountAggregateInputType = {
   observations?: true;
   internalComment?: true;
   createdAt?: true;
+  scheduledDate?: true;
+  scheduledTime?: true;
+  sector?: true;
   serviceTypeId?: true;
   requestedByUserId?: true;
   assignedEmployeeId?: true;
@@ -242,9 +260,12 @@ export type ServiceRequestGroupByOutputType = {
   observations: string | null;
   internalComment: string | null;
   createdAt: Date;
+  scheduledDate: Date | null;
+  scheduledTime: string | null;
+  sector: string | null;
   serviceTypeId: number;
   requestedByUserId: number;
-  assignedEmployeeId: number;
+  assignedEmployeeId: number | null;
   boatId: number;
   _count: ServiceRequestCountAggregateOutputType | null;
   _avg: ServiceRequestAvgAggregateOutputType | null;
@@ -282,9 +303,19 @@ export type ServiceRequestWhereInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFilter<'ServiceRequest'> | Date | string;
+  scheduledDate?:
+    | Prisma.DateTimeNullableFilter<'ServiceRequest'>
+    | Date
+    | string
+    | null;
+  scheduledTime?: Prisma.StringNullableFilter<'ServiceRequest'> | string | null;
+  sector?: Prisma.StringNullableFilter<'ServiceRequest'> | string | null;
   serviceTypeId?: Prisma.IntFilter<'ServiceRequest'> | number;
   requestedByUserId?: Prisma.IntFilter<'ServiceRequest'> | number;
-  assignedEmployeeId?: Prisma.IntFilter<'ServiceRequest'> | number;
+  assignedEmployeeId?:
+    | Prisma.IntNullableFilter<'ServiceRequest'>
+    | number
+    | null;
   boatId?: Prisma.IntFilter<'ServiceRequest'> | number;
   boatDeparture?: Prisma.XOR<
     Prisma.BoatDepartureNullableScalarRelationFilter,
@@ -299,9 +330,9 @@ export type ServiceRequestWhereInput = {
     Prisma.MemberWhereInput
   >;
   employee?: Prisma.XOR<
-    Prisma.EmployeeScalarRelationFilter,
+    Prisma.EmployeeNullableScalarRelationFilter,
     Prisma.EmployeeWhereInput
-  >;
+  > | null;
   boat?: Prisma.XOR<Prisma.BoatScalarRelationFilter, Prisma.BoatWhereInput>;
 };
 
@@ -312,16 +343,18 @@ export type ServiceRequestOrderByWithRelationInput = {
   observations?: Prisma.SortOrderInput | Prisma.SortOrder;
   internalComment?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
+  scheduledDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+  scheduledTime?: Prisma.SortOrderInput | Prisma.SortOrder;
+  sector?: Prisma.SortOrderInput | Prisma.SortOrder;
   serviceTypeId?: Prisma.SortOrder;
   requestedByUserId?: Prisma.SortOrder;
-  assignedEmployeeId?: Prisma.SortOrder;
+  assignedEmployeeId?: Prisma.SortOrderInput | Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   boatDeparture?: Prisma.BoatDepartureOrderByWithRelationInput;
   serviceType?: Prisma.ServiceTypeOrderByWithRelationInput;
   member?: Prisma.MemberOrderByWithRelationInput;
   employee?: Prisma.EmployeeOrderByWithRelationInput;
   boat?: Prisma.BoatOrderByWithRelationInput;
-  _relevance?: Prisma.ServiceRequestOrderByRelevanceInput;
 };
 
 export type ServiceRequestWhereUniqueInput = Prisma.AtLeast<
@@ -343,9 +376,22 @@ export type ServiceRequestWhereUniqueInput = Prisma.AtLeast<
       | string
       | null;
     createdAt?: Prisma.DateTimeFilter<'ServiceRequest'> | Date | string;
+    scheduledDate?:
+      | Prisma.DateTimeNullableFilter<'ServiceRequest'>
+      | Date
+      | string
+      | null;
+    scheduledTime?:
+      | Prisma.StringNullableFilter<'ServiceRequest'>
+      | string
+      | null;
+    sector?: Prisma.StringNullableFilter<'ServiceRequest'> | string | null;
     serviceTypeId?: Prisma.IntFilter<'ServiceRequest'> | number;
     requestedByUserId?: Prisma.IntFilter<'ServiceRequest'> | number;
-    assignedEmployeeId?: Prisma.IntFilter<'ServiceRequest'> | number;
+    assignedEmployeeId?:
+      | Prisma.IntNullableFilter<'ServiceRequest'>
+      | number
+      | null;
     boatId?: Prisma.IntFilter<'ServiceRequest'> | number;
     boatDeparture?: Prisma.XOR<
       Prisma.BoatDepartureNullableScalarRelationFilter,
@@ -360,9 +406,9 @@ export type ServiceRequestWhereUniqueInput = Prisma.AtLeast<
       Prisma.MemberWhereInput
     >;
     employee?: Prisma.XOR<
-      Prisma.EmployeeScalarRelationFilter,
+      Prisma.EmployeeNullableScalarRelationFilter,
       Prisma.EmployeeWhereInput
-    >;
+    > | null;
     boat?: Prisma.XOR<Prisma.BoatScalarRelationFilter, Prisma.BoatWhereInput>;
   },
   'serviceRequestId'
@@ -375,9 +421,12 @@ export type ServiceRequestOrderByWithAggregationInput = {
   observations?: Prisma.SortOrderInput | Prisma.SortOrder;
   internalComment?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
+  scheduledDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+  scheduledTime?: Prisma.SortOrderInput | Prisma.SortOrder;
+  sector?: Prisma.SortOrderInput | Prisma.SortOrder;
   serviceTypeId?: Prisma.SortOrder;
   requestedByUserId?: Prisma.SortOrder;
-  assignedEmployeeId?: Prisma.SortOrder;
+  assignedEmployeeId?: Prisma.SortOrderInput | Prisma.SortOrder;
   boatId?: Prisma.SortOrder;
   _count?: Prisma.ServiceRequestCountOrderByAggregateInput;
   _avg?: Prisma.ServiceRequestAvgOrderByAggregateInput;
@@ -414,11 +463,25 @@ export type ServiceRequestScalarWhereWithAggregatesInput = {
     | Prisma.DateTimeWithAggregatesFilter<'ServiceRequest'>
     | Date
     | string;
+  scheduledDate?:
+    | Prisma.DateTimeNullableWithAggregatesFilter<'ServiceRequest'>
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.StringNullableWithAggregatesFilter<'ServiceRequest'>
+    | string
+    | null;
+  sector?:
+    | Prisma.StringNullableWithAggregatesFilter<'ServiceRequest'>
+    | string
+    | null;
   serviceTypeId?: Prisma.IntWithAggregatesFilter<'ServiceRequest'> | number;
   requestedByUserId?: Prisma.IntWithAggregatesFilter<'ServiceRequest'> | number;
   assignedEmployeeId?:
-    | Prisma.IntWithAggregatesFilter<'ServiceRequest'>
-    | number;
+    | Prisma.IntNullableWithAggregatesFilter<'ServiceRequest'>
+    | number
+    | null;
   boatId?: Prisma.IntWithAggregatesFilter<'ServiceRequest'> | number;
 };
 
@@ -428,10 +491,13 @@ export type ServiceRequestCreateInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   boatDeparture?: Prisma.BoatDepartureCreateNestedOneWithoutServiceRequestInput;
   serviceType: Prisma.ServiceTypeCreateNestedOneWithoutServiceRequestsInput;
   member: Prisma.MemberCreateNestedOneWithoutServiceRequestsInput;
-  employee: Prisma.EmployeeCreateNestedOneWithoutServiceRequestsInput;
+  employee?: Prisma.EmployeeCreateNestedOneWithoutServiceRequestsInput;
   boat: Prisma.BoatCreateNestedOneWithoutServiceRequestsInput;
 };
 
@@ -442,9 +508,12 @@ export type ServiceRequestUncheckedCreateInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   serviceTypeId: number;
   requestedByUserId: number;
-  assignedEmployeeId: number;
+  assignedEmployeeId?: number | null;
   boatId: number;
   boatDeparture?: Prisma.BoatDepartureUncheckedCreateNestedOneWithoutServiceRequestInput;
 };
@@ -463,10 +532,20 @@ export type ServiceRequestUpdateInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   boatDeparture?: Prisma.BoatDepartureUpdateOneWithoutServiceRequestNestedInput;
   serviceType?: Prisma.ServiceTypeUpdateOneRequiredWithoutServiceRequestsNestedInput;
   member?: Prisma.MemberUpdateOneRequiredWithoutServiceRequestsNestedInput;
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutServiceRequestsNestedInput;
+  employee?: Prisma.EmployeeUpdateOneWithoutServiceRequestsNestedInput;
   boat?: Prisma.BoatUpdateOneRequiredWithoutServiceRequestsNestedInput;
 };
 
@@ -485,9 +564,22 @@ export type ServiceRequestUncheckedUpdateInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   serviceTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   requestedByUserId?: Prisma.IntFieldUpdateOperationsInput | number;
-  assignedEmployeeId?: Prisma.IntFieldUpdateOperationsInput | number;
+  assignedEmployeeId?:
+    | Prisma.NullableIntFieldUpdateOperationsInput
+    | number
+    | null;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   boatDeparture?: Prisma.BoatDepartureUncheckedUpdateOneWithoutServiceRequestNestedInput;
 };
@@ -499,9 +591,12 @@ export type ServiceRequestCreateManyInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   serviceTypeId: number;
   requestedByUserId: number;
-  assignedEmployeeId: number;
+  assignedEmployeeId?: number | null;
   boatId: number;
 };
 
@@ -519,6 +614,16 @@ export type ServiceRequestUpdateManyMutationInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
 };
 
 export type ServiceRequestUncheckedUpdateManyInput = {
@@ -536,9 +641,22 @@ export type ServiceRequestUncheckedUpdateManyInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   serviceTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   requestedByUserId?: Prisma.IntFieldUpdateOperationsInput | number;
-  assignedEmployeeId?: Prisma.IntFieldUpdateOperationsInput | number;
+  assignedEmployeeId?:
+    | Prisma.NullableIntFieldUpdateOperationsInput
+    | number
+    | null;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 
@@ -557,14 +675,6 @@ export type ServiceRequestScalarRelationFilter = {
   isNot?: Prisma.ServiceRequestWhereInput;
 };
 
-export type ServiceRequestOrderByRelevanceInput = {
-  fields:
-    | Prisma.ServiceRequestOrderByRelevanceFieldEnum
-    | Prisma.ServiceRequestOrderByRelevanceFieldEnum[];
-  sort: Prisma.SortOrder;
-  search: string;
-};
-
 export type ServiceRequestCountOrderByAggregateInput = {
   serviceRequestId?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
@@ -572,6 +682,9 @@ export type ServiceRequestCountOrderByAggregateInput = {
   observations?: Prisma.SortOrder;
   internalComment?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
+  scheduledDate?: Prisma.SortOrder;
+  scheduledTime?: Prisma.SortOrder;
+  sector?: Prisma.SortOrder;
   serviceTypeId?: Prisma.SortOrder;
   requestedByUserId?: Prisma.SortOrder;
   assignedEmployeeId?: Prisma.SortOrder;
@@ -593,6 +706,9 @@ export type ServiceRequestMaxOrderByAggregateInput = {
   observations?: Prisma.SortOrder;
   internalComment?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
+  scheduledDate?: Prisma.SortOrder;
+  scheduledTime?: Prisma.SortOrder;
+  sector?: Prisma.SortOrder;
   serviceTypeId?: Prisma.SortOrder;
   requestedByUserId?: Prisma.SortOrder;
   assignedEmployeeId?: Prisma.SortOrder;
@@ -606,6 +722,9 @@ export type ServiceRequestMinOrderByAggregateInput = {
   observations?: Prisma.SortOrder;
   internalComment?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
+  scheduledDate?: Prisma.SortOrder;
+  scheduledTime?: Prisma.SortOrder;
+  sector?: Prisma.SortOrder;
   serviceTypeId?: Prisma.SortOrder;
   requestedByUserId?: Prisma.SortOrder;
   assignedEmployeeId?: Prisma.SortOrder;
@@ -980,6 +1099,14 @@ export type EnumServiceStatusFieldUpdateOperationsInput = {
   set?: $Enums.ServiceStatus;
 };
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null;
+  increment?: number;
+  decrement?: number;
+  multiply?: number;
+  divide?: number;
+};
+
 export type ServiceRequestCreateNestedManyWithoutServiceTypeInput = {
   create?:
     | Prisma.XOR<
@@ -1096,10 +1223,13 @@ export type ServiceRequestCreateWithoutBoatInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   boatDeparture?: Prisma.BoatDepartureCreateNestedOneWithoutServiceRequestInput;
   serviceType: Prisma.ServiceTypeCreateNestedOneWithoutServiceRequestsInput;
   member: Prisma.MemberCreateNestedOneWithoutServiceRequestsInput;
-  employee: Prisma.EmployeeCreateNestedOneWithoutServiceRequestsInput;
+  employee?: Prisma.EmployeeCreateNestedOneWithoutServiceRequestsInput;
 };
 
 export type ServiceRequestUncheckedCreateWithoutBoatInput = {
@@ -1109,9 +1239,12 @@ export type ServiceRequestUncheckedCreateWithoutBoatInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   serviceTypeId: number;
   requestedByUserId: number;
-  assignedEmployeeId: number;
+  assignedEmployeeId?: number | null;
   boatDeparture?: Prisma.BoatDepartureUncheckedCreateNestedOneWithoutServiceRequestInput;
 };
 
@@ -1177,9 +1310,19 @@ export type ServiceRequestScalarWhereInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFilter<'ServiceRequest'> | Date | string;
+  scheduledDate?:
+    | Prisma.DateTimeNullableFilter<'ServiceRequest'>
+    | Date
+    | string
+    | null;
+  scheduledTime?: Prisma.StringNullableFilter<'ServiceRequest'> | string | null;
+  sector?: Prisma.StringNullableFilter<'ServiceRequest'> | string | null;
   serviceTypeId?: Prisma.IntFilter<'ServiceRequest'> | number;
   requestedByUserId?: Prisma.IntFilter<'ServiceRequest'> | number;
-  assignedEmployeeId?: Prisma.IntFilter<'ServiceRequest'> | number;
+  assignedEmployeeId?:
+    | Prisma.IntNullableFilter<'ServiceRequest'>
+    | number
+    | null;
   boatId?: Prisma.IntFilter<'ServiceRequest'> | number;
 };
 
@@ -1189,9 +1332,12 @@ export type ServiceRequestCreateWithoutBoatDepartureInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   serviceType: Prisma.ServiceTypeCreateNestedOneWithoutServiceRequestsInput;
   member: Prisma.MemberCreateNestedOneWithoutServiceRequestsInput;
-  employee: Prisma.EmployeeCreateNestedOneWithoutServiceRequestsInput;
+  employee?: Prisma.EmployeeCreateNestedOneWithoutServiceRequestsInput;
   boat: Prisma.BoatCreateNestedOneWithoutServiceRequestsInput;
 };
 
@@ -1202,9 +1348,12 @@ export type ServiceRequestUncheckedCreateWithoutBoatDepartureInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   serviceTypeId: number;
   requestedByUserId: number;
-  assignedEmployeeId: number;
+  assignedEmployeeId?: number | null;
   boatId: number;
 };
 
@@ -1250,9 +1399,19 @@ export type ServiceRequestUpdateWithoutBoatDepartureInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   serviceType?: Prisma.ServiceTypeUpdateOneRequiredWithoutServiceRequestsNestedInput;
   member?: Prisma.MemberUpdateOneRequiredWithoutServiceRequestsNestedInput;
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutServiceRequestsNestedInput;
+  employee?: Prisma.EmployeeUpdateOneWithoutServiceRequestsNestedInput;
   boat?: Prisma.BoatUpdateOneRequiredWithoutServiceRequestsNestedInput;
 };
 
@@ -1271,9 +1430,22 @@ export type ServiceRequestUncheckedUpdateWithoutBoatDepartureInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   serviceTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   requestedByUserId?: Prisma.IntFieldUpdateOperationsInput | number;
-  assignedEmployeeId?: Prisma.IntFieldUpdateOperationsInput | number;
+  assignedEmployeeId?:
+    | Prisma.NullableIntFieldUpdateOperationsInput
+    | number
+    | null;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 
@@ -1283,6 +1455,9 @@ export type ServiceRequestCreateWithoutEmployeeInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   boatDeparture?: Prisma.BoatDepartureCreateNestedOneWithoutServiceRequestInput;
   serviceType: Prisma.ServiceTypeCreateNestedOneWithoutServiceRequestsInput;
   member: Prisma.MemberCreateNestedOneWithoutServiceRequestsInput;
@@ -1296,6 +1471,9 @@ export type ServiceRequestUncheckedCreateWithoutEmployeeInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   serviceTypeId: number;
   requestedByUserId: number;
   boatId: number;
@@ -1351,9 +1529,12 @@ export type ServiceRequestCreateWithoutMemberInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   boatDeparture?: Prisma.BoatDepartureCreateNestedOneWithoutServiceRequestInput;
   serviceType: Prisma.ServiceTypeCreateNestedOneWithoutServiceRequestsInput;
-  employee: Prisma.EmployeeCreateNestedOneWithoutServiceRequestsInput;
+  employee?: Prisma.EmployeeCreateNestedOneWithoutServiceRequestsInput;
   boat: Prisma.BoatCreateNestedOneWithoutServiceRequestsInput;
 };
 
@@ -1364,8 +1545,11 @@ export type ServiceRequestUncheckedCreateWithoutMemberInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   serviceTypeId: number;
-  assignedEmployeeId: number;
+  assignedEmployeeId?: number | null;
   boatId: number;
   boatDeparture?: Prisma.BoatDepartureUncheckedCreateNestedOneWithoutServiceRequestInput;
 };
@@ -1419,9 +1603,12 @@ export type ServiceRequestCreateWithoutServiceTypeInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   boatDeparture?: Prisma.BoatDepartureCreateNestedOneWithoutServiceRequestInput;
   member: Prisma.MemberCreateNestedOneWithoutServiceRequestsInput;
-  employee: Prisma.EmployeeCreateNestedOneWithoutServiceRequestsInput;
+  employee?: Prisma.EmployeeCreateNestedOneWithoutServiceRequestsInput;
   boat: Prisma.BoatCreateNestedOneWithoutServiceRequestsInput;
 };
 
@@ -1432,8 +1619,11 @@ export type ServiceRequestUncheckedCreateWithoutServiceTypeInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   requestedByUserId: number;
-  assignedEmployeeId: number;
+  assignedEmployeeId?: number | null;
   boatId: number;
   boatDeparture?: Prisma.BoatDepartureUncheckedCreateNestedOneWithoutServiceRequestInput;
 };
@@ -1488,9 +1678,12 @@ export type ServiceRequestCreateManyBoatInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   serviceTypeId: number;
   requestedByUserId: number;
-  assignedEmployeeId: number;
+  assignedEmployeeId?: number | null;
 };
 
 export type ServiceRequestUpdateWithoutBoatInput = {
@@ -1507,10 +1700,20 @@ export type ServiceRequestUpdateWithoutBoatInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   boatDeparture?: Prisma.BoatDepartureUpdateOneWithoutServiceRequestNestedInput;
   serviceType?: Prisma.ServiceTypeUpdateOneRequiredWithoutServiceRequestsNestedInput;
   member?: Prisma.MemberUpdateOneRequiredWithoutServiceRequestsNestedInput;
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutServiceRequestsNestedInput;
+  employee?: Prisma.EmployeeUpdateOneWithoutServiceRequestsNestedInput;
 };
 
 export type ServiceRequestUncheckedUpdateWithoutBoatInput = {
@@ -1528,9 +1731,22 @@ export type ServiceRequestUncheckedUpdateWithoutBoatInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   serviceTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   requestedByUserId?: Prisma.IntFieldUpdateOperationsInput | number;
-  assignedEmployeeId?: Prisma.IntFieldUpdateOperationsInput | number;
+  assignedEmployeeId?:
+    | Prisma.NullableIntFieldUpdateOperationsInput
+    | number
+    | null;
   boatDeparture?: Prisma.BoatDepartureUncheckedUpdateOneWithoutServiceRequestNestedInput;
 };
 
@@ -1549,9 +1765,22 @@ export type ServiceRequestUncheckedUpdateManyWithoutBoatInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   serviceTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   requestedByUserId?: Prisma.IntFieldUpdateOperationsInput | number;
-  assignedEmployeeId?: Prisma.IntFieldUpdateOperationsInput | number;
+  assignedEmployeeId?:
+    | Prisma.NullableIntFieldUpdateOperationsInput
+    | number
+    | null;
 };
 
 export type ServiceRequestCreateManyEmployeeInput = {
@@ -1561,6 +1790,9 @@ export type ServiceRequestCreateManyEmployeeInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   serviceTypeId: number;
   requestedByUserId: number;
   boatId: number;
@@ -1580,6 +1812,16 @@ export type ServiceRequestUpdateWithoutEmployeeInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   boatDeparture?: Prisma.BoatDepartureUpdateOneWithoutServiceRequestNestedInput;
   serviceType?: Prisma.ServiceTypeUpdateOneRequiredWithoutServiceRequestsNestedInput;
   member?: Prisma.MemberUpdateOneRequiredWithoutServiceRequestsNestedInput;
@@ -1601,6 +1843,16 @@ export type ServiceRequestUncheckedUpdateWithoutEmployeeInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   serviceTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   requestedByUserId?: Prisma.IntFieldUpdateOperationsInput | number;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -1622,6 +1874,16 @@ export type ServiceRequestUncheckedUpdateManyWithoutEmployeeInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   serviceTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
   requestedByUserId?: Prisma.IntFieldUpdateOperationsInput | number;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -1634,8 +1896,11 @@ export type ServiceRequestCreateManyMemberInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   serviceTypeId: number;
-  assignedEmployeeId: number;
+  assignedEmployeeId?: number | null;
   boatId: number;
 };
 
@@ -1653,9 +1918,19 @@ export type ServiceRequestUpdateWithoutMemberInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   boatDeparture?: Prisma.BoatDepartureUpdateOneWithoutServiceRequestNestedInput;
   serviceType?: Prisma.ServiceTypeUpdateOneRequiredWithoutServiceRequestsNestedInput;
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutServiceRequestsNestedInput;
+  employee?: Prisma.EmployeeUpdateOneWithoutServiceRequestsNestedInput;
   boat?: Prisma.BoatUpdateOneRequiredWithoutServiceRequestsNestedInput;
 };
 
@@ -1674,8 +1949,21 @@ export type ServiceRequestUncheckedUpdateWithoutMemberInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   serviceTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
-  assignedEmployeeId?: Prisma.IntFieldUpdateOperationsInput | number;
+  assignedEmployeeId?:
+    | Prisma.NullableIntFieldUpdateOperationsInput
+    | number
+    | null;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   boatDeparture?: Prisma.BoatDepartureUncheckedUpdateOneWithoutServiceRequestNestedInput;
 };
@@ -1695,8 +1983,21 @@ export type ServiceRequestUncheckedUpdateManyWithoutMemberInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   serviceTypeId?: Prisma.IntFieldUpdateOperationsInput | number;
-  assignedEmployeeId?: Prisma.IntFieldUpdateOperationsInput | number;
+  assignedEmployeeId?:
+    | Prisma.NullableIntFieldUpdateOperationsInput
+    | number
+    | null;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 
@@ -1707,8 +2008,11 @@ export type ServiceRequestCreateManyServiceTypeInput = {
   observations?: string | null;
   internalComment?: string | null;
   createdAt?: Date | string;
+  scheduledDate?: Date | string | null;
+  scheduledTime?: string | null;
+  sector?: string | null;
   requestedByUserId: number;
-  assignedEmployeeId: number;
+  assignedEmployeeId?: number | null;
   boatId: number;
 };
 
@@ -1726,9 +2030,19 @@ export type ServiceRequestUpdateWithoutServiceTypeInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   boatDeparture?: Prisma.BoatDepartureUpdateOneWithoutServiceRequestNestedInput;
   member?: Prisma.MemberUpdateOneRequiredWithoutServiceRequestsNestedInput;
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutServiceRequestsNestedInput;
+  employee?: Prisma.EmployeeUpdateOneWithoutServiceRequestsNestedInput;
   boat?: Prisma.BoatUpdateOneRequiredWithoutServiceRequestsNestedInput;
 };
 
@@ -1747,8 +2061,21 @@ export type ServiceRequestUncheckedUpdateWithoutServiceTypeInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   requestedByUserId?: Prisma.IntFieldUpdateOperationsInput | number;
-  assignedEmployeeId?: Prisma.IntFieldUpdateOperationsInput | number;
+  assignedEmployeeId?:
+    | Prisma.NullableIntFieldUpdateOperationsInput
+    | number
+    | null;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   boatDeparture?: Prisma.BoatDepartureUncheckedUpdateOneWithoutServiceRequestNestedInput;
 };
@@ -1768,8 +2095,21 @@ export type ServiceRequestUncheckedUpdateManyWithoutServiceTypeInput = {
     | string
     | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  scheduledDate?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  scheduledTime?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   requestedByUserId?: Prisma.IntFieldUpdateOperationsInput | number;
-  assignedEmployeeId?: Prisma.IntFieldUpdateOperationsInput | number;
+  assignedEmployeeId?:
+    | Prisma.NullableIntFieldUpdateOperationsInput
+    | number
+    | null;
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 
@@ -1784,6 +2124,9 @@ export type ServiceRequestSelect<
     observations?: boolean;
     internalComment?: boolean;
     createdAt?: boolean;
+    scheduledDate?: boolean;
+    scheduledTime?: boolean;
+    sector?: boolean;
     serviceTypeId?: boolean;
     requestedByUserId?: boolean;
     assignedEmployeeId?: boolean;
@@ -1791,7 +2134,59 @@ export type ServiceRequestSelect<
     boatDeparture?: boolean | Prisma.ServiceRequest$boatDepartureArgs<ExtArgs>;
     serviceType?: boolean | Prisma.ServiceTypeDefaultArgs<ExtArgs>;
     member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>;
-    employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>;
+    employee?: boolean | Prisma.ServiceRequest$employeeArgs<ExtArgs>;
+    boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
+  },
+  ExtArgs['result']['serviceRequest']
+>;
+
+export type ServiceRequestSelectCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    serviceRequestId?: boolean;
+    status?: boolean;
+    requestedDatetime?: boolean;
+    observations?: boolean;
+    internalComment?: boolean;
+    createdAt?: boolean;
+    scheduledDate?: boolean;
+    scheduledTime?: boolean;
+    sector?: boolean;
+    serviceTypeId?: boolean;
+    requestedByUserId?: boolean;
+    assignedEmployeeId?: boolean;
+    boatId?: boolean;
+    serviceType?: boolean | Prisma.ServiceTypeDefaultArgs<ExtArgs>;
+    member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>;
+    employee?: boolean | Prisma.ServiceRequest$employeeArgs<ExtArgs>;
+    boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
+  },
+  ExtArgs['result']['serviceRequest']
+>;
+
+export type ServiceRequestSelectUpdateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    serviceRequestId?: boolean;
+    status?: boolean;
+    requestedDatetime?: boolean;
+    observations?: boolean;
+    internalComment?: boolean;
+    createdAt?: boolean;
+    scheduledDate?: boolean;
+    scheduledTime?: boolean;
+    sector?: boolean;
+    serviceTypeId?: boolean;
+    requestedByUserId?: boolean;
+    assignedEmployeeId?: boolean;
+    boatId?: boolean;
+    serviceType?: boolean | Prisma.ServiceTypeDefaultArgs<ExtArgs>;
+    member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>;
+    employee?: boolean | Prisma.ServiceRequest$employeeArgs<ExtArgs>;
     boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['serviceRequest']
@@ -1804,6 +2199,9 @@ export type ServiceRequestSelectScalar = {
   observations?: boolean;
   internalComment?: boolean;
   createdAt?: boolean;
+  scheduledDate?: boolean;
+  scheduledTime?: boolean;
+  sector?: boolean;
   serviceTypeId?: boolean;
   requestedByUserId?: boolean;
   assignedEmployeeId?: boolean;
@@ -1820,6 +2218,9 @@ export type ServiceRequestOmit<
   | 'observations'
   | 'internalComment'
   | 'createdAt'
+  | 'scheduledDate'
+  | 'scheduledTime'
+  | 'sector'
   | 'serviceTypeId'
   | 'requestedByUserId'
   | 'assignedEmployeeId'
@@ -1833,7 +2234,25 @@ export type ServiceRequestInclude<
   boatDeparture?: boolean | Prisma.ServiceRequest$boatDepartureArgs<ExtArgs>;
   serviceType?: boolean | Prisma.ServiceTypeDefaultArgs<ExtArgs>;
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>;
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>;
+  employee?: boolean | Prisma.ServiceRequest$employeeArgs<ExtArgs>;
+  boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
+};
+export type ServiceRequestIncludeCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  serviceType?: boolean | Prisma.ServiceTypeDefaultArgs<ExtArgs>;
+  member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>;
+  employee?: boolean | Prisma.ServiceRequest$employeeArgs<ExtArgs>;
+  boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
+};
+export type ServiceRequestIncludeUpdateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  serviceType?: boolean | Prisma.ServiceTypeDefaultArgs<ExtArgs>;
+  member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>;
+  employee?: boolean | Prisma.ServiceRequest$employeeArgs<ExtArgs>;
   boat?: boolean | Prisma.BoatDefaultArgs<ExtArgs>;
 };
 
@@ -1846,7 +2265,7 @@ export type $ServiceRequestPayload<
     boatDeparture: Prisma.$BoatDeparturePayload<ExtArgs> | null;
     serviceType: Prisma.$ServiceTypePayload<ExtArgs>;
     member: Prisma.$MemberPayload<ExtArgs>;
-    employee: Prisma.$EmployeePayload<ExtArgs>;
+    employee: Prisma.$EmployeePayload<ExtArgs> | null;
     boat: Prisma.$BoatPayload<ExtArgs>;
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
@@ -1857,9 +2276,12 @@ export type $ServiceRequestPayload<
       observations: string | null;
       internalComment: string | null;
       createdAt: Date;
+      scheduledDate: Date | null;
+      scheduledTime: string | null;
+      sector: string | null;
       serviceTypeId: number;
       requestedByUserId: number;
-      assignedEmployeeId: number;
+      assignedEmployeeId: number | null;
       boatId: number;
     },
     ExtArgs['result']['serviceRequest']
@@ -2066,6 +2488,42 @@ export interface ServiceRequestDelegate<
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
 
   /**
+   * Create many ServiceRequests and returns the data saved in the database.
+   * @param {ServiceRequestCreateManyAndReturnArgs} args - Arguments to create many ServiceRequests.
+   * @example
+   * // Create many ServiceRequests
+   * const serviceRequest = await prisma.serviceRequest.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Create many ServiceRequests and only return the `serviceRequestId`
+   * const serviceRequestWithServiceRequestIdOnly = await prisma.serviceRequest.createManyAndReturn({
+   *   select: { serviceRequestId: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  createManyAndReturn<T extends ServiceRequestCreateManyAndReturnArgs>(
+    args?: Prisma.SelectSubset<
+      T,
+      ServiceRequestCreateManyAndReturnArgs<ExtArgs>
+    >,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$ServiceRequestPayload<ExtArgs>,
+      T,
+      'createManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
+
+  /**
    * Delete a ServiceRequest.
    * @param {ServiceRequestDeleteArgs} args - Arguments to delete one ServiceRequest.
    * @example
@@ -2156,6 +2614,48 @@ export interface ServiceRequestDelegate<
   updateMany<T extends ServiceRequestUpdateManyArgs>(
     args: Prisma.SelectSubset<T, ServiceRequestUpdateManyArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
+
+  /**
+   * Update zero or more ServiceRequests and returns the data updated in the database.
+   * @param {ServiceRequestUpdateManyAndReturnArgs} args - Arguments to update many ServiceRequests.
+   * @example
+   * // Update many ServiceRequests
+   * const serviceRequest = await prisma.serviceRequest.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Update zero or more ServiceRequests and only return the `serviceRequestId`
+   * const serviceRequestWithServiceRequestIdOnly = await prisma.serviceRequest.updateManyAndReturn({
+   *   select: { serviceRequestId: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  updateManyAndReturn<T extends ServiceRequestUpdateManyAndReturnArgs>(
+    args: Prisma.SelectSubset<
+      T,
+      ServiceRequestUpdateManyAndReturnArgs<ExtArgs>
+    >,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$ServiceRequestPayload<ExtArgs>,
+      T,
+      'updateManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
 
   /**
    * Create or update one ServiceRequest.
@@ -2388,17 +2888,16 @@ export interface Prisma__ServiceRequestClient<
     ExtArgs,
     GlobalOmitOptions
   >;
-  employee<T extends Prisma.EmployeeDefaultArgs<ExtArgs> = {}>(
-    args?: Prisma.Subset<T, Prisma.EmployeeDefaultArgs<ExtArgs>>,
+  employee<T extends Prisma.ServiceRequest$employeeArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.ServiceRequest$employeeArgs<ExtArgs>>,
   ): Prisma.Prisma__EmployeeClient<
-    | runtime.Types.Result.GetResult<
-        Prisma.$EmployeePayload<ExtArgs>,
-        T,
-        'findUniqueOrThrow',
-        GlobalOmitOptions
-      >
-    | Null,
-    Null,
+    runtime.Types.Result.GetResult<
+      Prisma.$EmployeePayload<ExtArgs>,
+      T,
+      'findUniqueOrThrow',
+      GlobalOmitOptions
+    > | null,
+    null,
     ExtArgs,
     GlobalOmitOptions
   >;
@@ -2464,6 +2963,9 @@ export interface ServiceRequestFieldRefs {
   readonly observations: Prisma.FieldRef<'ServiceRequest', 'String'>;
   readonly internalComment: Prisma.FieldRef<'ServiceRequest', 'String'>;
   readonly createdAt: Prisma.FieldRef<'ServiceRequest', 'DateTime'>;
+  readonly scheduledDate: Prisma.FieldRef<'ServiceRequest', 'DateTime'>;
+  readonly scheduledTime: Prisma.FieldRef<'ServiceRequest', 'String'>;
+  readonly sector: Prisma.FieldRef<'ServiceRequest', 'String'>;
   readonly serviceTypeId: Prisma.FieldRef<'ServiceRequest', 'Int'>;
   readonly requestedByUserId: Prisma.FieldRef<'ServiceRequest', 'Int'>;
   readonly assignedEmployeeId: Prisma.FieldRef<'ServiceRequest', 'Int'>;
@@ -2743,6 +3245,34 @@ export type ServiceRequestCreateManyArgs<
 };
 
 /**
+ * ServiceRequest createManyAndReturn
+ */
+export type ServiceRequestCreateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the ServiceRequest
+   */
+  select?: Prisma.ServiceRequestSelectCreateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the ServiceRequest
+   */
+  omit?: Prisma.ServiceRequestOmit<ExtArgs> | null;
+  /**
+   * The data used to create many ServiceRequests.
+   */
+  data:
+    | Prisma.ServiceRequestCreateManyInput
+    | Prisma.ServiceRequestCreateManyInput[];
+  skipDuplicates?: boolean;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ServiceRequestIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+
+/**
  * ServiceRequest update
  */
 export type ServiceRequestUpdateArgs<
@@ -2796,6 +3326,42 @@ export type ServiceRequestUpdateManyArgs<
    * Limit how many ServiceRequests to update.
    */
   limit?: number;
+};
+
+/**
+ * ServiceRequest updateManyAndReturn
+ */
+export type ServiceRequestUpdateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the ServiceRequest
+   */
+  select?: Prisma.ServiceRequestSelectUpdateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the ServiceRequest
+   */
+  omit?: Prisma.ServiceRequestOmit<ExtArgs> | null;
+  /**
+   * The data used to update ServiceRequests.
+   */
+  data: Prisma.XOR<
+    Prisma.ServiceRequestUpdateManyMutationInput,
+    Prisma.ServiceRequestUncheckedUpdateManyInput
+  >;
+  /**
+   * Filter which ServiceRequests to update
+   */
+  where?: Prisma.ServiceRequestWhereInput;
+  /**
+   * Limit how many ServiceRequests to update.
+   */
+  limit?: number;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ServiceRequestIncludeUpdateManyAndReturn<ExtArgs> | null;
 };
 
 /**
@@ -2899,6 +3465,28 @@ export type ServiceRequest$boatDepartureArgs<
    */
   include?: Prisma.BoatDepartureInclude<ExtArgs> | null;
   where?: Prisma.BoatDepartureWhereInput;
+};
+
+/**
+ * ServiceRequest.employee
+ */
+export type ServiceRequest$employeeArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Employee
+   */
+  select?: Prisma.EmployeeSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Employee
+   */
+  omit?: Prisma.EmployeeOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmployeeInclude<ExtArgs> | null;
+  where?: Prisma.EmployeeWhereInput;
 };
 
 /**

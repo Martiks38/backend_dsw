@@ -234,7 +234,6 @@ export type EmployeeOrderByWithRelationInput = {
   employeeType?: Prisma.SortOrder;
   user?: Prisma.UserOrderByWithRelationInput;
   serviceRequests?: Prisma.ServiceRequestOrderByRelationAggregateInput;
-  _relevance?: Prisma.EmployeeOrderByRelevanceInput;
 };
 
 export type EmployeeWhereUniqueInput = Prisma.AtLeast<
@@ -357,14 +356,6 @@ export type EmployeeNullableScalarRelationFilter = {
   isNot?: Prisma.EmployeeWhereInput | null;
 };
 
-export type EmployeeOrderByRelevanceInput = {
-  fields:
-    | Prisma.EmployeeOrderByRelevanceFieldEnum
-    | Prisma.EmployeeOrderByRelevanceFieldEnum[];
-  sort: Prisma.SortOrder;
-  search: string;
-};
-
 export type EmployeeCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder;
   firstName?: Prisma.SortOrder;
@@ -395,11 +386,6 @@ export type EmployeeMinOrderByAggregateInput = {
 
 export type EmployeeSumOrderByAggregateInput = {
   userId?: Prisma.SortOrder;
-};
-
-export type EmployeeScalarRelationFilter = {
-  is?: Prisma.EmployeeWhereInput;
-  isNot?: Prisma.EmployeeWhereInput;
 };
 
 export type EmployeeCreateNestedOneWithoutUserInput = {
@@ -471,13 +457,15 @@ export type EmployeeCreateNestedOneWithoutServiceRequestsInput = {
   connect?: Prisma.EmployeeWhereUniqueInput;
 };
 
-export type EmployeeUpdateOneRequiredWithoutServiceRequestsNestedInput = {
+export type EmployeeUpdateOneWithoutServiceRequestsNestedInput = {
   create?: Prisma.XOR<
     Prisma.EmployeeCreateWithoutServiceRequestsInput,
     Prisma.EmployeeUncheckedCreateWithoutServiceRequestsInput
   >;
   connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutServiceRequestsInput;
   upsert?: Prisma.EmployeeUpsertWithoutServiceRequestsInput;
+  disconnect?: Prisma.EmployeeWhereInput | boolean;
+  delete?: Prisma.EmployeeWhereInput | boolean;
   connect?: Prisma.EmployeeWhereUniqueInput;
   update?: Prisma.XOR<
     Prisma.XOR<
@@ -671,6 +659,36 @@ export type EmployeeSelect<
   ExtArgs['result']['employee']
 >;
 
+export type EmployeeSelectCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    userId?: boolean;
+    firstName?: boolean;
+    lastName?: boolean;
+    employeeNumber?: boolean;
+    employeeType?: boolean;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+  },
+  ExtArgs['result']['employee']
+>;
+
+export type EmployeeSelectUpdateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = runtime.Types.Extensions.GetSelect<
+  {
+    userId?: boolean;
+    firstName?: boolean;
+    lastName?: boolean;
+    employeeNumber?: boolean;
+    employeeType?: boolean;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+  },
+  ExtArgs['result']['employee']
+>;
+
 export type EmployeeSelectScalar = {
   userId?: boolean;
   firstName?: boolean;
@@ -693,6 +711,18 @@ export type EmployeeInclude<
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
   serviceRequests?: boolean | Prisma.Employee$serviceRequestsArgs<ExtArgs>;
   _count?: boolean | Prisma.EmployeeCountOutputTypeDefaultArgs<ExtArgs>;
+};
+export type EmployeeIncludeCreateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+};
+export type EmployeeIncludeUpdateManyAndReturn<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 
 export type $EmployeePayload<
@@ -913,6 +943,39 @@ export interface EmployeeDelegate<
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
 
   /**
+   * Create many Employees and returns the data saved in the database.
+   * @param {EmployeeCreateManyAndReturnArgs} args - Arguments to create many Employees.
+   * @example
+   * // Create many Employees
+   * const employee = await prisma.employee.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Create many Employees and only return the `userId`
+   * const employeeWithUserIdOnly = await prisma.employee.createManyAndReturn({
+   *   select: { userId: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  createManyAndReturn<T extends EmployeeCreateManyAndReturnArgs>(
+    args?: Prisma.SelectSubset<T, EmployeeCreateManyAndReturnArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$EmployeePayload<ExtArgs>,
+      T,
+      'createManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
+
+  /**
    * Delete a Employee.
    * @param {EmployeeDeleteArgs} args - Arguments to delete one Employee.
    * @example
@@ -1003,6 +1066,45 @@ export interface EmployeeDelegate<
   updateMany<T extends EmployeeUpdateManyArgs>(
     args: Prisma.SelectSubset<T, EmployeeUpdateManyArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<Prisma.BatchPayload>;
+
+  /**
+   * Update zero or more Employees and returns the data updated in the database.
+   * @param {EmployeeUpdateManyAndReturnArgs} args - Arguments to update many Employees.
+   * @example
+   * // Update many Employees
+   * const employee = await prisma.employee.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   *
+   * // Update zero or more Employees and only return the `userId`
+   * const employeeWithUserIdOnly = await prisma.employee.updateManyAndReturn({
+   *   select: { userId: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   *
+   */
+  updateManyAndReturn<T extends EmployeeUpdateManyAndReturnArgs>(
+    args: Prisma.SelectSubset<T, EmployeeUpdateManyAndReturnArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    runtime.Types.Result.GetResult<
+      Prisma.$EmployeePayload<ExtArgs>,
+      T,
+      'updateManyAndReturn',
+      GlobalOmitOptions
+    >
+  >;
 
   /**
    * Create or update one Employee.
@@ -1528,6 +1630,32 @@ export type EmployeeCreateManyArgs<
 };
 
 /**
+ * Employee createManyAndReturn
+ */
+export type EmployeeCreateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Employee
+   */
+  select?: Prisma.EmployeeSelectCreateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Employee
+   */
+  omit?: Prisma.EmployeeOmit<ExtArgs> | null;
+  /**
+   * The data used to create many Employees.
+   */
+  data: Prisma.EmployeeCreateManyInput | Prisma.EmployeeCreateManyInput[];
+  skipDuplicates?: boolean;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmployeeIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+
+/**
  * Employee update
  */
 export type EmployeeUpdateArgs<
@@ -1581,6 +1709,42 @@ export type EmployeeUpdateManyArgs<
    * Limit how many Employees to update.
    */
   limit?: number;
+};
+
+/**
+ * Employee updateManyAndReturn
+ */
+export type EmployeeUpdateManyAndReturnArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Employee
+   */
+  select?: Prisma.EmployeeSelectUpdateManyAndReturn<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Employee
+   */
+  omit?: Prisma.EmployeeOmit<ExtArgs> | null;
+  /**
+   * The data used to update Employees.
+   */
+  data: Prisma.XOR<
+    Prisma.EmployeeUpdateManyMutationInput,
+    Prisma.EmployeeUncheckedUpdateManyInput
+  >;
+  /**
+   * Filter which Employees to update
+   */
+  where?: Prisma.EmployeeWhereInput;
+  /**
+   * Limit how many Employees to update.
+   */
+  limit?: number;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmployeeIncludeUpdateManyAndReturn<ExtArgs> | null;
 };
 
 /**
