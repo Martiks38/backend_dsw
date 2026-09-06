@@ -53,18 +53,6 @@ export class AuthController {
     return req.user;
   }
 
-  @Post('logout')
-  @HttpCode(HttpStatus.OK)
-  logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie('access_token', {
-      httpOnly: true,
-      secure: true,
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      path: '/',
-    });
-    return { message: 'Sesión cerrada' };
-  }
-
   @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
   forgotPassword(@Body() dto: ForgotPasswordDto) {

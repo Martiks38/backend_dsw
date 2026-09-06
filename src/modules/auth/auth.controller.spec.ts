@@ -118,15 +118,4 @@ describe('AuthController', () => {
       expect(mockResponse.cookie).not.toHaveBeenCalled();
     });
   });
-
-  describe('logout', () => {
-    it('debería limpiar la cookie access_token y devolver el mensaje', () => {
-      const result = controller.logout(mockResponse as unknown as Response);
-
-      expect(mockResponse.clearCookie).toHaveBeenCalledWith('access_token', {
-        path: '/',
-      });
-      expect(result).toEqual({ message: 'Sesión cerrada' });
-    });
-  });
 });
