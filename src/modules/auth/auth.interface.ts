@@ -1,10 +1,11 @@
 import type { Request } from 'express';
 
-import { Role } from './role.enum';
+import { AppRole } from './role.enum';
 
 export interface AuthenticatedUser {
-  sub: string;
-  role: Role;
+  id: string;
+  internalId: number;
+  role: AppRole;
   name: string;
 }
 
