@@ -29,9 +29,11 @@ enum OperationType {
 model Boat {
   boatId Int @id @map("boat_id")
 
-  publicId    String @unique @map("public_id")
+  publicId    String   @unique @map("public_id")
   name        String
   description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 
   boatTypeId Int @map("boat_type_id")
   userId     Int @map("user_id")
@@ -101,14 +103,16 @@ model Contract {
 model User {
   userId Int @id @default(autoincrement()) @map("user_id")
 
-  publicId       String  @unique @map("public_id")
-  email          String  @unique
+  publicId       String   @unique @map("public_id")
+  email          String   @unique
   password       String
-  phoneNumber    String  @map("phone_number")
-  documentType   String  @map("document_type")
-  documentNumber String  @map("document_number")
-  isActive       Boolean @default(true) @map("is_active")
-  isEmployee     Boolean @default(false) @map("is_employee")
+  phoneNumber    String   @map("phone_number")
+  documentType   String   @map("document_type")
+  documentNumber String   @map("document_number")
+  isActive       Boolean  @default(true) @map("is_active")
+  isEmployee     Boolean  @default(false) @map("is_employee")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now())
 
   passwordResetTokens PasswordResetToken[]
 

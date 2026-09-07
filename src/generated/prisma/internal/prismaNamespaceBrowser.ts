@@ -88,6 +88,8 @@ export const BoatScalarFieldEnum = {
   publicId: 'publicId',
   name: 'name',
   description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   boatTypeId: 'boatTypeId',
   userId: 'userId',
 } as const;
@@ -146,6 +148,8 @@ export const UserScalarFieldEnum = {
   documentNumber: 'documentNumber',
   isActive: 'isActive',
   isEmployee: 'isEmployee',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
 } as const;
 
 export type UserScalarFieldEnum =

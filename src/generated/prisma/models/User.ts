@@ -44,6 +44,8 @@ export type UserMinAggregateOutputType = {
   documentNumber: string | null;
   isActive: boolean | null;
   isEmployee: boolean | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 };
 
 export type UserMaxAggregateOutputType = {
@@ -56,6 +58,8 @@ export type UserMaxAggregateOutputType = {
   documentNumber: string | null;
   isActive: boolean | null;
   isEmployee: boolean | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 };
 
 export type UserCountAggregateOutputType = {
@@ -68,6 +72,8 @@ export type UserCountAggregateOutputType = {
   documentNumber: number;
   isActive: number;
   isEmployee: number;
+  createdAt: number;
+  updatedAt: number;
   _all: number;
 };
 
@@ -89,6 +95,8 @@ export type UserMinAggregateInputType = {
   documentNumber?: true;
   isActive?: true;
   isEmployee?: true;
+  createdAt?: true;
+  updatedAt?: true;
 };
 
 export type UserMaxAggregateInputType = {
@@ -101,6 +109,8 @@ export type UserMaxAggregateInputType = {
   documentNumber?: true;
   isActive?: true;
   isEmployee?: true;
+  createdAt?: true;
+  updatedAt?: true;
 };
 
 export type UserCountAggregateInputType = {
@@ -113,6 +123,8 @@ export type UserCountAggregateInputType = {
   documentNumber?: true;
   isActive?: true;
   isEmployee?: true;
+  createdAt?: true;
+  updatedAt?: true;
   _all?: true;
 };
 
@@ -219,6 +231,8 @@ export type UserGroupByOutputType = {
   documentNumber: string;
   isActive: boolean;
   isEmployee: boolean;
+  createdAt: Date;
+  updatedAt: Date;
   _count: UserCountAggregateOutputType | null;
   _avg: UserAvgAggregateOutputType | null;
   _sum: UserSumAggregateOutputType | null;
@@ -252,6 +266,8 @@ export type UserWhereInput = {
   documentNumber?: Prisma.StringFilter<'User'> | string;
   isActive?: Prisma.BoolFilter<'User'> | boolean;
   isEmployee?: Prisma.BoolFilter<'User'> | boolean;
+  createdAt?: Prisma.DateTimeFilter<'User'> | Date | string;
+  updatedAt?: Prisma.DateTimeFilter<'User'> | Date | string;
   passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter;
   employee?: Prisma.XOR<
     Prisma.EmployeeNullableScalarRelationFilter,
@@ -273,6 +289,8 @@ export type UserOrderByWithRelationInput = {
   documentNumber?: Prisma.SortOrder;
   isActive?: Prisma.SortOrder;
   isEmployee?: Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
+  updatedAt?: Prisma.SortOrder;
   passwordResetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput;
   employee?: Prisma.EmployeeOrderByWithRelationInput;
   member?: Prisma.MemberOrderByWithRelationInput;
@@ -293,6 +311,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<
     documentNumber?: Prisma.StringFilter<'User'> | string;
     isActive?: Prisma.BoolFilter<'User'> | boolean;
     isEmployee?: Prisma.BoolFilter<'User'> | boolean;
+    createdAt?: Prisma.DateTimeFilter<'User'> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<'User'> | Date | string;
     passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter;
     employee?: Prisma.XOR<
       Prisma.EmployeeNullableScalarRelationFilter,
@@ -316,6 +336,8 @@ export type UserOrderByWithAggregationInput = {
   documentNumber?: Prisma.SortOrder;
   isActive?: Prisma.SortOrder;
   isEmployee?: Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
+  updatedAt?: Prisma.SortOrder;
   _count?: Prisma.UserCountOrderByAggregateInput;
   _avg?: Prisma.UserAvgOrderByAggregateInput;
   _max?: Prisma.UserMaxOrderByAggregateInput;
@@ -340,6 +362,8 @@ export type UserScalarWhereWithAggregatesInput = {
   documentNumber?: Prisma.StringWithAggregatesFilter<'User'> | string;
   isActive?: Prisma.BoolWithAggregatesFilter<'User'> | boolean;
   isEmployee?: Prisma.BoolWithAggregatesFilter<'User'> | boolean;
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<'User'> | Date | string;
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<'User'> | Date | string;
 };
 
 export type UserCreateInput = {
@@ -351,6 +375,8 @@ export type UserCreateInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput;
   employee?: Prisma.EmployeeCreateNestedOneWithoutUserInput;
   member?: Prisma.MemberCreateNestedOneWithoutUserInput;
@@ -366,6 +392,8 @@ export type UserUncheckedCreateInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput;
   employee?: Prisma.EmployeeUncheckedCreateNestedOneWithoutUserInput;
   member?: Prisma.MemberUncheckedCreateNestedOneWithoutUserInput;
@@ -380,6 +408,8 @@ export type UserUpdateInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput;
   employee?: Prisma.EmployeeUpdateOneWithoutUserNestedInput;
   member?: Prisma.MemberUpdateOneWithoutUserNestedInput;
@@ -395,6 +425,8 @@ export type UserUncheckedUpdateInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput;
   employee?: Prisma.EmployeeUncheckedUpdateOneWithoutUserNestedInput;
   member?: Prisma.MemberUncheckedUpdateOneWithoutUserNestedInput;
@@ -410,6 +442,8 @@ export type UserCreateManyInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
 };
 
 export type UserUpdateManyMutationInput = {
@@ -421,6 +455,8 @@ export type UserUpdateManyMutationInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 
 export type UserUncheckedUpdateManyInput = {
@@ -433,6 +469,8 @@ export type UserUncheckedUpdateManyInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 
 export type UserDocumentTypeDocumentNumberCompoundUniqueInput = {
@@ -450,6 +488,8 @@ export type UserCountOrderByAggregateInput = {
   documentNumber?: Prisma.SortOrder;
   isActive?: Prisma.SortOrder;
   isEmployee?: Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
+  updatedAt?: Prisma.SortOrder;
 };
 
 export type UserAvgOrderByAggregateInput = {
@@ -466,6 +506,8 @@ export type UserMaxOrderByAggregateInput = {
   documentNumber?: Prisma.SortOrder;
   isActive?: Prisma.SortOrder;
   isEmployee?: Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
+  updatedAt?: Prisma.SortOrder;
 };
 
 export type UserMinOrderByAggregateInput = {
@@ -478,6 +520,8 @@ export type UserMinOrderByAggregateInput = {
   documentNumber?: Prisma.SortOrder;
   isActive?: Prisma.SortOrder;
   isEmployee?: Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
+  updatedAt?: Prisma.SortOrder;
 };
 
 export type UserSumOrderByAggregateInput = {
@@ -580,6 +624,8 @@ export type UserCreateWithoutEmployeeInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput;
   member?: Prisma.MemberCreateNestedOneWithoutUserInput;
 };
@@ -594,6 +640,8 @@ export type UserUncheckedCreateWithoutEmployeeInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput;
   member?: Prisma.MemberUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -635,6 +683,8 @@ export type UserUpdateWithoutEmployeeInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput;
   member?: Prisma.MemberUpdateOneWithoutUserNestedInput;
 };
@@ -649,6 +699,8 @@ export type UserUncheckedUpdateWithoutEmployeeInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput;
   member?: Prisma.MemberUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -662,6 +714,8 @@ export type UserCreateWithoutMemberInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput;
   employee?: Prisma.EmployeeCreateNestedOneWithoutUserInput;
 };
@@ -676,6 +730,8 @@ export type UserUncheckedCreateWithoutMemberInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput;
   employee?: Prisma.EmployeeUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -717,6 +773,8 @@ export type UserUpdateWithoutMemberInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput;
   employee?: Prisma.EmployeeUpdateOneWithoutUserNestedInput;
 };
@@ -731,6 +789,8 @@ export type UserUncheckedUpdateWithoutMemberInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput;
   employee?: Prisma.EmployeeUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -744,6 +804,8 @@ export type UserCreateWithoutPasswordResetTokensInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   employee?: Prisma.EmployeeCreateNestedOneWithoutUserInput;
   member?: Prisma.MemberCreateNestedOneWithoutUserInput;
 };
@@ -758,6 +820,8 @@ export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
   documentNumber: string;
   isActive?: boolean;
   isEmployee?: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   employee?: Prisma.EmployeeUncheckedCreateNestedOneWithoutUserInput;
   member?: Prisma.MemberUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -799,6 +863,8 @@ export type UserUpdateWithoutPasswordResetTokensInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   employee?: Prisma.EmployeeUpdateOneWithoutUserNestedInput;
   member?: Prisma.MemberUpdateOneWithoutUserNestedInput;
 };
@@ -813,6 +879,8 @@ export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
   documentNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isEmployee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   employee?: Prisma.EmployeeUncheckedUpdateOneWithoutUserNestedInput;
   member?: Prisma.MemberUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -871,6 +939,8 @@ export type UserSelect<
     documentNumber?: boolean;
     isActive?: boolean;
     isEmployee?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
     passwordResetTokens?:
       | boolean
       | Prisma.User$passwordResetTokensArgs<ExtArgs>;
@@ -895,6 +965,8 @@ export type UserSelectCreateManyAndReturn<
     documentNumber?: boolean;
     isActive?: boolean;
     isEmployee?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
   },
   ExtArgs['result']['user']
 >;
@@ -913,6 +985,8 @@ export type UserSelectUpdateManyAndReturn<
     documentNumber?: boolean;
     isActive?: boolean;
     isEmployee?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
   },
   ExtArgs['result']['user']
 >;
@@ -927,6 +1001,8 @@ export type UserSelectScalar = {
   documentNumber?: boolean;
   isActive?: boolean;
   isEmployee?: boolean;
+  createdAt?: boolean;
+  updatedAt?: boolean;
 };
 
 export type UserOmit<
@@ -941,7 +1017,9 @@ export type UserOmit<
   | 'documentType'
   | 'documentNumber'
   | 'isActive'
-  | 'isEmployee',
+  | 'isEmployee'
+  | 'createdAt'
+  | 'updatedAt',
   ExtArgs['result']['user']
 >;
 export type UserInclude<
@@ -983,6 +1061,8 @@ export type $UserPayload<
       documentNumber: string;
       isActive: boolean;
       isEmployee: boolean;
+      createdAt: Date;
+      updatedAt: Date;
     },
     ExtArgs['result']['user']
   >;
@@ -1623,6 +1703,8 @@ export interface UserFieldRefs {
   readonly documentNumber: Prisma.FieldRef<'User', 'String'>;
   readonly isActive: Prisma.FieldRef<'User', 'Boolean'>;
   readonly isEmployee: Prisma.FieldRef<'User', 'Boolean'>;
+  readonly createdAt: Prisma.FieldRef<'User', 'DateTime'>;
+  readonly updatedAt: Prisma.FieldRef<'User', 'DateTime'>;
 }
 
 // Custom InputTypes

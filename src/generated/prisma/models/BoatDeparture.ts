@@ -583,10 +583,6 @@ export type BoatDepartureUncheckedUpdateManyWithoutBoatNestedInput = {
     | Prisma.BoatDepartureScalarWhereInput[];
 };
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string;
-};
-
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null;
 };
