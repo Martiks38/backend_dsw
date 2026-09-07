@@ -1,17 +1,17 @@
-import { Role } from '@/modules/auth/role.enum';
+import { AppRole } from '@/modules/auth/role.enum';
 
-const EMPLOYEE_TYPE_TO_ROLE: Record<string, Role> = {
-  admin: Role.ADMIN,
-  operator: Role.OPERATOR,
+const EMPLOYEE_TYPE_TO_ROLE: Record<string, AppRole> = {
+  admin: AppRole.ADMIN,
+  operator: AppRole.OPERATOR,
 };
 
 export function getUserRole(user: {
   publicId: string;
   isActive: boolean;
   employee: { employeeType: string } | null;
-}): Role {
+}): AppRole {
   if (!user.employee) {
-    return Role.MEMBER;
+    return AppRole.MEMBER;
   }
 
   const role = EMPLOYEE_TYPE_TO_ROLE[user.employee.employeeType.toLowerCase()];
