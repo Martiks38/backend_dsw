@@ -26,6 +26,14 @@ function daysFromNow(days: number): Date {
   return d;
 }
 
+function normalizeForEmail(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+}
+
 async function main() {
   console.log('🧹 Limpiando datos existentes...');
 
@@ -139,7 +147,7 @@ async function main() {
     const user = await prisma.user.create({
       data: {
         publicId: nanoid(),
-        email: `${e.firstName.toLowerCase()}.${e.lastName.toLowerCase()}@nautico.com.ar`,
+        email: `${normalizeForEmail(e.firstName)}.${normalizeForEmail(e.lastName)}@nautico.com.ar`,
         password: await hashPassword('Password123!'),
         phoneNumber: `341555${1000 + i}`,
         documentType: 'DNI',
@@ -188,7 +196,7 @@ async function main() {
         publicId: nanoid(),
         email: m.businessName
           ? 'contacto@nauticadellitoral.com.ar'
-          : `${m.firstName!.toLowerCase()}.${m.lastName!.toLowerCase()}@gmail.com`,
+          : `${normalizeForEmail(m.firstName!)}.${normalizeForEmail(m.lastName!)}@gmail.com`,
         password: await hashPassword('Password123!'),
         phoneNumber: `341666${2000 + i}`,
         documentType: m.businessName ? 'CUIT' : 'DNI',
