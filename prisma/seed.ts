@@ -134,6 +134,8 @@ async function main() {
 
   const employees = [];
   for (const [i, e] of employeeSeeds.entries()) {
+    const createdAt = daysFromNow(-200 + i * 15);
+
     const user = await prisma.user.create({
       data: {
         publicId: nanoid(),
@@ -143,6 +145,8 @@ async function main() {
         documentType: 'DNI',
         documentNumber: e.doc,
         isEmployee: true,
+        createdAt,
+        updatedAt: createdAt,
         employee: {
           create: {
             firstName: e.firstName,
@@ -174,8 +178,11 @@ async function main() {
     { firstName: 'Federico', lastName: 'Correa', doc: '32777888' },
   ];
 
+  const memberCreatedAtOffsets = [-150, -125, -100, -75, -50, -25, -10, -3];
+
   const members = [];
   for (const [i, m] of memberSeeds.entries()) {
+    const createdAt = daysFromNow(memberCreatedAtOffsets[i]);
     const user = await prisma.user.create({
       data: {
         publicId: nanoid(),
@@ -187,6 +194,8 @@ async function main() {
         documentType: m.businessName ? 'CUIT' : 'DNI',
         documentNumber: m.doc,
         isEmployee: false,
+        createdAt,
+        updatedAt: createdAt,
         member: {
           create: {
             firstName: m.firstName ?? undefined,
@@ -213,10 +222,13 @@ async function main() {
     'Horizonte Azul',
   ];
 
+  const boatCreatedAtOffsets = [-180, -155, -130, -105, -80, -55, -30, -5];
+
   const boats = [];
   for (const [i, name] of boatNames.entries()) {
     const owner = members[i % members.length];
     const boatType = boatTypesCycle[i % boatTypesCycle.length];
+    const createdAt = daysFromNow(boatCreatedAtOffsets[i]);
     const boat = await prisma.boat.create({
       data: {
         boatId: i + 1,
@@ -225,6 +237,8 @@ async function main() {
         description: `Embarcación tipo ${boatType.name.toLowerCase()} perteneciente a socio del club`,
         boatTypeId: boatType.boatTypeId,
         userId: owner.userId,
+        createdAt,
+        updatedAt: createdAt,
       },
     });
     boats.push(boat);
