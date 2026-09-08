@@ -42,6 +42,8 @@ export type BoatMinAggregateOutputType = {
   boatId: number | null;
   publicId: string | null;
   name: string | null;
+  model: string | null;
+  registrationNumber: string | null;
   description: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
@@ -53,6 +55,8 @@ export type BoatMaxAggregateOutputType = {
   boatId: number | null;
   publicId: string | null;
   name: string | null;
+  model: string | null;
+  registrationNumber: string | null;
   description: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
@@ -64,6 +68,8 @@ export type BoatCountAggregateOutputType = {
   boatId: number;
   publicId: number;
   name: number;
+  model: number;
+  registrationNumber: number;
   description: number;
   createdAt: number;
   updatedAt: number;
@@ -88,6 +94,8 @@ export type BoatMinAggregateInputType = {
   boatId?: true;
   publicId?: true;
   name?: true;
+  model?: true;
+  registrationNumber?: true;
   description?: true;
   createdAt?: true;
   updatedAt?: true;
@@ -99,6 +107,8 @@ export type BoatMaxAggregateInputType = {
   boatId?: true;
   publicId?: true;
   name?: true;
+  model?: true;
+  registrationNumber?: true;
   description?: true;
   createdAt?: true;
   updatedAt?: true;
@@ -110,6 +120,8 @@ export type BoatCountAggregateInputType = {
   boatId?: true;
   publicId?: true;
   name?: true;
+  model?: true;
+  registrationNumber?: true;
   description?: true;
   createdAt?: true;
   updatedAt?: true;
@@ -215,6 +227,8 @@ export type BoatGroupByOutputType = {
   boatId: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt: Date;
   updatedAt: Date;
@@ -247,6 +261,8 @@ export type BoatWhereInput = {
   boatId?: Prisma.IntFilter<'Boat'> | number;
   publicId?: Prisma.StringFilter<'Boat'> | string;
   name?: Prisma.StringFilter<'Boat'> | string;
+  model?: Prisma.StringFilter<'Boat'> | string;
+  registrationNumber?: Prisma.StringFilter<'Boat'> | string;
   description?: Prisma.StringFilter<'Boat'> | string;
   createdAt?: Prisma.DateTimeFilter<'Boat'> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<'Boat'> | Date | string;
@@ -269,6 +285,8 @@ export type BoatOrderByWithRelationInput = {
   boatId?: Prisma.SortOrder;
   publicId?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
+  model?: Prisma.SortOrder;
+  registrationNumber?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
@@ -289,6 +307,8 @@ export type BoatWhereUniqueInput = Prisma.AtLeast<
     OR?: Prisma.BoatWhereInput[];
     NOT?: Prisma.BoatWhereInput | Prisma.BoatWhereInput[];
     name?: Prisma.StringFilter<'Boat'> | string;
+    model?: Prisma.StringFilter<'Boat'> | string;
+    registrationNumber?: Prisma.StringFilter<'Boat'> | string;
     description?: Prisma.StringFilter<'Boat'> | string;
     createdAt?: Prisma.DateTimeFilter<'Boat'> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<'Boat'> | Date | string;
@@ -313,6 +333,8 @@ export type BoatOrderByWithAggregationInput = {
   boatId?: Prisma.SortOrder;
   publicId?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
+  model?: Prisma.SortOrder;
+  registrationNumber?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
@@ -336,6 +358,8 @@ export type BoatScalarWhereWithAggregatesInput = {
   boatId?: Prisma.IntWithAggregatesFilter<'Boat'> | number;
   publicId?: Prisma.StringWithAggregatesFilter<'Boat'> | string;
   name?: Prisma.StringWithAggregatesFilter<'Boat'> | string;
+  model?: Prisma.StringWithAggregatesFilter<'Boat'> | string;
+  registrationNumber?: Prisma.StringWithAggregatesFilter<'Boat'> | string;
   description?: Prisma.StringWithAggregatesFilter<'Boat'> | string;
   createdAt?: Prisma.DateTimeWithAggregatesFilter<'Boat'> | Date | string;
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<'Boat'> | Date | string;
@@ -344,9 +368,10 @@ export type BoatScalarWhereWithAggregatesInput = {
 };
 
 export type BoatCreateInput = {
-  boatId: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -358,9 +383,11 @@ export type BoatCreateInput = {
 };
 
 export type BoatUncheckedCreateInput = {
-  boatId: number;
+  boatId?: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -372,9 +399,10 @@ export type BoatUncheckedCreateInput = {
 };
 
 export type BoatUpdateInput = {
-  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -389,6 +417,8 @@ export type BoatUncheckedUpdateInput = {
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -400,9 +430,11 @@ export type BoatUncheckedUpdateInput = {
 };
 
 export type BoatCreateManyInput = {
-  boatId: number;
+  boatId?: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -411,9 +443,10 @@ export type BoatCreateManyInput = {
 };
 
 export type BoatUpdateManyMutationInput = {
-  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -423,6 +456,8 @@ export type BoatUncheckedUpdateManyInput = {
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -434,6 +469,8 @@ export type BoatCountOrderByAggregateInput = {
   boatId?: Prisma.SortOrder;
   publicId?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
+  model?: Prisma.SortOrder;
+  registrationNumber?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
@@ -451,6 +488,8 @@ export type BoatMaxOrderByAggregateInput = {
   boatId?: Prisma.SortOrder;
   publicId?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
+  model?: Prisma.SortOrder;
+  registrationNumber?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
@@ -462,6 +501,8 @@ export type BoatMinOrderByAggregateInput = {
   boatId?: Prisma.SortOrder;
   publicId?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
+  model?: Prisma.SortOrder;
+  registrationNumber?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
@@ -490,20 +531,20 @@ export type BoatScalarRelationFilter = {
   isNot?: Prisma.BoatWhereInput;
 };
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number;
-  increment?: number;
-  decrement?: number;
-  multiply?: number;
-  divide?: number;
-};
-
 export type StringFieldUpdateOperationsInput = {
   set?: string;
 };
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string;
+};
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number;
+  increment?: number;
+  decrement?: number;
+  multiply?: number;
+  divide?: number;
 };
 
 export type BoatCreateNestedManyWithoutBoatTypeInput = {
@@ -757,9 +798,10 @@ export type BoatUpdateOneRequiredWithoutServiceRequestsNestedInput = {
 };
 
 export type BoatCreateWithoutBoatTypeInput = {
-  boatId: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -770,9 +812,11 @@ export type BoatCreateWithoutBoatTypeInput = {
 };
 
 export type BoatUncheckedCreateWithoutBoatTypeInput = {
-  boatId: number;
+  boatId?: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -832,6 +876,8 @@ export type BoatScalarWhereInput = {
   boatId?: Prisma.IntFilter<'Boat'> | number;
   publicId?: Prisma.StringFilter<'Boat'> | string;
   name?: Prisma.StringFilter<'Boat'> | string;
+  model?: Prisma.StringFilter<'Boat'> | string;
+  registrationNumber?: Prisma.StringFilter<'Boat'> | string;
   description?: Prisma.StringFilter<'Boat'> | string;
   createdAt?: Prisma.DateTimeFilter<'Boat'> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<'Boat'> | Date | string;
@@ -840,9 +886,10 @@ export type BoatScalarWhereInput = {
 };
 
 export type BoatCreateWithoutDeparturesInput = {
-  boatId: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -853,9 +900,11 @@ export type BoatCreateWithoutDeparturesInput = {
 };
 
 export type BoatUncheckedCreateWithoutDeparturesInput = {
-  boatId: number;
+  boatId?: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -894,9 +943,10 @@ export type BoatUpdateToOneWithWhereWithoutDeparturesInput = {
 };
 
 export type BoatUpdateWithoutDeparturesInput = {
-  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -910,6 +960,8 @@ export type BoatUncheckedUpdateWithoutDeparturesInput = {
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -920,9 +972,10 @@ export type BoatUncheckedUpdateWithoutDeparturesInput = {
 };
 
 export type BoatCreateWithoutContractsInput = {
-  boatId: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -933,9 +986,11 @@ export type BoatCreateWithoutContractsInput = {
 };
 
 export type BoatUncheckedCreateWithoutContractsInput = {
-  boatId: number;
+  boatId?: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -974,9 +1029,10 @@ export type BoatUpdateToOneWithWhereWithoutContractsInput = {
 };
 
 export type BoatUpdateWithoutContractsInput = {
-  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -990,6 +1046,8 @@ export type BoatUncheckedUpdateWithoutContractsInput = {
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1000,9 +1058,10 @@ export type BoatUncheckedUpdateWithoutContractsInput = {
 };
 
 export type BoatCreateWithoutMemberInput = {
-  boatId: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -1013,9 +1072,11 @@ export type BoatCreateWithoutMemberInput = {
 };
 
 export type BoatUncheckedCreateWithoutMemberInput = {
-  boatId: number;
+  boatId?: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -1067,9 +1128,10 @@ export type BoatUpdateManyWithWhereWithoutMemberInput = {
 };
 
 export type BoatCreateWithoutServiceRequestsInput = {
-  boatId: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -1080,9 +1142,11 @@ export type BoatCreateWithoutServiceRequestsInput = {
 };
 
 export type BoatUncheckedCreateWithoutServiceRequestsInput = {
-  boatId: number;
+  boatId?: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -1121,9 +1185,10 @@ export type BoatUpdateToOneWithWhereWithoutServiceRequestsInput = {
 };
 
 export type BoatUpdateWithoutServiceRequestsInput = {
-  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1137,6 +1202,8 @@ export type BoatUncheckedUpdateWithoutServiceRequestsInput = {
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1147,9 +1214,11 @@ export type BoatUncheckedUpdateWithoutServiceRequestsInput = {
 };
 
 export type BoatCreateManyBoatTypeInput = {
-  boatId: number;
+  boatId?: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -1157,9 +1226,10 @@ export type BoatCreateManyBoatTypeInput = {
 };
 
 export type BoatUpdateWithoutBoatTypeInput = {
-  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1173,6 +1243,8 @@ export type BoatUncheckedUpdateWithoutBoatTypeInput = {
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1186,6 +1258,8 @@ export type BoatUncheckedUpdateManyWithoutBoatTypeInput = {
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1193,9 +1267,11 @@ export type BoatUncheckedUpdateManyWithoutBoatTypeInput = {
 };
 
 export type BoatCreateManyMemberInput = {
-  boatId: number;
+  boatId?: number;
   publicId: string;
   name: string;
+  model: string;
+  registrationNumber: string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -1203,9 +1279,10 @@ export type BoatCreateManyMemberInput = {
 };
 
 export type BoatUpdateWithoutMemberInput = {
-  boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1219,6 +1296,8 @@ export type BoatUncheckedUpdateWithoutMemberInput = {
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1232,6 +1311,8 @@ export type BoatUncheckedUpdateManyWithoutMemberInput = {
   boatId?: Prisma.IntFieldUpdateOperationsInput | number;
   publicId?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
+  model?: Prisma.StringFieldUpdateOperationsInput | string;
+  registrationNumber?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1308,6 +1389,8 @@ export type BoatSelect<
     boatId?: boolean;
     publicId?: boolean;
     name?: boolean;
+    model?: boolean;
+    registrationNumber?: boolean;
     description?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -1331,6 +1414,8 @@ export type BoatSelectCreateManyAndReturn<
     boatId?: boolean;
     publicId?: boolean;
     name?: boolean;
+    model?: boolean;
+    registrationNumber?: boolean;
     description?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -1350,6 +1435,8 @@ export type BoatSelectUpdateManyAndReturn<
     boatId?: boolean;
     publicId?: boolean;
     name?: boolean;
+    model?: boolean;
+    registrationNumber?: boolean;
     description?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -1365,6 +1452,8 @@ export type BoatSelectScalar = {
   boatId?: boolean;
   publicId?: boolean;
   name?: boolean;
+  model?: boolean;
+  registrationNumber?: boolean;
   description?: boolean;
   createdAt?: boolean;
   updatedAt?: boolean;
@@ -1379,6 +1468,8 @@ export type BoatOmit<
   | 'boatId'
   | 'publicId'
   | 'name'
+  | 'model'
+  | 'registrationNumber'
   | 'description'
   | 'createdAt'
   | 'updatedAt'
@@ -1429,6 +1520,8 @@ export type $BoatPayload<
       boatId: number;
       publicId: string;
       name: string;
+      model: string;
+      registrationNumber: string;
       description: string;
       createdAt: Date;
       updatedAt: Date;
@@ -2090,6 +2183,8 @@ export interface BoatFieldRefs {
   readonly boatId: Prisma.FieldRef<'Boat', 'Int'>;
   readonly publicId: Prisma.FieldRef<'Boat', 'String'>;
   readonly name: Prisma.FieldRef<'Boat', 'String'>;
+  readonly model: Prisma.FieldRef<'Boat', 'String'>;
+  readonly registrationNumber: Prisma.FieldRef<'Boat', 'String'>;
   readonly description: Prisma.FieldRef<'Boat', 'String'>;
   readonly createdAt: Prisma.FieldRef<'Boat', 'DateTime'>;
   readonly updatedAt: Prisma.FieldRef<'Boat', 'DateTime'>;

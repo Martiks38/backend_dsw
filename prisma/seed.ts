@@ -219,29 +219,42 @@ async function main() {
 
   console.log('🚤 Creando embarcaciones...');
   const boatTypesCycle = [velaType, motorType, kayakType];
-  const boatNames = [
-    'Viento Sur',
-    'Marea Alta',
-    'Estrella del Paraná',
-    'Rayo Verde',
-    'Costa Brava',
-    'Aguas Claras',
-    'Luna Llena',
-    'Horizonte Azul',
+  const boatDefs = [
+    { name: 'Viento Sur', model: 'Sundancer 240', registration: 'SR240-001' },
+    {
+      name: 'Marea Alta',
+      model: 'Activ 755 Sundeck',
+      registration: 'QS755-002',
+    },
+    {
+      name: 'Estrella del Paraná',
+      model: 'Bavaria Cruiser 34',
+      registration: 'BC34-003',
+    },
+    { name: 'Rayo Verde', model: 'Sea Fox 226', registration: 'SF226-004' },
+    {
+      name: 'Costa Brava',
+      model: 'Beneteau Oceanis 38',
+      registration: 'BO38-005',
+    },
+    { name: 'Aguas Claras', model: 'Perception Kayak', registration: 'PK-006' },
+    { name: 'Luna Llena', model: 'Sundancer 320', registration: 'SR320-007' },
+    { name: 'Horizonte Azul', model: 'Old Town Kayak', registration: 'OT-008' },
   ];
 
   const boatCreatedAtOffsets = [-180, -155, -130, -105, -80, -55, -30, -5];
 
   const boats = [];
-  for (const [i, name] of boatNames.entries()) {
+  for (const [i, def] of boatDefs.entries()) {
     const owner = members[i % members.length];
     const boatType = boatTypesCycle[i % boatTypesCycle.length];
     const createdAt = daysFromNow(boatCreatedAtOffsets[i]);
     const boat = await prisma.boat.create({
       data: {
-        boatId: i + 1,
         publicId: nanoid(),
-        name,
+        name: def.name,
+        model: def.model,
+        registrationNumber: def.registration,
         description: `Embarcación tipo ${boatType.name.toLowerCase()} perteneciente a socio del club`,
         boatTypeId: boatType.boatTypeId,
         userId: owner.userId,
@@ -317,8 +330,9 @@ async function main() {
   }
 
   console.log('📄 Creando contratos de guarda (cuna)...');
-  for (let i = 0; i < 6; i++) {
-    const boat = boats[i];
+  // Ahora TODAS las embarcaciones tienen contrato: no puede existir un
+  // bote sin contrato en la guardería (regla de negocio).
+  for (const [i, boat] of boats.entries()) {
     const cradle = cradles[i % cradles.length];
     const startDatetime = daysFromNow(-60 + i * 5);
     await prisma.contract.create({

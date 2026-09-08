@@ -27,13 +27,15 @@ enum OperationType {
 }
 
 model Boat {
-  boatId Int @id @map("boat_id")
+  boatId Int @id @default(autoincrement()) @map("boat_id")
 
-  publicId    String   @unique @map("public_id")
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  publicId           String   @unique @map("public_id")
+  name               String
+  model              String
+  registrationNumber String   @map("registration_number")
+  description        String
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @default(now()) @map("updated_at")
 
   boatTypeId Int @map("boat_type_id")
   userId     Int @map("user_id")
@@ -111,8 +113,8 @@ model User {
   documentNumber String   @map("document_number")
   isActive       Boolean  @default(true) @map("is_active")
   isEmployee     Boolean  @default(false) @map("is_employee")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now())
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @default(now()) @map("updated_at")
 
   passwordResetTokens PasswordResetToken[]
 
