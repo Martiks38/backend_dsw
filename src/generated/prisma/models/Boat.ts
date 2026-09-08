@@ -303,12 +303,12 @@ export type BoatWhereUniqueInput = Prisma.AtLeast<
   {
     boatId?: number;
     publicId?: string;
+    registrationNumber?: string;
     AND?: Prisma.BoatWhereInput | Prisma.BoatWhereInput[];
     OR?: Prisma.BoatWhereInput[];
     NOT?: Prisma.BoatWhereInput | Prisma.BoatWhereInput[];
     name?: Prisma.StringFilter<'Boat'> | string;
     model?: Prisma.StringFilter<'Boat'> | string;
-    registrationNumber?: Prisma.StringFilter<'Boat'> | string;
     description?: Prisma.StringFilter<'Boat'> | string;
     createdAt?: Prisma.DateTimeFilter<'Boat'> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<'Boat'> | Date | string;
@@ -326,7 +326,7 @@ export type BoatWhereUniqueInput = Prisma.AtLeast<
     departures?: Prisma.BoatDepartureListRelationFilter;
     serviceRequests?: Prisma.ServiceRequestListRelationFilter;
   },
-  'boatId' | 'publicId'
+  'boatId' | 'publicId' | 'registrationNumber'
 >;
 
 export type BoatOrderByWithAggregationInput = {
