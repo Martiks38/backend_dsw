@@ -82,16 +82,32 @@ async function main() {
 
   console.log('🛠️ Creando tipos de servicio...');
   const serviceTypeDefs = [
-    { name: 'Botadura', description: 'Ingreso de la embarcación al agua' },
     {
-      name: 'Guardado en cuna',
-      description: 'Retiro del agua y almacenamiento en cuna',
+      name: 'Combustible',
+      description: 'Carga de combustible con productos de alta calidad.',
     },
     {
-      name: 'Mantenimiento de casco',
-      description: 'Limpieza y mantenimiento del casco',
+      name: 'Limpieza',
+      description:
+        'Limpieza exterior e interior para que tu embarcación luzca siempre impecable.',
     },
-    { name: 'Revisión de motor', description: 'Chequeo y service del motor' },
+    {
+      name: 'Mantenimiento',
+      description:
+        'Mantenimiento preventivo y correctivo realizado por profesionales.',
+    },
+    {
+      name: 'Botadura y retiro',
+      description: 'Servicio de botadura y retiro de embarcaciones.',
+    },
+    {
+      name: 'Carga de baterías',
+      description: 'Carga y chequeo de baterías para un rendimiento óptimo.',
+    },
+    {
+      name: 'Reparaciones',
+      description: 'Reparaciones mecánicas y eléctricas en general.',
+    },
   ];
   const serviceTypes = [];
   for (const def of serviceTypeDefs) {
