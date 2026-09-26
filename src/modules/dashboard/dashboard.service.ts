@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { type Member, Prisma } from '@/generated/prisma/client';
+import { getClientName } from '@/common/utils/getClientName.util';
+import { Prisma } from '@/generated/prisma/client';
 import { PrismaService } from '@/prisma/prisma.service';
 
 import type {
@@ -225,12 +226,6 @@ export class DashboardService {
     }));
   }
 
-  private getClientName(member: Member) {
-    return (
-      member.businessName ?? `${member.firstName} ${member.lastName}`.trim()
-    );
-  }
-
   private mapToTaskItem(req: ServiceRequestWithRelations): TaskItem {
     return {
       id: req.serviceRequestId,
@@ -238,7 +233,7 @@ export class DashboardService {
       scheduledAtLabel: req.scheduledTime ?? '',
       serviceTypeName: req.serviceType.name,
       boatName: req.boat.name,
-      clientName: this.getClientName(req.member),
+      clientName: getClientName(req.member),
       status: req.status,
       href: `/dashboard/solicitudes/${req.serviceRequestId}`,
     };
@@ -249,7 +244,7 @@ export class DashboardService {
   ): PendingRequestRow {
     return {
       id: req.serviceRequestId,
-      clientName: this.getClientName(req.member),
+      clientName: getClientName(req.member),
       boatName: req.boat.name,
       dateLabel: req.scheduledDate
         ? req.scheduledDate.toLocaleDateString('es-Ar')
