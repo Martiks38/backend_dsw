@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -20,6 +21,10 @@ import {
 
 import { MessageResponseDto } from '@/common/dto/message-response.dto';
 
+import { Roles } from '../auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { AppRole } from '../auth/role.enum';
 import { UpdateMemberResponseDto } from '../members/dto';
 import { EmployeeResponseDto } from './dto';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
@@ -27,9 +32,17 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { EmployeesService } from './employees.service';
 
 @ApiTags('employees')
+@UseGuards(JwtAuthGuard)
 @Controller('employees')
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
+
+  @Get('operators')
+  @Roles(AppRole.ADMIN)
+  @UseGuards(RolesGuard)
+  getOperators() {
+    return this.employeesService.getOperatorsWithWorkload();
+  }
 
   @Post()
   @ApiOperation({ summary: 'Crea un nuevo empleado (User + Employee)' })

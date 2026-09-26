@@ -340,4 +340,35 @@ export class EmployeesService {
       throw new ConflictException(error);
     }
   }
+
+  async getOperatorsWithWorkload() {
+    const startOfMonth = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      1,
+    );
+
+    const operators = await this.prisma.employee.findMany({
+      where: { employeeType: 'OPERATOR' },
+      include: { user: true },
+    });
+
+    const workloads = await this.prisma.serviceRequest.groupBy({
+      by: ['assignedEmployeeId'],
+      where: {
+        assignedEmployeeId: { in: operators.map((o) => o.userId) },
+        scheduledDate: { gte: startOfMonth },
+      },
+      _count: { assignedEmployeeId: true },
+    });
+
+    return operators.map((op) => ({
+      id: op.user.publicId,
+      firstName: op.firstName,
+      lastName: op.lastName,
+      totalThisMonth:
+        workloads.find((w) => w.assignedEmployeeId === op.userId)?._count
+          .assignedEmployeeId ?? 0,
+    }));
+  }
 }
