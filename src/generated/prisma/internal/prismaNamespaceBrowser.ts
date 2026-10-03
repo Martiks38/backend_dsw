@@ -134,6 +134,7 @@ export const ContractScalarFieldEnum = {
   startDatetime: 'startDatetime',
   boatId: 'boatId',
   endDatetime: 'endDatetime',
+  plannedEndDatetime: 'plannedEndDatetime',
   cradleId: 'cradleId',
 } as const;
 
