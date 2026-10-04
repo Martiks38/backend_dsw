@@ -1,6 +1,6 @@
 import { Prisma } from '@/generated/prisma/client';
 
-export const employeeSelect = {
+const _employeeSelect = {
   firstName: true,
   lastName: true,
   employeeNumber: true,
@@ -17,10 +17,6 @@ export const employeeSelect = {
     },
   },
 } satisfies Prisma.EmployeeSelect;
-
-export type RawEmployeeWithUser = Prisma.EmployeeGetPayload<{
-  select: typeof employeeSelect;
-}>;
 
 export interface UniqueFields {
   email: string;

@@ -11,7 +11,6 @@ import {
 import {
   ApiBody,
   ApiConflictResponse,
-  ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -20,38 +19,28 @@ import {
 } from '@nestjs/swagger';
 
 import { MessageResponseDto } from '@/common/dto/message-response.dto';
+import { SetActiveStatusDto } from '@/common/dto/set-active-status.dto';
 
+import { type AuthenticatedUser } from '../auth/auth.interface';
+import { CurrentUser } from '../auth/decorators/currentUser.decorator';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { AppRole } from '../auth/role.enum';
 import { UpdateMemberResponseDto } from '../members/dto';
-import { EmployeeResponseDto } from './dto';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { EmployeesService } from './employees.service';
 
 @ApiTags('employees')
-@UseGuards(JwtAuthGuard)
 @Controller('employees')
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
-  @Get('operators')
+  @Post()
   @Roles(AppRole.ADMIN)
   @UseGuards(RolesGuard)
-  getOperators() {
-    return this.employeesService.getOperatorsWithWorkload();
-  }
-
-  @Post()
-  @ApiOperation({ summary: 'Crea un nuevo empleado (User + Employee)' })
-  @ApiCreatedResponse({ type: CreateEmployeeDto })
-  @ApiConflictResponse({
-    description: 'Email, documento o matrícula ya registrada para otro usuario',
-  })
-  create(@Body() createEmployeeDto: CreateEmployeeDto) {
-    return this.employeesService.create(createEmployeeDto);
+  create(@Body() dto: CreateEmployeeDto) {
+    return this.employeesService.create(dto);
   }
 
   @Get(':publicId')
@@ -61,13 +50,16 @@ export class EmployeesController {
     type: 'string',
     description: 'Identificador público',
   })
-  @ApiOkResponse({
-    description: 'Se encontró un empleado con el ID proporcionado',
-    type: EmployeeResponseDto,
-  })
   @ApiNotFoundResponse({ description: 'Empleado no encontrado' })
   findOne(@Param('publicId') publicId: string) {
     return this.employeesService.findOne(publicId);
+  }
+
+  @Get()
+  @Roles(AppRole.ADMIN)
+  @UseGuards(RolesGuard)
+  getAll() {
+    return this.employeesService.getAllPaginated();
   }
 
   @Patch(':publicId')
@@ -97,6 +89,21 @@ export class EmployeesController {
     @Body() updateEmployeeDto: UpdateEmployeeDto,
   ) {
     return this.employeesService.update(publicId, updateEmployeeDto);
+  }
+
+  @Patch(':publicId/status')
+  @Roles(AppRole.ADMIN)
+  @UseGuards(RolesGuard)
+  setStatus(
+    @Param('publicId') publicId: string,
+    @Body() dto: SetActiveStatusDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.employeesService.setStatus(
+      publicId,
+      dto.isActive,
+      user.internalId,
+    );
   }
 
   @Delete(':publicId')
