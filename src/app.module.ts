@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { AuthModule } from './modules/auth/auth.module';
 import { BoatsModule } from './modules/boats/boats.module';
+import { ClientsModule } from './modules/clients/clients.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { EmployeesModule } from './modules/employees/employees.module';
 import { MailModule } from './modules/mail/mail.module';
@@ -28,6 +29,7 @@ import { PrismaModule } from './prisma/prisma.module';
     BoatsModule,
     ServiceTypesModule,
     UsersModule,
+    ClientsModule,
   ],
   controllers: [],
   providers: [],
