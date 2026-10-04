@@ -15,7 +15,7 @@ export class MailService {
 
   private async send(to: string, subject: string, html: string) {
     const { data, error } = await this.resend.emails.send({
-      from: 'Guardería Náutica <no-reply@guarderianautica.com',
+      from: 'Guardería Náutica <no-reply@guarderianautica.com>',
       to,
       subject,
       html,
