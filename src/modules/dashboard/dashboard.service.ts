@@ -34,7 +34,12 @@ export class DashboardService {
             scheduledDate: { gte: startOfDay, lte: endOfDay },
           },
           orderBy: { scheduledTime: 'asc' },
-          include: { member: true, boat: true, serviceType: true },
+          include: {
+            member: true,
+            boat: true,
+            serviceType: true,
+            employee: true,
+          },
         }),
         this.prisma.serviceRequest.count({
           where: {
@@ -149,7 +154,12 @@ export class DashboardService {
         },
         orderBy: { scheduledDate: 'asc' },
         take: 10,
-        include: { member: true, boat: true, serviceType: true },
+        include: {
+          member: true,
+          boat: true,
+          serviceType: true,
+          employee: true,
+        },
       }),
 
       this.prisma.serviceRequest.findFirst({
