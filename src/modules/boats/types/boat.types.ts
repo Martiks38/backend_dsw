@@ -1,3 +1,5 @@
+export type BoatAdminStatus = 'EN_GUARDIA' | 'EN_AGUA' | 'EN_MANTENIMIENTO';
+
 export interface MyBoatCard {
   id: string;
   name: string;
@@ -8,4 +10,15 @@ export interface MyBoatCard {
   contractStartISO: string;
   cradleCode: string | null;
   isInGuardia: boolean;
+}
+
+export interface BoatAdminListItem {
+  id: string;
+  registrationNumber: string;
+  name: string;
+  ownerName: string;
+  boatTypeName: string;
+  status: BoatAdminStatus;
+  cradleCode: string | null;
+  plannedEndDatetimeLabel: string | null;
 }

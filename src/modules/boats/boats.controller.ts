@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 
 import { type AuthenticatedUser } from '../auth/auth.interface';
 import { CurrentUser } from '../auth/decorators/currentUser.decorator';
@@ -7,6 +7,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { AppRole } from '../auth/role.enum';
 import { BoatsService } from './boats.service';
+import { CreateBoatDto } from './dto/create-boat.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('boats')
@@ -18,5 +19,26 @@ export class BoatsController {
   @UseGuards(RolesGuard)
   getMyBoats(@CurrentUser() user: AuthenticatedUser) {
     return this.boatsService.findByMember(user.internalId);
+  }
+
+  @Get('marina')
+  @Roles(AppRole.ADMIN)
+  @UseGuards(RolesGuard)
+  getMarina() {
+    return this.boatsService.getGuardiaOverview();
+  }
+
+  @Get()
+  @Roles(AppRole.ADMIN)
+  @UseGuards(RolesGuard)
+  findAllWithStatus() {
+    return this.boatsService.getAdminOverview();
+  }
+
+  @Post()
+  @Roles(AppRole.ADMIN)
+  @UseGuards(RolesGuard)
+  create(@Body() dto: CreateBoatDto) {
+    return this.boatsService.create(dto);
   }
 }
