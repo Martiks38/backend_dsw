@@ -1,6 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as crypto from 'crypto';
+import { createHash, randomBytes } from 'crypto';
 
 import { getUserRole } from '@/common/utils/getUserRole.util';
 import {
@@ -11,6 +15,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 
 import { MailService } from '../mail/mail.service';
 import { LoginDto } from './dto/login.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -20,66 +25,47 @@ export class AuthService {
     private readonly mailService: MailService,
   ) {}
 
-  async requestPasswordReset(email: string) {
-    const responseMessage = 'Se ha enviado un email a su correo';
+  async forgotPassword(email: string): Promise<void> {
     const user = await this.prisma.user.findUnique({ where: { email } });
 
-    // No revela si el email existe o está inhabilitado
-    if (!user || !user.isActive) {
-      return { message: responseMessage };
-    }
+    if (!user || !user.isActive) return;
 
-    const rawToken = crypto.randomBytes(32).toString('hex');
-    const tokenHash = crypto
-      .createHash('sha256')
-      .update(rawToken)
-      .digest('hex');
+    const rawToken = randomBytes(32).toString('hex');
+    const tokenHash = createHash('sha256').update(rawToken).digest('hex');
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
 
     await this.prisma.passwordResetToken.create({
-      data: {
-        userId: user.userId,
-        tokenHash,
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60),
-      },
+      data: { userId: user.userId, tokenHash, expiresAt },
     });
 
-    await this.mailService.sendPasswordReset(user.email, rawToken);
-
-    return { message: responseMessage };
+    await this.mailService.sendPasswordReset(email, rawToken);
   }
 
-  async resetPassword(rawToken: string, newPassword: string) {
-    const tokenHash = crypto
-      .createHash('sha256')
-      .update(rawToken)
-      .digest('hex');
+  async resetPassword(dto: ResetPasswordDto): Promise<void> {
+    const tokenHash = createHash('sha256').update(dto.token).digest('hex');
 
-    const resetToken = await this.prisma.passwordResetToken.findFirst({
-      where: {
-        tokenHash,
-        used: false,
-        expiresAt: { gt: new Date() },
-      },
+    const resetToken = await this.prisma.passwordResetToken.findUnique({
+      where: { tokenHash },
     });
 
-    if (!resetToken) {
-      throw new UnauthorizedException('Token inválido o expirado');
+    if (!resetToken || resetToken.used || resetToken.expiresAt < new Date()) {
+      throw new BadRequestException(
+        'El link de recuperación es inválido o expiró.',
+      );
     }
 
-    const hashedPassword = await hashPassword(newPassword);
+    const passwordHash = await hashPassword(dto.newPassword);
 
     await this.prisma.$transaction([
       this.prisma.user.update({
         where: { userId: resetToken.userId },
-        data: { password: hashedPassword },
+        data: { password: passwordHash },
       }),
       this.prisma.passwordResetToken.update({
         where: { passwordResetTokenId: resetToken.passwordResetTokenId },
         data: { used: true },
       }),
     ]);
-
-    return { message: 'Contraseña actualizada' };
   }
 
   async validateCredentials(dto: LoginDto) {

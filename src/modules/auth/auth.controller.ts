@@ -13,9 +13,9 @@ import type { CookieOptions, Response } from 'express';
 
 import type { AuthenticatedRequest } from './auth.interface';
 import { AuthService } from './auth.service';
-import { ForgotPasswordDto } from './dto/forgotPassword.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { LoginDto } from './dto/login.dto';
-import { ResetPasswordDto } from './dto/resetPassword.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
@@ -54,14 +54,16 @@ export class AuthController {
   }
 
   @Post('forgot-password')
-  @HttpCode(HttpStatus.OK)
-  forgotPassword(@Body() dto: ForgotPasswordDto) {
-    return this.authService.requestPasswordReset(dto.email);
+  async forgotPassword(@Body() dto: ForgotPasswordDto) {
+    await this.authService.forgotPassword(dto.email);
+    return {
+      message: 'Si el email existe, vas a recibir un correo con instrucciones.',
+    };
   }
 
   @Post('reset-password')
-  @HttpCode(HttpStatus.OK)
-  resetPassword(@Body() dto: ResetPasswordDto) {
-    return this.authService.resetPassword(dto.token, dto.newPassword);
+  async resetPassword(@Body() dto: ResetPasswordDto) {
+    await this.authService.resetPassword(dto);
+    return { message: 'Contraseña actualizada correctamente.' };
   }
 }
