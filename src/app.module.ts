@@ -7,7 +7,6 @@ import { ClientsModule } from './modules/clients/clients.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { EmployeesModule } from './modules/employees/employees.module';
 import { MailModule } from './modules/mail/mail.module';
-import { MembersModule } from './modules/members/members.module';
 import { ServiceRequestModule } from './modules/service-request/service-request.module';
 import { ServiceTypesModule } from './modules/service-types/service-types.module';
 import { UsersModule } from './modules/users/users.module';
@@ -20,7 +19,6 @@ import { PrismaModule } from './prisma/prisma.module';
       envFilePath: '.env',
     }),
     PrismaModule,
-    MembersModule,
     EmployeesModule,
     AuthModule,
     MailModule,
