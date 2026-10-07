@@ -12,13 +12,11 @@ import {
   ApiBody,
   ApiConflictResponse,
   ApiNotFoundResponse,
-  ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 
-import { MessageResponseDto } from '@/common/dto/message-response.dto';
 import { SetActiveStatusDto } from '@/common/dto/set-active-status.dto';
 
 import { type AuthenticatedUser } from '../auth/auth.interface';
@@ -26,7 +24,6 @@ import { CurrentUser } from '../auth/decorators/currentUser.decorator';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { AppRole } from '../auth/role.enum';
-import { UpdateMemberResponseDto } from '../members/dto';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { EmployeesService } from './employees.service';
@@ -73,10 +70,6 @@ export class EmployeesController {
     type: UpdateEmployeeDto,
     description: 'Campos del empleado a modificar',
   })
-  @ApiOkResponse({
-    description: 'Los datos del empleado se actualizaron exitosamente',
-    type: UpdateMemberResponseDto,
-  })
   @ApiNotFoundResponse({
     description: 'Empleado no encontrado o deshabilitado',
   })
@@ -112,10 +105,6 @@ export class EmployeesController {
     name: 'publicId',
     type: 'string',
     description: 'Identificador público',
-  })
-  @ApiOkResponse({
-    description: 'El empleado fue deshabilidado existosamente',
-    type: MessageResponseDto,
   })
   @ApiNotFoundResponse({
     description: 'No se encontró un socio activo con el ID proporcionado',

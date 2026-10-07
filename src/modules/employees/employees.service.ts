@@ -14,7 +14,6 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { AccountProvisioningService } from '../common/account-provisioning.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { type UniqueFields } from './employees.types';
 
 @Injectable()
 export class EmployeesService {
@@ -68,7 +67,7 @@ export class EmployeesService {
             create: {
               firstName: dto.firstName,
               lastName: dto.lastName,
-              employeeNumber: nanoid(10), // autogenerado, no viene del DTO
+              employeeNumber: nanoid(10),
               employeeType: dto.employeeType,
             },
           },
@@ -261,43 +260,6 @@ export class EmployeesService {
     };
   }
 
-  private async assetIsUnique(props: UniqueFields) {
-    const { email, documentType, documentNumber } = props;
-
-    const conflicts = await this.prisma.user.findMany({
-      where: {
-        OR: [{ email }, { documentType, documentNumber }],
-      },
-      select: {
-        email: true,
-        documentType: true,
-        documentNumber: true,
-      },
-    });
-
-    const errors: string[] = [];
-
-    for (const u of conflicts) {
-      if (u.email === email) {
-        errors.push('El email ya está registrado');
-      }
-
-      if (
-        u.documentType === documentType &&
-        u.documentNumber === documentNumber
-      ) {
-        errors.push('Ya existe un usuario con ese tipo y número de documento');
-      }
-    }
-
-    if (errors.length > 0) {
-      this.logger.warn(
-        `Intento de creación duplicado:\n\r\t${errors.join('\n\r\t')}`,
-      );
-      throw new ConflictException(errors);
-    }
-  }
-
   private async checkUniqueConstraints(
     userId: number,
     userData: UpdateEmployeeDto,
@@ -341,7 +303,6 @@ export class EmployeesService {
     });
 
     return employees.map((e) => ({
-      displayId: e.userId,
       publicId: e.user.publicId,
       name: `${e.firstName} ${e.lastName}`,
       role: e.employeeType === 'ADMIN' ? 'Admin' : 'Operador',
@@ -358,6 +319,7 @@ export class EmployeesService {
       where: { publicId },
       include: { employee: true },
     });
+
     if (!user?.employee) throw new NotFoundException('Empleado no encontrado');
 
     if (user.userId === currentUserId && !isActive) {
@@ -365,6 +327,7 @@ export class EmployeesService {
     }
 
     await this.prisma.user.update({ where: { publicId }, data: { isActive } });
+
     return { success: true };
   }
 }

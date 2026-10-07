@@ -20,7 +20,7 @@ import { CreateClientDto } from './dto/create-client.dto';
 import { FindClientsDto } from './dto/find-clients.dto';
 
 @UseGuards(JwtAuthGuard)
-@Controller('clientes')
+@Controller('clients')
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
 

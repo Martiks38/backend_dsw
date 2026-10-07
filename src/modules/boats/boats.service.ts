@@ -180,7 +180,6 @@ export class BoatsService {
       const lastDeparture = latestDepartureByBoat.get(boat.boatId);
 
       let status: BoatAdminStatus;
-
       if (boatsInMaintenance.has(boat.boatId)) {
         status = 'EN_MANTENIMIENTO';
       } else if (lastDeparture && lastDeparture.realReturnDatetime === null) {

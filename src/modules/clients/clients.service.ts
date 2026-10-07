@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { nanoid } from 'nanoid';
 
+import { getClientName } from '@/common/utils/getClientName.util';
 import { Prisma } from '@/generated/prisma/client';
 import { PrismaService } from '@/prisma/prisma.service';
 
@@ -103,7 +104,7 @@ export class ClientsService {
 
     return members.map((m) => ({
       publicId: m.user.publicId,
-      name: m.businessName ?? `${m.firstName ?? ''} ${m.lastName ?? ''}`.trim(),
+      name: getClientName(m),
     }));
   }
 
@@ -155,10 +156,8 @@ export class ClientsService {
 
     return {
       data: data.map((m) => ({
-        displayId: m.userId,
         publicId: m.user.publicId,
-        name:
-          m.businessName ?? `${m.firstName ?? ''} ${m.lastName ?? ''}`.trim(),
+        name: getClientName(m),
         email: m.user.email,
         phoneNumber: m.user.phoneNumber,
         isActive: m.user.isActive,
@@ -173,9 +172,13 @@ export class ClientsService {
       where: { publicId },
       include: { member: true },
     });
-    if (!user?.member) throw new NotFoundException('Cliente no encontrado');
+
+    if (!user?.member) {
+      throw new NotFoundException('Cliente no encontrado');
+    }
 
     await this.prisma.user.update({ where: { publicId }, data: { isActive } });
+
     return { success: true };
   }
 }
