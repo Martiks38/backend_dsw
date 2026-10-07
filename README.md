@@ -1,98 +1,162 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# MarinaGuard — Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Sistema de gestión para una guardería náutica: administración de socios, embarcaciones, contratos de guarda, empleados y solicitudes de servicio (combustible, limpieza, mantenimiento, botadura y retiro, carga de baterías, reparaciones).
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Backend desarrollado en **NestJS**.
 
-## Description
+> Trabajo práctico de la materia **Desarrollo de Software** — UTN Facultad Regional Rosario.
+> Autor: Giuliano Martín Cappa.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Tecnologías
 
-## Project setup
+- [NestJS](https://nestjs.com/) (Node.js + TypeScript)
+- [Prisma ORM](https://www.prisma.io/) sobre PostgreSQL (`@prisma/adapter-pg`)
+- Autenticación con JWT (cookie httpOnly) + Passport
+- [Resend](https://resend.com/) para el envío de emails transaccionales (recuperación de contraseña, invitación de nuevos usuarios)
+- Jest para tests unitarios
+- ESLint + Prettier + Husky
+- Gestor de paquetes: **pnpm**
+
+## Requisitos previos
+
+- Node.js v24.21.0
+- [pnpm](https://pnpm.io/installation)
+- Una instancia de PostgreSQL accesible (local o remota, por ejemplo [Neon](https://neon.tech/))
+
+## Instalación
+
+1. Cloná el repositorio y entrá a la carpeta del backend:
+
+   ```bash
+   git clone https://github.com/Martiks38/backend_dsw
+   cd backend_dsw
+   ```
+
+2. Instalá las dependencias:
+
+   ```bash
+   pnpm install
+   ```
+
+3. Creá un archivo `.env` en la raíz del proyecto, usando como base el siguiente ejemplo:
+
+   ```dotenv
+   DATABASE_URL=postgresql://postgres:1234@localhost:5432/guarderia
+   FRONTEND_URL=http://localhost:3000
+   JWT_EXPIRES_IN=1d
+   JWT_SECRET=secret
+   RESEND_API_KEY=your-resend-api-key
+   ```
+
+   | Variable         | Descripción                                                                                                                                        |
+   | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | `DATABASE_URL`   | Cadena de conexión a la base PostgreSQL.                                                                                                           |
+   | `FRONTEND_URL`   | URL donde corre el frontend. Se usa para armar los links de los emails (recuperación de contraseña, invitaciones) y para la configuración de CORS. |
+   | `JWT_EXPIRES_IN` | Tiempo de expiración del token de sesión (ej. `1d` = 1 día).                                                                                       |
+   | `JWT_SECRET`     | Secreto usado para firmar los JWT. **Cambiar por un valor propio y seguro en cualquier entorno que no sea desarrollo local.**                      |
+   | `RESEND_API_KEY` | API key de [Resend](https://resend.com/) para el envío de emails.                                                                                  |
+
+4. Generá el cliente de Prisma y aplicá las migraciones:
+
+   ```bash
+   pnpm prisma generate
+   pnpm prisma migrate dev
+   ```
+
+5. (Opcional pero recomendado) Cargá datos de ejemplo — socios, empleados, embarcaciones, contratos y solicitudes de servicio:
+
+   ```bash
+   pnpm db:seed
+   ```
+
+   Todos los usuarios creados por el seed usan la contraseña `Password123!`.
+
+## Ejecución
 
 ```bash
-$ pnpm install
+# Modo desarrollo (con recarga automática)
+pnpm start:dev
+
+# Modo desarrollo con debugger
+pnpm start:debug
+
+# Build de producción
+pnpm build
+pnpm start:prod
 ```
 
-## Compile and run the project
+Por defecto, la API queda disponible en `http://localhost:3001`. Sin embargo, puede definirse una varible de entorno PORT para definirla `http://localhost:<port>`.
+
+## Tests
 
 ```bash
-# development
-$ pnpm run start
+# Tests unitarios
+pnpm test
 
-# watch mode
-$ pnpm run start:dev
+# Tests unitarios en modo watch
+pnpm test:watch
 
-# production mode
-$ pnpm run start:prod
+# Tests unitarios con reporte de cobertura
+pnpm test:cov
 ```
 
-## Run tests
+## Calidad de código
 
 ```bash
-# unit tests
-$ pnpm run test
+# Linter (con autofix)
+pnpm lint
 
-# e2e tests
-$ pnpm run test:e2e
+# Formateo con Prettier
+pnpm format
 
-# test coverage
-$ pnpm run test:cov
+# Chequeo de tipos sin emitir archivos
+pnpm typecheck
 ```
 
-## Deployment
+El proyecto usa Husky para correr validaciones automáticas antes de cada commit.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## Documentación de la API
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+<!-- TODO: si el proyecto expone Swagger, indicar la ruta real, por ejemplo:
+Con el servidor corriendo, la documentación interactiva (Swagger) está disponible en:
+http://localhost:3001/api/docs
+-->
 
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+## Estructura del proyecto
+
+```
+src/
+  auth/              # Login, JWT strategy, guards, decorators (CurrentUser, Roles)
+  users/             # Perfil del usuario autenticado (datos personales, cambio de contraseña)
+  clients/           # Alta y gestión de socios (clientes)
+  employees/         # Alta y gestión de empleados (operarios y administradores)
+  boats/             # Embarcaciones, contratos de guarda, estado (en guardería / en agua / en mantenimiento)
+  service-request/   # Solicitudes de servicio: creación, listado, asignación, cambio de estado, cancelación
+  dashboard/         # Datos agregados para los paneles de socio, operario y admin
+  common/            # Utilidades y servicios compartidos (hash de contraseñas, provisioning de cuentas, etc.)
+  mail/              # Envío de emails transaccionales vía Resend
+  prisma/            # Cliente y módulo de Prisma
+  schema.prisma      # Modelo de datos
+  seed.ts            # Script de datos de ejemplo
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Roles y funcionalidades principales
 
-## Resources
+El sistema maneja tres roles:
 
-Check out a few resources that may come in handy when working with NestJS:
+- **Socio (`MEMBER`)**: ve sus embarcaciones y el estado de su guarda, solicita servicios para sus embarcaciones, consulta y cancela sus propias solicitudes pendientes, gestiona su perfil.
+- **Operario (`OPERATOR`)**: ve las solicitudes que tiene asignadas, actualiza su estado (en proceso / completada), registra la salida y el regreso de embarcaciones para servicios de botadura y retiro.
+- **Administrador (`ADMIN`)**: gestiona socios, empleados y embarcaciones (incluyendo el contrato de guarda), asigna operarios a las solicitudes, hace seguimiento de todos los servicios en curso.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Más detalle del modelo de datos y las reglas de negocio en [`docs/README.md`](./docs/README.md). <!-- TODO: completar ese directorio según el formato pedido por la cátedra -->
 
-## Support
+## Despliegue
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+<!-- TODO: completar con la URL real de Render una vez definida -->
 
-## Stay in touch
+- **API en producción:** _pendiente_
+- **Credenciales de prueba:** _pendiente_ (se recomienda usar alguno de los usuarios del seed)
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Documentación adicional y propuesta del TP
 
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+La propuesta del trabajo práctico, con las condiciones de regularidad y aprobación, se encuentra en el repositorio del TP: [proposal.md](https://github.com/Martiks38/tp_desarrollo_software/blob/main/proposal.md).
