@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Patch,
@@ -9,84 +8,100 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
-  ApiBody,
   ApiConflictResponse,
+  ApiCookieAuth,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
+  ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
+import {
+  ActionResponseDto,
+  CreatedResourceResponseDto,
+} from '@/common/dto/action-response.dto';
 import { SetActiveStatusDto } from '@/common/dto/set-active-status.dto';
 
 import { type AuthenticatedUser } from '../auth/auth.interface';
 import { CurrentUser } from '../auth/decorators/currentUser.decorator';
 import { Roles } from '../auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { AppRole } from '../auth/role.enum';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
+import {
+  EmployeeListItemDto,
+  EmployeeResponseDto,
+  UpdateEmployeeResponseDto,
+} from './dto/employee-response.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { EmployeesService } from './employees.service';
 
 @ApiTags('employees')
+@ApiCookieAuth()
+@ApiUnauthorizedResponse({ description: 'No autenticado' })
+@ApiForbiddenResponse({ description: 'Rol insuficiente (solo ADMIN)' })
+@Roles(AppRole.ADMIN)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('employees')
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @Post()
-  @Roles(AppRole.ADMIN)
-  @UseGuards(RolesGuard)
+  @ApiOperation({
+    summary: 'Da de alta un empleado y le envía sus credenciales por email',
+  })
+  @ApiConflictResponse({
+    description: 'Email o documento ya registrados; incluye fieldErrors',
+  })
+  @ApiCreatedResponse({ type: CreatedResourceResponseDto })
   create(@Body() dto: CreateEmployeeDto) {
     return this.employeesService.create(dto);
   }
 
   @Get(':publicId')
-  @ApiOperation({ summary: 'Busca un empleado por su publiId' })
-  @ApiParam({
-    name: 'publicId',
-    type: 'string',
-    description: 'Identificador público',
-  })
+  @ApiOperation({ summary: 'Busca un empleado por su publicId' })
+  @ApiParam({ name: 'publicId', type: String })
   @ApiNotFoundResponse({ description: 'Empleado no encontrado' })
+  @ApiOkResponse({ type: EmployeeResponseDto })
   findOne(@Param('publicId') publicId: string) {
     return this.employeesService.findOne(publicId);
   }
 
   @Get()
-  @Roles(AppRole.ADMIN)
-  @UseGuards(RolesGuard)
+  @ApiOperation({
+    summary: 'Lista los empleados con rol, estado y servicios asignados',
+  })
+  @ApiOkResponse({ type: EmployeeListItemDto, isArray: true })
   getAll() {
     return this.employeesService.getAllPaginated();
   }
 
   @Patch(':publicId')
   @ApiOperation({ summary: 'Actualiza los datos de un empleado' })
-  @ApiParam({
-    name: 'publicId',
-    type: 'string',
-    description: 'Identificador público',
-  })
-  @ApiBody({
-    type: UpdateEmployeeDto,
-    description: 'Campos del empleado a modificar',
-  })
+  @ApiParam({ name: 'publicId', type: String })
   @ApiNotFoundResponse({
     description: 'Empleado no encontrado o deshabilitado',
   })
   @ApiConflictResponse({
-    description:
-      'El email, documento o matrícula ya está registrado por otro usuario',
+    description: 'El email ya está registrado por otro usuario',
   })
-  update(
-    @Param('publicId') publicId: string,
-    @Body() updateEmployeeDto: UpdateEmployeeDto,
-  ) {
-    return this.employeesService.update(publicId, updateEmployeeDto);
+  @ApiOkResponse({ type: UpdateEmployeeResponseDto })
+  update(@Param('publicId') publicId: string, @Body() dto: UpdateEmployeeDto) {
+    return this.employeesService.update(publicId, dto);
   }
 
   @Patch(':publicId/status')
-  @Roles(AppRole.ADMIN)
-  @UseGuards(RolesGuard)
+  @ApiOperation({
+    summary: 'Activa o desactiva la cuenta de un empleado (no la propia)',
+  })
+  @ApiParam({ name: 'publicId', type: String })
+  @ApiNotFoundResponse({ description: 'Empleado no encontrado' })
+  @ApiOkResponse({ type: ActionResponseDto })
   setStatus(
     @Param('publicId') publicId: string,
     @Body() dto: SetActiveStatusDto,
@@ -97,19 +112,5 @@ export class EmployeesController {
       dto.isActive,
       user.internalId,
     );
-  }
-
-  @Delete(':publicId')
-  @ApiOperation({ summary: 'Deshabilitar un empleado' })
-  @ApiParam({
-    name: 'publicId',
-    type: 'string',
-    description: 'Identificador público',
-  })
-  @ApiNotFoundResponse({
-    description: 'No se encontró un socio activo con el ID proporcionado',
-  })
-  remove(@Param('publicId') publicId: string) {
-    return this.employeesService.remove(publicId);
   }
 }

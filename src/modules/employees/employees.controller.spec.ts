@@ -22,7 +22,6 @@ describe('EmployeesController', () => {
     getAllPaginated: jest.fn(),
     update: jest.fn(),
     setStatus: jest.fn(),
-    remove: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -95,9 +94,7 @@ describe('EmployeesController', () => {
       const expectedResult = [
         {
           publicId: 'abc123',
-          firstName: 'Pepe',
           lastName: 'Pepito',
-          employeeType: EmployeeType.ADMIN,
           isActive: true,
           assignedServices: 3,
         },
@@ -172,18 +169,6 @@ describe('EmployeesController', () => {
         false,
         99,
       );
-      expect(result).toEqual(expectedResult);
-    });
-  });
-
-  describe('remove', () => {
-    it('debería llamar a employeesService.remove con el publicId recibido', async () => {
-      const expectedResult = { message: 'Empleado eliminado correctamente' };
-      mockEmployeesService.remove.mockResolvedValue(expectedResult);
-
-      const result = await controller.remove('abc123');
-
-      expect(mockEmployeesService.remove).toHaveBeenCalledWith('abc123');
       expect(result).toEqual(expectedResult);
     });
   });

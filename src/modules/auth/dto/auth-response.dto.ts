@@ -2,23 +2,15 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { AppRole } from '../role.enum';
 
-export class LoginUserResponseDto {
-  @ApiProperty({
-    description: 'Identificador público del usuario',
-    example: 'V1StGXR8_Z5jdHi6B-myT',
-  })
-  id!: string;
-
-  @ApiProperty({ enum: AppRole, enumName: 'AppRole' })
-  role!: AppRole;
+export class AuthUserDto {
+  @ApiProperty({ description: 'Identificador público' }) id!: string;
+  @ApiProperty({ enum: AppRole }) role!: AppRole;
 }
 
 export class LoginResponseDto {
-  @ApiProperty({ type: LoginUserResponseDto })
-  user!: LoginUserResponseDto;
+  @ApiProperty({ type: AuthUserDto }) user!: AuthUserDto;
 }
 
-export class AuthMeResponseDto {
-  @ApiProperty({ enum: AppRole, enumName: 'AppRole' })
-  role!: AppRole;
+export class MeResponseDto extends AuthUserDto {
+  @ApiProperty() name!: string;
 }

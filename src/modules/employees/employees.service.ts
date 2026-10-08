@@ -227,39 +227,6 @@ export class EmployeesService {
     }
   }
 
-  async remove(publicId: string) {
-    const user = await this.prisma.user.findUnique({
-      where: { publicId },
-      select: {
-        userId: true,
-        isActive: true,
-      },
-    });
-
-    if (!user || !user.isActive) {
-      this.logger.warn(`Empleado no encontrado: publicId=${publicId}`);
-      throw new NotFoundException(
-        `No se encontro el empleado con id ${publicId}`,
-      );
-    }
-
-    await this.prisma.user.update({
-      where: { userId: user.userId },
-      data: { isActive: false },
-      select: {
-        userId: true,
-        isActive: true,
-      },
-    });
-
-    this.logger.log(`Empleado removido: userId=${user.userId}`);
-
-    return {
-      success: true,
-      message: `Empleado con id ${publicId} fue eliminado exitosamente`,
-    };
-  }
-
   private async checkUniqueConstraints(
     userId: number,
     userData: UpdateEmployeeDto,

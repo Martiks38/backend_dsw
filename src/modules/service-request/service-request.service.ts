@@ -119,13 +119,15 @@ export class ServiceRequestService {
       }
     }
 
-    return this.prisma.serviceRequest.update({
+    await this.prisma.serviceRequest.update({
       where: { serviceRequestId: id },
       data: {
         status: dto.status ?? undefined,
         internalComment: dto.internalComment ?? undefined,
       },
     });
+
+    return { success: true };
   }
 
   async assign(id: number, dto: AssignServiceRequestDto) {
@@ -156,8 +158,9 @@ export class ServiceRequestService {
       throw new BadRequestException('Solo se puede asignar a un operario');
     }
 
-    return this.prisma.serviceRequest.update({
+    await this.prisma.serviceRequest.update({
       where: { serviceRequestId: id },
+
       data: {
         assignedEmployeeId: user.userId,
         scheduledDate: new Date(dto.scheduledDate),
@@ -166,6 +169,8 @@ export class ServiceRequestService {
         status: 'SCHEDULED',
       },
     });
+
+    return { success: true };
   }
 
   async cancel(id: number, user: AuthenticatedUser, reason?: string) {
@@ -173,13 +178,15 @@ export class ServiceRequestService {
 
     this.validateCancellationPermissions(serviceRequest, user);
 
-    return this.prisma.serviceRequest.update({
+    await this.prisma.serviceRequest.update({
       where: { serviceRequestId: id },
       data: {
         status: 'CANCELED',
         internalComment: reason ?? serviceRequest.internalComment,
       },
     });
+
+    return { success: true };
   }
 
   private async findServiceRequestOrThrow(id: number) {
@@ -269,21 +276,6 @@ export class ServiceRequestService {
     };
   }
 
-  async getTodayServiceRequestsByOperator(operatorId: number) {
-    const today = new Date();
-    const startOfDay = new Date(today.setHours(0, 0, 0, 0));
-    const endOfDay = new Date(today.setHours(23, 59, 59, 999));
-
-    return this.prisma.serviceRequest.findMany({
-      where: {
-        assignedEmployeeId: operatorId,
-        scheduledDate: { gte: startOfDay, lte: endOfDay },
-      },
-      orderBy: { scheduledTime: 'asc' },
-      include: { member: true, boat: true },
-    });
-  }
-
   async create(dto: CreateServiceRequestDto, memberId: number) {
     const boat = await this.prisma.boat.findUnique({
       where: { publicId: dto.boatId },
@@ -305,8 +297,8 @@ export class ServiceRequestService {
       throw new BadRequestException('Solicitud de servicio incorrecta.');
     }
 
-    return this.prisma.$transaction(
-      dto.serviceTypeIds.map((serviceTypeId) =>
+    const created = await this.prisma.$transaction(
+      uniqueServiceTypeIds.map((serviceTypeId) =>
         this.prisma.serviceRequest.create({
           data: {
             status: 'PENDING',
@@ -319,6 +311,8 @@ export class ServiceRequestService {
         }),
       ),
     );
+
+    return { success: true, count: created.length };
   }
 
   private mapToListItem(
