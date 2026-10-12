@@ -2,6 +2,16 @@ import { BrevoClient, BrevoError } from '@getbrevo/brevo';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+import { escapeHtml } from './escape-html';
+
+export interface ContactMessage {
+  fullname: string;
+  email: string;
+  phone?: string;
+  subject: string;
+  message: string;
+}
+
 @Injectable()
 export class MailService {
   private readonly brevo: BrevoClient;
@@ -24,13 +34,19 @@ export class MailService {
     };
   }
 
-  private async send(to: string, subject: string, html: string): Promise<void> {
+  private async send(
+    to: string,
+    subject: string,
+    html: string,
+    replyTo?: { email: string; name?: string },
+  ): Promise<void> {
     try {
       await this.brevo.transactionalEmails.sendTransacEmail({
         sender: this.sender,
         to: [{ email: to }],
         subject,
         htmlContent: html,
+        replyTo,
       });
     } catch (error) {
       if (error instanceof BrevoError) {
@@ -75,6 +91,24 @@ export class MailService {
       to,
       'Tu servicio fue completado',
       `<p>El servicio "${serviceName}" que solicitaste fue completado con éxito.</p>`,
+    );
+  }
+
+  async sendContactMessage(to: string, contact: ContactMessage): Promise<void> {
+    const { fullname, email, phone, subject, message } = contact;
+
+    await this.send(
+      to,
+      `Nueva consulta: ${subject}`,
+      `<h2>Nueva consulta desde la web</h2>
+    <p><strong>Nombre y apellido:</strong> ${escapeHtml(fullname)}</p>
+    <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+    <p><strong>Teléfono:</strong> ${escapeHtml(phone || 'No informado')}</p>
+    <p><strong>Asunto:</strong> ${escapeHtml(subject)}</p>
+    <hr />
+    <h3>Mensaje:</h3>
+    <p style="white-space: pre-wrap;">${escapeHtml(message)}</p>`,
+      { email, name: fullname },
     );
   }
 }
