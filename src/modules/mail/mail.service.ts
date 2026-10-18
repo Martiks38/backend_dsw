@@ -56,6 +56,7 @@ export class MailService {
       } else {
         this.logger.error(`Error enviando mail a ${to}: ${String(error)}`);
       }
+
       throw new Error('No se pudo enviar el email');
     }
   }
@@ -75,7 +76,7 @@ export class MailService {
     name: string,
     tempPassword: string,
   ): Promise<void> {
-    const link = `${this.frontendUrl}/login`;
+    const link = `${this.frontendUrl}/iniciar-sesion`;
 
     await this.send(
       to,

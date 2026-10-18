@@ -19,9 +19,12 @@ import {
 } from '@nestjs/swagger';
 import type { CookieOptions, Response } from 'express';
 
-import { MessageOnlyResponseDto } from '@/common/dto/action-response.dto';
+import {
+  ActionResponseDto,
+  MessageOnlyResponseDto,
+} from '@/common/dto/action-response.dto';
 
-import type { AuthenticatedRequest } from './auth.interface';
+import { type AuthenticatedRequest } from './auth.interface';
 import { AuthService } from './auth.service';
 import { LoginResponseDto, MeResponseDto } from './dto/auth-response.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
@@ -73,7 +76,8 @@ export class AuthController {
   @ApiUnauthorizedResponse({ description: 'No autenticado' })
   @ApiOkResponse({ type: MeResponseDto })
   getProfile(@Req() req: AuthenticatedRequest) {
-    const { id, role, name } = req.user; // sin internalId
+    const { id, role, name } = req.user;
+
     return { id, role, name };
   }
 
@@ -87,19 +91,20 @@ export class AuthController {
   })
   async forgotPassword(@Body() dto: ForgotPasswordDto) {
     await this.authService.forgotPassword(dto.email);
+
     return {
       message: 'Si el email existe, vas a recibir un correo con instrucciones.',
     };
   }
 
   @Post('reset-password')
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Restablece la contraseña con el token recibido por email',
+    summary: 'Restablece la contraseña usando el token recibido por email',
   })
-  @ApiBadRequestResponse({ description: 'Token inválido, usado o expirado' })
-  @ApiOkResponse({ type: MessageOnlyResponseDto })
-  async resetPassword(@Body() dto: ResetPasswordDto) {
-    await this.authService.resetPassword(dto);
-    return { message: 'Contraseña actualizada correctamente.' };
+  @ApiOkResponse({ type: ActionResponseDto })
+  @ApiBadRequestResponse({ description: 'Token inválido, usado o vencido' })
+  resetPassword(@Body() dto: ResetPasswordDto) {
+    return this.authService.resetPassword(dto);
   }
 }
