@@ -109,7 +109,9 @@ describe('MailService', () => {
       );
       expect(sentOptions.htmlContent).toContain('Juan');
       expect(sentOptions.htmlContent).toContain('tempPass');
-      expect(sentOptions.htmlContent).toContain('https://frontend.com/login');
+      expect(sentOptions.htmlContent).toContain(
+        'https://frontend.com/iniciar-sesion',
+      );
     });
   });
 
