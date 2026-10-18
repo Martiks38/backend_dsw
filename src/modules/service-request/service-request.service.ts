@@ -236,6 +236,7 @@ export class ServiceRequestService {
     dto: FindServiceRequestDto,
     operatorId?: number,
     memberId?: number,
+    date?: string,
   ): Promise<PaginatedResult<ServiceRequestListItem>> {
     const { page, limit, status, serviceTypeId, from, until } = dto;
     const skip = (page - 1) * limit;
@@ -253,6 +254,11 @@ export class ServiceRequestService {
         lte: endDate,
       },
     };
+
+    if (date?.toLowerCase() === 'today') {
+      const { startOfDay, endOfDay } = this.getArgentinaTodayRange();
+      where.scheduledDate = { gte: startOfDay, lte: endOfDay };
+    }
 
     const [data, total] = await this.prisma.$transaction([
       this.prisma.serviceRequest.findMany({
@@ -274,6 +280,26 @@ export class ServiceRequestService {
       data: data.map((r) => this.mapToListItem(r)),
       meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
     };
+  }
+
+  private getArgentinaTodayRange() {
+    const timeZone = 'America/Argentina/Buenos_Aires';
+    const [year, month, day] = new Intl.DateTimeFormat('en-CA', {
+      timeZone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })
+      .format(new Date())
+      .split('-')
+      .map(Number);
+
+    const startOfDay = new Date(Date.UTC(year, month - 1, day, 3, 0, 0, 0));
+    const endOfDay = new Date(
+      Date.UTC(year, month - 1, day + 1, 2, 59, 59, 999),
+    );
+
+    return { startOfDay, endOfDay };
   }
 
   async create(dto: CreateServiceRequestDto, memberId: number) {

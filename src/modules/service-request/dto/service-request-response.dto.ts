@@ -20,6 +20,17 @@ export class PaginatedServiceRequestsDto {
   @ApiProperty({ type: PaginationMetaDto }) meta!: PaginationMetaDto;
 }
 
+export class ServiceRequestTodayItemDto {
+  @ApiProperty() id!: number;
+  @ApiProperty() scheduledAtISO!: string;
+  @ApiProperty() scheduledAtLabel!: string;
+  @ApiProperty() serviceTypeName!: string;
+  @ApiProperty() boatName!: string;
+  @ApiProperty() clientName!: string;
+  @ApiProperty({ enum: ServiceStatus }) status!: ServiceStatus;
+  @ApiProperty() href!: string;
+}
+
 export class ServiceRequestDetailDto {
   @ApiProperty() id!: number;
   @ApiProperty({ enum: ServiceStatus }) status!: ServiceStatus;

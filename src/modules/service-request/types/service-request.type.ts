@@ -36,3 +36,14 @@ export interface ServiceRequestListItem {
   status: ServiceStatus;
   href: string;
 }
+
+export interface ServiceRequestTodayItem {
+  id: number;
+  serviceTypeName: string;
+  boatName: string;
+  clientName: string;
+  status: ServiceStatus;
+  href: string;
+  scheduledAtISO: string;
+  scheduledAtLabel: string;
+}

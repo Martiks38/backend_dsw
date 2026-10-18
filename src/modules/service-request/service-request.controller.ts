@@ -18,6 +18,7 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -74,24 +75,43 @@ export class ServiceRequestController {
   @UseGuards(RolesGuard)
   @ApiOperation({
     summary:
-      'Lista paginada; socio: propias, operario: asignadas, admin: todas',
+      'Lista paginada; socio: propias, operario: asignadas, admin: todas. Con date=today filtra scheduledDate de hoy (Argentina)',
+  })
+  @ApiQuery({
+    name: 'date',
+    required: false,
+    example: 'today',
+    description:
+      'Si vale "today", devuelve solo solicitudes con scheduledDate de hoy (00:00–23:59:59, America/Argentina/Buenos_Aires)',
   })
   @ApiOkResponse({ type: PaginatedServiceRequestsDto })
   async getRequests(
     @CurrentUser() user: AuthenticatedUser,
     @Query() dto: FindServiceRequestDto,
+    @Query('date') date?: string,
   ) {
     if (user.role === AppRole.OPERATOR) {
-      return this.serviceRequestService.getAllPaginated(dto, user.internalId);
+      return this.serviceRequestService.getAllPaginated(
+        dto,
+        user.internalId,
+        undefined,
+        date,
+      );
     }
     if (user.role === AppRole.MEMBER) {
       return this.serviceRequestService.getAllPaginated(
         dto,
         undefined,
         user.internalId,
+        date,
       );
     }
-    return this.serviceRequestService.getAllPaginated(dto);
+    return this.serviceRequestService.getAllPaginated(
+      dto,
+      undefined,
+      undefined,
+      date,
+    );
   }
 
   @Post()
@@ -157,7 +177,7 @@ export class ServiceRequestController {
     return this.serviceRequestService.assign(id, dto);
   }
 
-  @Patch(':id/cancelar')
+  @Patch(':id/cancel')
   @Roles(AppRole.MEMBER, AppRole.ADMIN)
   @UseGuards(RolesGuard)
   @ApiOperation({
