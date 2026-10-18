@@ -89,6 +89,44 @@ export class BoatsService {
     });
   }
 
+  async findForDeparture(search: string) {
+    const term = search.trim();
+
+    const boats = await this.prisma.boat.findMany({
+      where: {
+        contracts: { some: { endDatetime: null } },
+        departures: { none: { realReturnDatetime: null } },
+        OR: [
+          { publicId: { contains: term, mode: 'insensitive' } },
+          { name: { contains: term, mode: 'insensitive' } },
+          { registrationNumber: { contains: term, mode: 'insensitive' } },
+          {
+            member: {
+              OR: [
+                { firstName: { contains: term, mode: 'insensitive' } },
+                { lastName: { contains: term, mode: 'insensitive' } },
+                { businessName: { contains: term, mode: 'insensitive' } },
+              ],
+            },
+          },
+        ],
+      },
+      include: { member: true },
+      orderBy: { name: 'asc' },
+      take: 20,
+    });
+
+    return boats.map((boat) => ({
+      publicId: boat.publicId,
+      name: boat.name,
+      model: boat.model,
+      registrationNumber: boat.registrationNumber,
+      ownerName:
+        boat.member.businessName ??
+        `${boat.member.firstName ?? ''} ${boat.member.lastName ?? ''}`.trim(),
+    }));
+  }
+
   async findByMember(memberId: number): Promise<MyBoatCard[]> {
     const boats = await this.prisma.boat.findMany({
       where: { userId: memberId },

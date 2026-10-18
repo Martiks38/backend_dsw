@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiConflictResponse,
   ApiCookieAuth,
   ApiCreatedResponse,
@@ -7,6 +8,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -26,6 +28,7 @@ import {
   MyBoatDto,
 } from './dto/boat-response.dto';
 import { CreateBoatDto } from './dto/create-boat.dto';
+import { BoatSearchResultDto, FindBoatsDto } from './dto/find-boat.dto';
 
 @ApiTags('boats')
 @ApiCookieAuth()
@@ -58,6 +61,25 @@ export class BoatsController {
   @ApiOkResponse({ type: GuardiaOverviewDto })
   getMarina() {
     return this.boatsService.getGuardiaOverview();
+  }
+
+  @Get('find')
+  @Roles(AppRole.OPERATOR)
+  @UseGuards(RolesGuard)
+  @ApiOperation({
+    summary:
+      'Busca embarcaciones disponibles para botar (en guardia y fuera del agua) por código, nombre, matrícula o propietario',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: true,
+    description: 'Código público, nombre, matrícula o propietario',
+  })
+  @ApiForbiddenResponse({ description: 'Rol insuficiente (solo OPERATOR)' })
+  @ApiBadRequestResponse({ description: 'Búsqueda vacía o demasiado larga' })
+  @ApiOkResponse({ type: BoatSearchResultDto, isArray: true })
+  findForDeparture(@Query() dto: FindBoatsDto) {
+    return this.boatsService.findForDeparture(dto.search);
   }
 
   @Get()
