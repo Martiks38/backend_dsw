@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { AuthModule } from './modules/auth/auth.module';
+import { BoatDeparturesModule } from './modules/boat-departures/boat-departure.module';
 import { BoatsModule } from './modules/boats/boats.module';
 import { ClientsModule } from './modules/clients/clients.module';
 import { ContactModule } from './modules/contact/contact.module';
@@ -24,6 +25,7 @@ import { PrismaModule } from './prisma/prisma.module';
     EmployeesModule,
     AuthModule,
     MailModule,
+    BoatDeparturesModule,
     ServiceRequestModule,
     DashboardModule,
     BoatsModule,
