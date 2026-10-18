@@ -27,7 +27,7 @@ export class DashboardService {
     const { startOfDay, endOfDay, startOfMonth } = this.getDateRanges();
 
     const [todayTasks, tasksToday, inProgress, completedToday, totalThisMonth] =
-      await this.prisma.$transaction([
+      await Promise.all([
         this.prisma.serviceRequest.findMany({
           where: {
             assignedEmployeeId: operatorId,
@@ -92,7 +92,7 @@ export class DashboardService {
       pendingRequests,
       servicesInProgressToday,
       pendingRows,
-    ] = await this.prisma.$transaction([
+    ] = await Promise.all([
       this.prisma.member.count(),
       this.prisma.member.count({
         where: { user: { createdAt: { gte: startOfMonth } } },
@@ -136,7 +136,7 @@ export class DashboardService {
       servicesThisMonth,
       pendingRows,
       nextService,
-    ] = await this.prisma.$transaction([
+    ] = await Promise.all([
       this.prisma.boat.count({ where: { userId: memberId } }),
       this.prisma.serviceRequest.count({
         where: { requestedByUserId: memberId, status: 'PENDING' },
