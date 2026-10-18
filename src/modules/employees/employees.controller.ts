@@ -36,6 +36,7 @@ import { CreateEmployeeDto } from './dto/create-employee.dto';
 import {
   EmployeeListItemDto,
   EmployeeResponseDto,
+  OperatorResponseDto,
   UpdateEmployeeResponseDto,
 } from './dto/employee-response.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -70,6 +71,13 @@ export class EmployeesController {
   @ApiOkResponse({ type: EmployeeResponseDto })
   findOne(@Param('publicId') publicId: string) {
     return this.employeesService.findOne(publicId);
+  }
+
+  @Get('operators')
+  @ApiOperation({ summary: 'Obtiene todos los operadores' })
+  @ApiOkResponse({ type: OperatorResponseDto, isArray: true })
+  getOperators() {
+    return this.employeesService.getAllOperators();
   }
 
   @Get()

@@ -257,6 +257,31 @@ export class EmployeesService {
     }
   }
 
+  async getAllOperators() {
+    const operators = await this.prisma.employee.findMany({
+      where: { employeeType: 'OPERATOR' },
+      include: { user: true },
+      orderBy: { firstName: 'asc', lastName: 'asc' },
+    });
+
+    return operators.map((op) => {
+      const { firstName, lastName, employeeNumber } = op;
+      const { publicId, phoneNumber, documentType, documentNumber, email } =
+        op.user;
+
+      return {
+        publicId,
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        documentType,
+        documentNumber,
+        employeeNumber,
+      };
+    });
+  }
+
   async getAllPaginated() {
     const employees = await this.prisma.employee.findMany({
       include: { user: true },
