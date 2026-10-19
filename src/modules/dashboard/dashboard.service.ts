@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { type Member, Prisma } from '@/generated/prisma/client';
+import { getClientName } from '@/common/utils/getClientName.util';
+import { Prisma } from '@/generated/prisma/client';
 import { PrismaService } from '@/prisma/prisma.service';
 
 import type {
@@ -26,14 +27,19 @@ export class DashboardService {
     const { startOfDay, endOfDay, startOfMonth } = this.getDateRanges();
 
     const [todayTasks, tasksToday, inProgress, completedToday, totalThisMonth] =
-      await this.prisma.$transaction([
+      await Promise.all([
         this.prisma.serviceRequest.findMany({
           where: {
             assignedEmployeeId: operatorId,
             scheduledDate: { gte: startOfDay, lte: endOfDay },
           },
           orderBy: { scheduledTime: 'asc' },
-          include: { member: true, boat: true, serviceType: true },
+          include: {
+            member: true,
+            boat: true,
+            serviceType: true,
+            employee: true,
+          },
         }),
         this.prisma.serviceRequest.count({
           where: {
@@ -86,7 +92,7 @@ export class DashboardService {
       pendingRequests,
       servicesInProgressToday,
       pendingRows,
-    ] = await this.prisma.$transaction([
+    ] = await Promise.all([
       this.prisma.member.count(),
       this.prisma.member.count({
         where: { user: { createdAt: { gte: startOfMonth } } },
@@ -130,7 +136,7 @@ export class DashboardService {
       servicesThisMonth,
       pendingRows,
       nextService,
-    ] = await this.prisma.$transaction([
+    ] = await Promise.all([
       this.prisma.boat.count({ where: { userId: memberId } }),
       this.prisma.serviceRequest.count({
         where: { requestedByUserId: memberId, status: 'PENDING' },
@@ -148,7 +154,12 @@ export class DashboardService {
         },
         orderBy: { scheduledDate: 'asc' },
         take: 10,
-        include: { member: true, boat: true, serviceType: true },
+        include: {
+          member: true,
+          boat: true,
+          serviceType: true,
+          employee: true,
+        },
       }),
 
       this.prisma.serviceRequest.findFirst({
@@ -225,12 +236,6 @@ export class DashboardService {
     }));
   }
 
-  private getClientName(member: Member) {
-    return (
-      member.businessName ?? `${member.firstName} ${member.lastName}`.trim()
-    );
-  }
-
   private mapToTaskItem(req: ServiceRequestWithRelations): TaskItem {
     return {
       id: req.serviceRequestId,
@@ -238,7 +243,7 @@ export class DashboardService {
       scheduledAtLabel: req.scheduledTime ?? '',
       serviceTypeName: req.serviceType.name,
       boatName: req.boat.name,
-      clientName: this.getClientName(req.member),
+      clientName: getClientName(req.member),
       status: req.status,
       href: `/dashboard/solicitudes/${req.serviceRequestId}`,
     };
@@ -249,7 +254,7 @@ export class DashboardService {
   ): PendingRequestRow {
     return {
       id: req.serviceRequestId,
-      clientName: this.getClientName(req.member),
+      clientName: getClientName(req.member),
       boatName: req.boat.name,
       dateLabel: req.scheduledDate
         ? req.scheduledDate.toLocaleDateString('es-Ar')

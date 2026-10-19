@@ -4,6 +4,11 @@ generator client {
   moduleFormat = "cjs"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "../docs/er-diagram.png"
+}
+
 datasource db {
   provider = "postgresql"
 }
@@ -93,6 +98,8 @@ model Contract {
   boatId        Int      @map("boat_id")
 
   endDatetime DateTime? @map("end_datetime")
+
+  plannedEndDate DateTime? @map("planned_end_date")
 
   cradleId Int @map("cradle_id")
 

@@ -9,21 +9,43 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiCookieAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import type { CookieOptions, Response } from 'express';
 
-import type { AuthenticatedRequest } from './auth.interface';
+import {
+  ActionResponseDto,
+  MessageOnlyResponseDto,
+} from '@/common/dto/action-response.dto';
+
+import { type AuthenticatedRequest } from './auth.interface';
 import { AuthService } from './auth.service';
-import { ForgotPasswordDto } from './dto/forgotPassword.dto';
+import { LoginResponseDto, MeResponseDto } from './dto/auth-response.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { LoginDto } from './dto/login.dto';
-import { ResetPasswordDto } from './dto/resetPassword.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Inicia sesión y setea la cookie httpOnly access_token',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Credenciales inválidas o usuario inactivo',
+  })
+  @ApiOkResponse({ type: LoginResponseDto })
   async login(
     @Body() loginDto: LoginDto,
     @Res({ passthrough: true }) res: Response,
@@ -39,7 +61,7 @@ export class AuthController {
     };
 
     if (loginDto.remember) {
-      cookieOptions.maxAge = 1000 * 60 * 60 * 24; // 1 día
+      cookieOptions.maxAge = 1000 * 60 * 60 * 24;
     }
 
     res.cookie('access_token', token, cookieOptions);
@@ -49,19 +71,40 @@ export class AuthController {
 
   @Get('me')
   @UseGuards(JwtAuthGuard)
+  @ApiCookieAuth()
+  @ApiOperation({ summary: 'Datos básicos del usuario autenticado' })
+  @ApiUnauthorizedResponse({ description: 'No autenticado' })
+  @ApiOkResponse({ type: MeResponseDto })
   getProfile(@Req() req: AuthenticatedRequest) {
-    return req.user;
+    const { id, role, name } = req.user;
+
+    return { id, role, name };
   }
 
   @Post('forgot-password')
-  @HttpCode(HttpStatus.OK)
-  forgotPassword(@Body() dto: ForgotPasswordDto) {
-    return this.authService.requestPasswordReset(dto.email);
+  @ApiOperation({
+    summary: 'Solicita el email de restablecimiento de contraseña',
+  })
+  @ApiOkResponse({
+    type: MessageOnlyResponseDto,
+    description: 'Siempre responde OK, exista o no el email',
+  })
+  async forgotPassword(@Body() dto: ForgotPasswordDto) {
+    await this.authService.forgotPassword(dto.email);
+
+    return {
+      message: 'Si el email existe, vas a recibir un correo con instrucciones.',
+    };
   }
 
   @Post('reset-password')
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Restablece la contraseña usando el token recibido por email',
+  })
+  @ApiOkResponse({ type: ActionResponseDto })
+  @ApiBadRequestResponse({ description: 'Token inválido, usado o vencido' })
   resetPassword(@Body() dto: ResetPasswordDto) {
-    return this.authService.resetPassword(dto.token, dto.newPassword);
+    return this.authService.resetPassword(dto);
   }
 }

@@ -1,23 +1,46 @@
-export class EmployeeResponseDto {
-  publicId!: string;
+import { ApiProperty, PickType } from '@nestjs/swagger';
 
-  firstName!: string;
+import { EmployeeType } from '@/generated/prisma/client';
 
-  lastName!: string;
+export class EmployeeBaseDto {
+  @ApiProperty() publicId!: string;
+  @ApiProperty() firstName!: string;
+  @ApiProperty() lastName!: string;
+  @ApiProperty() phoneNumber!: string;
+  @ApiProperty() documentType!: string;
+  @ApiProperty() documentNumber!: string;
+  @ApiProperty() email!: string;
+}
 
-  phoneNumber!: string;
+export class EmployeeResponseDto extends EmployeeBaseDto {
+  @ApiProperty() employeeNumber!: string;
 
-  documentType!: string;
+  @ApiProperty({ enum: EmployeeType })
+  employeeType!: EmployeeType;
 
-  documentNumber!: string;
+  @ApiProperty() isEmployee!: boolean;
+  @ApiProperty() isActive!: boolean;
+}
 
-  email!: string;
+export class OperatorResponseDto extends EmployeeBaseDto {
+  @ApiProperty() employeeNumber!: string;
+}
 
-  employeeNumber!: string;
+export class UpdateEmployeeResponseDto extends PickType(EmployeeBaseDto, [
+  'publicId',
+  'firstName',
+  'lastName',
+  'email',
+  'phoneNumber',
+] as const) {}
 
-  employeeType!: string;
-
-  isEmployee!: boolean;
-
-  isActive!: boolean;
+export class EmployeeListItemDto {
+  @ApiProperty() publicId!: string;
+  @ApiProperty() name!: string;
+  @ApiProperty({ enum: ['Admin', 'Operador'] })
+  role!: 'Admin' | 'Operador';
+  @ApiProperty() phoneNumber!: string;
+  @ApiProperty() isActive!: boolean;
+  @ApiProperty({ description: 'Solicitudes asignadas al empleado' })
+  assignedServices!: number;
 }

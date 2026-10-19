@@ -1,6 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as crypto from 'crypto';
+import { createHash, randomBytes } from 'crypto';
 
 import { getUserRole } from '@/common/utils/getUserRole.util';
 import {
@@ -11,6 +15,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 
 import { MailService } from '../mail/mail.service';
 import { LoginDto } from './dto/login.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -20,66 +25,65 @@ export class AuthService {
     private readonly mailService: MailService,
   ) {}
 
-  async requestPasswordReset(email: string) {
-    const responseMessage = 'Se ha enviado un email a su correo';
-    const user = await this.prisma.user.findUnique({ where: { email } });
-
-    // No revela si el email existe o está inhabilitado
-    if (!user || !user.isActive) {
-      return { message: responseMessage };
-    }
-
-    const rawToken = crypto.randomBytes(32).toString('hex');
-    const tokenHash = crypto
-      .createHash('sha256')
-      .update(rawToken)
-      .digest('hex');
-
-    await this.prisma.passwordResetToken.create({
-      data: {
-        userId: user.userId,
-        tokenHash,
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60),
-      },
+  async forgotPassword(email: string): Promise<void> {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      select: { userId: true, isActive: true },
     });
 
-    await this.mailService.sendPasswordReset(user.email, rawToken);
+    if (!user || !user.isActive) return;
 
-    return { message: responseMessage };
-  }
-
-  async resetPassword(rawToken: string, newPassword: string) {
-    const tokenHash = crypto
-      .createHash('sha256')
-      .update(rawToken)
-      .digest('hex');
-
-    const resetToken = await this.prisma.passwordResetToken.findFirst({
-      where: {
-        tokenHash,
-        used: false,
-        expiresAt: { gt: new Date() },
-      },
-    });
-
-    if (!resetToken) {
-      throw new UnauthorizedException('Token inválido o expirado');
-    }
-
-    const hashedPassword = await hashPassword(newPassword);
+    const rawToken = randomBytes(32).toString('hex');
+    const tokenHash = createHash('sha256').update(rawToken).digest('hex');
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
 
     await this.prisma.$transaction([
-      this.prisma.user.update({
-        where: { userId: resetToken.userId },
-        data: { password: hashedPassword },
-      }),
-      this.prisma.passwordResetToken.update({
-        where: { passwordResetTokenId: resetToken.passwordResetTokenId },
+      // Un solo enlace vigente por usuario.
+      this.prisma.passwordResetToken.updateMany({
+        where: { userId: user.userId, used: false },
         data: { used: true },
+      }),
+      this.prisma.passwordResetToken.create({
+        data: { userId: user.userId, tokenHash, expiresAt },
       }),
     ]);
 
-    return { message: 'Contraseña actualizada' };
+    void this.mailService
+      .sendPasswordReset(email, rawToken)
+      .catch(() => undefined);
+  }
+
+  async resetPassword(dto: ResetPasswordDto): Promise<void> {
+    const tokenHash = createHash('sha256').update(dto.token).digest('hex');
+    const passwordHash = await hashPassword(dto.newPassword);
+
+    await this.prisma.$transaction(async (tx) => {
+      const consumed = await tx.passwordResetToken.updateMany({
+        where: { tokenHash, used: false, expiresAt: { gt: new Date() } },
+        data: { used: true },
+      });
+
+      if (consumed.count === 0) {
+        throw new BadRequestException(
+          'El link de recuperación es inválido o expiró.',
+        );
+      }
+
+      const { userId } = await tx.passwordResetToken.findUniqueOrThrow({
+        where: { tokenHash },
+        select: { userId: true },
+      });
+
+      await tx.user.update({
+        where: { userId },
+        data: { password: passwordHash },
+      });
+
+      await tx.passwordResetToken.updateMany({
+        where: { userId, used: false },
+        data: { used: true },
+      });
+    });
   }
 
   async validateCredentials(dto: LoginDto) {
@@ -106,7 +110,7 @@ export class AuthService {
     const validatePassword = await comparePassword(dto.password, user.password);
 
     if (!validatePassword) {
-      throw new UnauthorizedException(`${ERROR_MESSAGE} o usuario inactivo`);
+      throw new UnauthorizedException(ERROR_MESSAGE);
     }
 
     const role = getUserRole(user);

@@ -63,14 +63,13 @@ async function main() {
   ]);
 
   console.log('🪑 Creando cunas...');
-  const cradleDefs = [
-    { cradleCode: 'C-001', state: 'Disponible' },
-    { cradleCode: 'C-002', state: 'Ocupada' },
-    { cradleCode: 'C-003', state: 'Disponible' },
-    { cradleCode: 'C-004', state: 'Ocupada' },
-    { cradleCode: 'C-005', state: 'Disponible' },
-    { cradleCode: 'C-006', state: 'Ocupada' },
-  ];
+  // 12 cunas: las primeras 8 quedan ocupadas por los contratos activos de
+  // los botes del seed, las 4 restantes quedan libres (útil para probar
+  // el alta de "Nueva embarcación" sin quedarse sin opciones).
+  const cradleDefs = Array.from({ length: 12 }, (_, i) => ({
+    cradleCode: `C-${String(i + 1).padStart(3, '0')}`,
+    state: i < 8 ? 'Ocupada' : 'Disponible',
+  }));
 
   const cradles = [];
   for (const def of cradleDefs) {
@@ -346,16 +345,36 @@ async function main() {
   }
 
   console.log('📄 Creando contratos de guarda (cuna)...');
-  // Ahora TODAS las embarcaciones tienen contrato: no puede existir un
-  // bote sin contrato en la guardería (regla de negocio).
+  // TODAS las embarcaciones tienen contrato ACTIVO (endDatetime: null) —
+  // no puede existir un bote sin contrato en la guardería (regla de negocio).
+  // Las primeras 8 cunas (de las 12 creadas) quedan ocupadas, una por bote;
+  // las 4 restantes quedan libres para poder dar de alta nuevas embarcaciones.
+  // plannedEndDate simula fecha de salida prevista: algunos botes la tienen
+  // dentro de los próximos 30 días (para probar "Próximas salidas" en Guardería),
+  // otros más lejos en el tiempo, y uno sin definir (guarda indefinida).
+  const plannedEndOffsets: (number | null)[] = [
+    15, // dentro de 30 días
+    25, // dentro de 30 días
+    90, // lejos
+    180, // lejos
+    null, // sin definir
+    10, // dentro de 30 días
+    200, // lejos
+    null, // sin definir
+  ];
+
   for (const [i, boat] of boats.entries()) {
-    const cradle = cradles[i % cradles.length];
+    const cradle = cradles[i]; // una cuna por bote, las primeras 8 de las 12
     const startDatetime = daysFromNow(-60 + i * 5);
+    const plannedOffset = plannedEndOffsets[i];
+
     await prisma.contract.create({
       data: {
         startDatetime,
         boatId: boat.boatId,
-        endDatetime: i % 3 === 0 ? daysFromNow(120) : null,
+        endDatetime: null, // contrato activo
+        plannedEndDate:
+          plannedOffset !== null ? daysFromNow(plannedOffset) : null,
         cradleId: cradle.cradleId,
       },
     });

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
@@ -7,48 +8,96 @@ import {
 import { nanoid } from 'nanoid';
 
 import { handlePrismaError } from '@/common/utils/handlePrismaError.util';
-import { hashPassword } from '@/common/utils/hashPassword.util';
 import { Prisma } from '@/generated/prisma/client';
 import { PrismaService } from '@/prisma/prisma.service';
 
-import {
-  CreateEmployeeResponseDto,
-  EmployeeResponseDto,
-  UpdateEmployeeResponseDto,
-} from './dto';
+import { AccountProvisioningService } from '../common/account-provisioning.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { UniqueFields } from './employees.types';
 
 @Injectable()
 export class EmployeesService {
   private readonly logger = new Logger(EmployeesService.name);
 
-  constructor(private prisma: PrismaService) {}
-  async create(createEmployeeDto: CreateEmployeeDto) {
-    const { email, documentType, documentNumber } = createEmployeeDto;
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly provisioning: AccountProvisioningService,
+  ) {}
 
-    const uniqueFields: UniqueFields = {
-      email,
-      documentType,
-      documentNumber,
-    };
+  async create(dto: CreateEmployeeDto) {
+    const fieldErrors: Record<string, string[]> = {};
 
-    await this.assetIsUnique(uniqueFields);
-
-    const hashedPassword = await hashPassword(createEmployeeDto.password);
-
-    const result = await this.createUserAndEmployee({
-      ...createEmployeeDto,
-      password: hashedPassword,
+    const emailTaken = await this.prisma.user.findFirst({
+      where: { email: dto.email },
+      select: { userId: true },
+    });
+    const documentTaken = await this.prisma.user.findFirst({
+      where: { documentType: 'DNI', documentNumber: dto.documentNumber },
+      select: { userId: true },
     });
 
-    this.logger.log(`Empleado creado: publicId=${result.publicId}`);
+    if (emailTaken)
+      fieldErrors.email = ['El correo electrónico ya está registrado.'];
+    if (documentTaken)
+      fieldErrors.documentNumber = [
+        'El número de documento ya está registrado.',
+      ];
 
-    return result;
+    if (Object.keys(fieldErrors).length > 0) {
+      throw new ConflictException({
+        message: 'Algunos datos ya están registrados.',
+        fieldErrors,
+      });
+    }
+
+    const tempPassword = this.provisioning.generateTempPassword();
+    const passwordHash = await this.provisioning.hashTempPassword(tempPassword);
+
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          publicId: nanoid(),
+          email: dto.email,
+          password: passwordHash,
+          phoneNumber: dto.phoneNumber,
+          documentType: 'DNI',
+          documentNumber: dto.documentNumber,
+          isEmployee: true,
+          employee: {
+            create: {
+              firstName: dto.firstName,
+              lastName: dto.lastName,
+              employeeNumber: nanoid(10),
+              employeeType: dto.employeeType,
+            },
+          },
+        },
+      });
+
+      await this.provisioning.sendInvitation(
+        user.email,
+        `${dto.firstName} ${dto.lastName}`,
+        tempPassword,
+      );
+
+      return { success: true, publicId: user.publicId };
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        throw new ConflictException({
+          message: 'Algunos datos ya están registrados.',
+          fieldErrors: {
+            general: ['Los datos ingresados ya están registrados.'],
+          },
+        });
+      }
+      throw error;
+    }
   }
 
-  async findOne(publicId: string): Promise<EmployeeResponseDto | null> {
+  async findOne(publicId: string) {
     const employee = await this.prisma.employee.findFirst({
       where: {
         user: {
@@ -67,7 +116,7 @@ export class EmployeesService {
       );
     }
 
-    const response: EmployeeResponseDto = {
+    const response = {
       publicId: employee.user.publicId,
       firstName: employee.firstName,
       lastName: employee.lastName,
@@ -84,10 +133,7 @@ export class EmployeesService {
     return response;
   }
 
-  async update(
-    publicId: string,
-    updateEmployeeDto: UpdateEmployeeDto,
-  ): Promise<UpdateEmployeeResponseDto> {
+  async update(publicId: string, updateEmployeeDto: UpdateEmployeeDto) {
     const existingEmployee = await this.prisma.user.findUnique({
       where: { publicId },
       select: {
@@ -159,7 +205,7 @@ export class EmployeesService {
           },
         });
 
-        const response: UpdateEmployeeResponseDto = {
+        const response = {
           publicId: updatedEmployee.user.publicId,
           email: updatedEmployee.user.email,
           phoneNumber: updatedEmployee.user.phoneNumber,
@@ -177,136 +223,6 @@ export class EmployeesService {
         this.logger,
         'actualizar empleado',
         'Uno o varios campos ya se hallan registrados',
-      );
-    }
-  }
-
-  async remove(publicId: string) {
-    const user = await this.prisma.user.findUnique({
-      where: { publicId },
-      select: {
-        userId: true,
-        isActive: true,
-      },
-    });
-
-    if (!user || !user.isActive) {
-      this.logger.warn(`Empleado no encontrado: publicId=${publicId}`);
-      throw new NotFoundException(
-        `No se encontro el empleado con id ${publicId}`,
-      );
-    }
-
-    await this.prisma.user.update({
-      where: { userId: user.userId },
-      data: { isActive: false },
-      select: {
-        userId: true,
-        isActive: true,
-      },
-    });
-
-    this.logger.log(`Empleado removido: userId=${user.userId}`);
-
-    return {
-      success: true,
-      message: `Empleado con id ${publicId} fue eliminado exitosamente`,
-    };
-  }
-
-  private async assetIsUnique(props: UniqueFields) {
-    const { email, documentType, documentNumber } = props;
-
-    const conflicts = await this.prisma.user.findMany({
-      where: {
-        OR: [{ email }, { documentType, documentNumber }],
-      },
-      select: {
-        email: true,
-        documentType: true,
-        documentNumber: true,
-      },
-    });
-
-    const errors: string[] = [];
-
-    for (const u of conflicts) {
-      if (u.email === email) {
-        errors.push('El email ya está registrado');
-      }
-
-      if (
-        u.documentType === documentType &&
-        u.documentNumber === documentNumber
-      ) {
-        errors.push('Ya existe un usuario con ese tipo y número de documento');
-      }
-    }
-
-    if (errors.length > 0) {
-      this.logger.warn(
-        `Intento de creación duplicado:\n\r\t${errors.join('\n\r\t')}`,
-      );
-      throw new ConflictException(errors);
-    }
-  }
-
-  private async createUserAndEmployee(
-    newEmployee: CreateEmployeeDto,
-  ): Promise<CreateEmployeeResponseDto> {
-    const {
-      firstName,
-      lastName,
-      documentType,
-      documentNumber,
-      email,
-      employeeType,
-      password,
-      phoneNumber,
-    } = newEmployee;
-
-    try {
-      return await this.prisma.$transaction(async (tx) => {
-        const user = await tx.user.create({
-          data: {
-            publicId: nanoid(10),
-            documentType,
-            documentNumber,
-            email,
-            password,
-            phoneNumber,
-            isEmployee: true,
-          },
-        });
-
-        const employee = await tx.employee.create({
-          data: {
-            userId: user.userId,
-            employeeType,
-            employeeNumber: nanoid(10),
-            firstName,
-            lastName,
-          },
-        });
-
-        const response: CreateEmployeeResponseDto = {
-          publicId: user.publicId,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-          documentType: user.documentType,
-          documentNumber: user.documentNumber,
-          employeeType: employee.employeeType,
-          employeeNumber: employee.employeeNumber,
-        };
-
-        return response;
-      });
-    } catch (error) {
-      handlePrismaError(
-        error,
-        this.logger,
-        'Crear empleado',
-        'Ya se encuentra registrado un empleado/socio con uno o varios datos ingresados',
       );
     }
   }
@@ -339,5 +255,71 @@ export class EmployeesService {
     if (error) {
       throw new ConflictException(error);
     }
+  }
+
+  async getAllOperators() {
+    const operators = await this.prisma.employee.findMany({
+      where: { employeeType: 'OPERATOR' },
+      include: { user: true },
+      orderBy: { firstName: 'asc', lastName: 'asc' },
+    });
+
+    return operators.map((op) => {
+      const { firstName, lastName, employeeNumber } = op;
+      const { publicId, phoneNumber, documentType, documentNumber, email } =
+        op.user;
+
+      return {
+        publicId,
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        documentType,
+        documentNumber,
+        employeeNumber,
+      };
+    });
+  }
+
+  async getAllPaginated() {
+    const employees = await this.prisma.employee.findMany({
+      include: { user: true },
+      orderBy: { userId: 'asc' },
+    });
+
+    const assignedCounts = await this.prisma.serviceRequest.groupBy({
+      by: ['assignedEmployeeId'],
+      where: { assignedEmployeeId: { in: employees.map((e) => e.userId) } },
+      _count: { assignedEmployeeId: true },
+    });
+
+    return employees.map((e) => ({
+      publicId: e.user.publicId,
+      name: `${e.firstName} ${e.lastName}`,
+      role: e.employeeType === 'ADMIN' ? 'Admin' : 'Operador',
+      phoneNumber: e.user.phoneNumber,
+      isActive: e.user.isActive,
+      assignedServices:
+        assignedCounts.find((c) => c.assignedEmployeeId === e.userId)?._count
+          .assignedEmployeeId ?? 0,
+    }));
+  }
+
+  async setStatus(publicId: string, isActive: boolean, currentUserId: number) {
+    const user = await this.prisma.user.findUnique({
+      where: { publicId },
+      include: { employee: true },
+    });
+
+    if (!user?.employee) throw new NotFoundException('Empleado no encontrado');
+
+    if (user.userId === currentUserId && !isActive) {
+      throw new BadRequestException('No podés desactivar tu propia cuenta');
+    }
+
+    await this.prisma.user.update({ where: { publicId }, data: { isActive } });
+
+    return { success: true };
   }
 }

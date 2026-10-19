@@ -1,20 +1,18 @@
-import { ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { nanoid } from 'nanoid';
 
-import { hashPassword } from '@/common/utils/hashPassword.util';
-import { EmployeeType } from '@/generated/prisma/enums';
+import { Prisma } from '@/generated/prisma/client';
 import { PrismaService } from '@/prisma/prisma.service';
 
-import {
-  CreateEmployeeDto,
-  CreateEmployeeResponseDto,
-  UpdateEmployeeResponseDto,
-} from './dto';
+import { AccountProvisioningService } from '../common/account-provisioning.service';
+import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { EmployeesService } from './employees.service';
-import { RawEmployeeWithUser } from './employees.types';
 
-jest.mock('@/common/utils/hashPassword.util');
 jest.mock('nanoid', () => ({
   nanoid: jest.fn(),
 }));
@@ -26,17 +24,25 @@ describe('EmployeesService', () => {
     user: {
       findFirst: jest.fn(),
       findUnique: jest.fn(),
-      findMany: jest.fn(),
-      update: jest.fn(),
       create: jest.fn(),
+      update: jest.fn(),
     },
     employee: {
       findFirst: jest.fn(),
-      findUniqueOrThrow: jest.fn(),
+      findMany: jest.fn(),
       update: jest.fn(),
-      create: jest.fn(),
+      findUniqueOrThrow: jest.fn(),
+    },
+    serviceRequest: {
+      groupBy: jest.fn(),
     },
     $transaction: jest.fn(),
+  };
+
+  const mockProvisioning = {
+    generateTempPassword: jest.fn(),
+    hashTempPassword: jest.fn(),
+    sendInvitation: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -44,6 +50,7 @@ describe('EmployeesService', () => {
       providers: [
         EmployeesService,
         { provide: PrismaService, useValue: mockPrismaService },
+        { provide: AccountProvisioningService, useValue: mockProvisioning },
       ],
     }).compile();
 
@@ -51,28 +58,135 @@ describe('EmployeesService', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
-  it('debería estar definido', () => {
-    expect(service).toBeDefined();
+  describe('create', () => {
+    const newEmployee: CreateEmployeeDto = {
+      email: 'test@test.com',
+      phoneNumber: '3411234567',
+      documentNumber: '12345678',
+      firstName: 'Pepe',
+      lastName: 'Pepito',
+      employeeType: 'ADMIN',
+    };
+
+    it('debería crear el usuario, generar employeeNumber con nanoid y enviar la invitación', async () => {
+      mockPrismaService.user.findFirst.mockResolvedValue(null);
+      mockProvisioning.generateTempPassword.mockReturnValue('tempPass123');
+      mockProvisioning.hashTempPassword.mockResolvedValue('hashedPassword');
+
+      (nanoid as jest.Mock)
+        .mockReturnValueOnce('public123')
+        .mockReturnValueOnce('EMP-generated');
+
+      mockPrismaService.user.create.mockResolvedValue({
+        userId: 1,
+        publicId: 'public123',
+        email: newEmployee.email,
+      });
+
+      const result = await service.create(newEmployee);
+
+      expect(mockPrismaService.user.create).toHaveBeenCalledWith({
+        data: {
+          publicId: 'public123',
+          email: newEmployee.email,
+          password: 'hashedPassword',
+          phoneNumber: newEmployee.phoneNumber,
+          documentType: 'DNI',
+          documentNumber: newEmployee.documentNumber,
+          isEmployee: true,
+          employee: {
+            create: {
+              firstName: newEmployee.firstName,
+              lastName: newEmployee.lastName,
+              employeeNumber: 'EMP-generated',
+              employeeType: newEmployee.employeeType,
+            },
+          },
+        },
+      });
+
+      expect(mockProvisioning.sendInvitation).toHaveBeenCalledWith(
+        newEmployee.email,
+        'Pepe Pepito',
+        'tempPass123',
+      );
+
+      expect(result).toEqual({ success: true, publicId: 'public123' });
+    });
+
+    it('debería lanzar ConflictException con fieldErrors si el email ya está registrado', async () => {
+      mockPrismaService.user.findFirst
+        .mockResolvedValueOnce({ userId: 2 }) // email
+        .mockResolvedValueOnce(null); // documento
+
+      const error = await service
+        .create(newEmployee)
+        .catch((err: unknown) => err);
+
+      expect(error).toBeInstanceOf(ConflictException);
+      expect((error as ConflictException).getResponse()).toMatchObject({
+        fieldErrors: {
+          email: ['El correo electrónico ya está registrado.'],
+        },
+      });
+      expect(mockPrismaService.user.create).not.toHaveBeenCalled();
+    });
+
+    it('debería informar email y documento duplicados a la vez', async () => {
+      mockPrismaService.user.findFirst
+        .mockResolvedValueOnce({ userId: 2 })
+        .mockResolvedValueOnce({ userId: 3 });
+
+      const error = await service
+        .create(newEmployee)
+        .catch((err: unknown) => err);
+
+      expect((error as ConflictException).getResponse()).toMatchObject({
+        fieldErrors: {
+          email: expect.any(Array) as unknown as string[],
+          documentNumber: expect.any(Array) as unknown as string[],
+        },
+      });
+    });
+
+    it('debería traducir un P2002 de carrera a ConflictException', async () => {
+      mockPrismaService.user.findFirst.mockResolvedValue(null);
+      mockProvisioning.generateTempPassword.mockReturnValue('tempPass123');
+      mockProvisioning.hashTempPassword.mockResolvedValue('hashedPassword');
+      (nanoid as jest.Mock).mockReturnValue('id');
+
+      mockPrismaService.user.create.mockRejectedValue(
+        new Prisma.PrismaClientKnownRequestError('Unique constraint', {
+          code: 'P2002',
+          clientVersion: 'test',
+        }),
+      );
+
+      await expect(service.create(newEmployee)).rejects.toThrow(
+        ConflictException,
+      );
+      expect(mockProvisioning.sendInvitation).not.toHaveBeenCalled();
+    });
   });
 
   describe('findOne', () => {
-    it('debería lanzar NotFoundException si el employee no existe', async () => {
-      mockPrismaService.employee.findFirst(null);
+    it('debería lanzar NotFoundException si el empleado no existe', async () => {
+      mockPrismaService.employee.findFirst.mockResolvedValue(null);
 
-      await expect(service.findOne('publicId-inexistente')).rejects.toThrow(
+      await expect(service.findOne('inexistente')).rejects.toThrow(
         NotFoundException,
       );
     });
 
-    it('debería devolver el empleado combinando datos de user y employee', async () => {
-      const mockRawEmployee: RawEmployeeWithUser = {
+    it('debería devolver los datos combinados de user y employee', async () => {
+      mockPrismaService.employee.findFirst.mockResolvedValue({
         firstName: 'Pepe',
         lastName: 'Pepito',
-        employeeNumber: '12345',
-        employeeType: EmployeeType.ADMIN,
+        employeeNumber: 'EMP-1',
+        employeeType: 'ADMIN',
         user: {
           publicId: 'abc123',
           email: 'test@test.com',
@@ -82,134 +196,23 @@ describe('EmployeesService', () => {
           isActive: true,
           isEmployee: true,
         },
-      };
-
-      mockPrismaService.employee.findFirst.mockResolvedValue(mockRawEmployee);
+      });
 
       const result = await service.findOne('abc123');
 
-      const { user, ...rest } = mockRawEmployee;
-      const expectedValue = {
-        ...rest,
-        ...user,
-      };
-
-      expect(result).toEqual(expectedValue);
-    });
-  });
-
-  describe('create', () => {
-    const newEmployee: CreateEmployeeDto = {
-      email: 'test@test.com',
-      password: '123',
-      phoneNumber: 'phoneNumber',
-      firstName: 'Pepe',
-      lastName: 'Pepito',
-      employeeType: EmployeeType.ADMIN,
-      documentType: 'DNI',
-      documentNumber: '12345678',
-    };
-
-    beforeEach(() => {
-      mockPrismaService.$transaction.mockImplementation(
-        async (
-          cb: (tx: typeof mockPrismaService) => Promise<CreateEmployeeDto>,
-        ) => cb(mockPrismaService),
-      );
-    });
-
-    it('debería crear el user y el employee correctamente', async () => {
-      mockPrismaService.user.findMany.mockResolvedValue([]);
-
-      const mockPasswordHashed = 'hashedPassword';
-      const mockPublicId = 'public123';
-      const mockEmployeeNumber = 'employee1';
-
-      (hashPassword as jest.Mock).mockResolvedValue(mockPasswordHashed);
-      (nanoid as jest.Mock)
-        .mockReturnValueOnce(mockPublicId)
-        .mockReturnValueOnce(mockEmployeeNumber);
-
-      mockPrismaService.user.create.mockResolvedValue({
-        userId: 1,
-        publicId: mockPublicId,
-        password: mockPasswordHashed,
-        documentType: newEmployee.documentType,
-        documentNumber: newEmployee.documentNumber,
-        email: newEmployee.email,
-        phoneNumber: newEmployee.phoneNumber,
+      expect(result).toEqual({
+        publicId: 'abc123',
+        firstName: 'Pepe',
+        lastName: 'Pepito',
+        phoneNumber: '3411234567',
+        documentType: 'DNI',
+        documentNumber: '12345678',
+        email: 'test@test.com',
+        employeeNumber: 'EMP-1',
+        employeeType: 'ADMIN',
         isEmployee: true,
         isActive: true,
       });
-
-      mockPrismaService.employee.create.mockResolvedValue({
-        userId: 1,
-        firstName: newEmployee.firstName,
-        lastName: newEmployee.lastName,
-        employeeNumber: mockEmployeeNumber,
-        employeeType: EmployeeType.ADMIN,
-      });
-
-      const result = await service.create(newEmployee);
-
-      expect(hashPassword).toHaveBeenCalledWith(newEmployee.password);
-
-      expect(mockPrismaService.user.create).toHaveBeenCalledWith({
-        data: {
-          publicId: mockPublicId,
-          documentType: newEmployee.documentType,
-          documentNumber: newEmployee.documentNumber,
-          email: newEmployee.email,
-          password: mockPasswordHashed,
-          phoneNumber: newEmployee.phoneNumber,
-          isEmployee: true,
-        },
-      });
-
-      expect(mockPrismaService.employee.create).toHaveBeenCalledWith({
-        data: {
-          userId: 1,
-          firstName: newEmployee.firstName,
-          lastName: newEmployee.lastName,
-          employeeType: newEmployee.employeeType,
-          employeeNumber: mockEmployeeNumber,
-        },
-      });
-
-      const expectedResult: CreateEmployeeResponseDto = {
-        publicId: mockPublicId,
-        email: newEmployee.email,
-        phoneNumber: newEmployee.phoneNumber,
-        documentType: newEmployee.documentType,
-        documentNumber: newEmployee.documentNumber,
-        employeeType: newEmployee.employeeType,
-        employeeNumber: mockEmployeeNumber,
-      };
-
-      expect(result).toMatchObject(expectedResult);
-      expect(result).not.toHaveProperty('password');
-      expect(result).not.toHaveProperty('userId');
-    });
-
-    it('debería lanzar ConflictExpection si el email ya está registrado', async () => {
-      mockPrismaService.user.findMany.mockResolvedValue([
-        {
-          email: newEmployee.email,
-          documentType: 'DNI',
-          documentNumber: '11111111',
-        },
-      ]);
-
-      const error = await service
-        .create(newEmployee)
-        .catch((err: unknown) => err);
-
-      expect(error).toBeInstanceOf(ConflictException);
-      expect((error as ConflictException).getResponse()).toMatchObject({
-        message: ['El email ya está registrado'],
-      });
-
-      expect(mockPrismaService.$transaction).not.toHaveBeenCalled();
     });
   });
 
@@ -221,131 +224,171 @@ describe('EmployeesService', () => {
       );
     });
 
-    it('debería lanzar NotFoundException si no encuentra al empleado', async () => {
+    it('debería lanzar NotFoundException si el empleado no existe', async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
 
-      const publicId = 'inexistente';
-
-      const error = await service
-        .update(publicId, {
-          firstName: 'Actualizado',
-        })
-        .catch((err: unknown) => err);
-
-      expect(error).toBeInstanceOf(NotFoundException);
-      expect((error as NotFoundException).getResponse()).toMatchObject({
-        message: `No se encontró el empleado con id ${publicId}`,
-      });
-
+      await expect(
+        service.update('inexistente', { firstName: 'Nuevo' }),
+      ).rejects.toThrow(NotFoundException);
       expect(mockPrismaService.$transaction).not.toHaveBeenCalled();
     });
 
-    it('debería lanzar ConflictException si el nuevo email pertenece a otro usuario', async () => {
+    it('debería lanzar NotFoundException si el empleado está inactivo', async () => {
       mockPrismaService.user.findUnique.mockResolvedValue({
         userId: 1,
-        publicId: 'abc123',
-        email: 'test@test.com',
-        isActive: true,
+        isActive: false,
       });
 
+      await expect(
+        service.update('abc123', { firstName: 'Nuevo' }),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('debería lanzar ConflictException si el email pertenece a otro usuario', async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        userId: 1,
+        isActive: true,
+      });
       mockPrismaService.user.findFirst.mockResolvedValue({
-        userId: 2,
         email: 'otro@test.com',
       });
 
-      const error = await service
-        .update('abc123', { email: 'otro@test.com' })
-        .catch((err: unknown) => err);
-
-      expect(error).toBeInstanceOf(ConflictException);
-      expect((error as ConflictException).getResponse()).toMatchObject({
-        message: 'El email ya está registrado',
-      });
-
+      await expect(
+        service.update('abc123', { email: 'otro@test.com' }),
+      ).rejects.toThrow(ConflictException);
       expect(mockPrismaService.$transaction).not.toHaveBeenCalled();
     });
 
-    it('debería actualizar correctamente el usuario', async () => {
-      const partialEmployee = {
-        publicId: 'abc123',
-        email: 'test@test.com',
-        phoneNumber: '3411234567',
-        firstName: 'Pepe',
-        lastName: 'Pepito',
-        isActive: true,
-      };
-
+    it('debería repartir los campos entre user y employee y devolver los datos actualizados', async () => {
       mockPrismaService.user.findUnique.mockResolvedValue({
         userId: 1,
         isActive: true,
       });
       mockPrismaService.user.findFirst.mockResolvedValue(null);
-
-      mockPrismaService.user.update.mockResolvedValue({
-        userId: 1,
-        email: 'otro@test.com',
-      });
-      mockPrismaService.employee.update.mockResolvedValue({
-        userId: 1,
-        firstName: 'Pepe-Actualizado',
-      });
+      mockPrismaService.user.update.mockResolvedValue({});
+      mockPrismaService.employee.update.mockResolvedValue({});
       mockPrismaService.employee.findUniqueOrThrow.mockResolvedValue({
-        firstName: 'Pepe-Actualizado',
-        lastName: partialEmployee.lastName,
+        firstName: 'Nuevo',
+        lastName: 'Pepito',
         user: {
-          publicId: partialEmployee.publicId,
-          email: 'otro@test.com',
-          phoneNumber: partialEmployee.phoneNumber,
+          publicId: 'abc123',
+          email: 'test@test.com',
+          phoneNumber: '3410000000',
         },
       });
 
       const result = await service.update('abc123', {
-        firstName: 'Pepe-Actualizado',
-        email: 'otro@test.com',
+        firstName: 'Nuevo',
+        phoneNumber: '3410000000',
       });
 
-      expect(result).toMatchObject({
-        firstName: 'Pepe-Actualizado',
-        lastName: partialEmployee.lastName,
-        publicId: partialEmployee.publicId,
-        email: 'otro@test.com',
-        phoneNumber: partialEmployee.phoneNumber,
-      } satisfies UpdateEmployeeResponseDto);
+      expect(mockPrismaService.user.update).toHaveBeenCalledWith({
+        where: { userId: 1 },
+        data: { phoneNumber: '3410000000' },
+      });
+      expect(mockPrismaService.employee.update).toHaveBeenCalledWith({
+        where: { userId: 1 },
+        data: { firstName: 'Nuevo' },
+      });
+      expect(result).toEqual({
+        publicId: 'abc123',
+        email: 'test@test.com',
+        phoneNumber: '3410000000',
+        firstName: 'Nuevo',
+        lastName: 'Pepito',
+      });
     });
   });
 
-  describe('remove', () => {
-    it('debería lanzar NotFoundException si no encuentra al empleado', async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue(null);
+  describe('getAllPaginated', () => {
+    it('debería mapear empleados con su rol y cantidad de servicios asignados', async () => {
+      mockPrismaService.employee.findMany.mockResolvedValue([
+        {
+          userId: 1,
+          firstName: 'Pepe',
+          lastName: 'Pepito',
+          employeeType: 'ADMIN',
+          user: { publicId: 'a1', phoneNumber: '341', isActive: true },
+        },
+        {
+          userId: 2,
+          firstName: 'Ana',
+          lastName: 'Gómez',
+          employeeType: 'OPERATOR',
+          user: { publicId: 'b2', phoneNumber: '342', isActive: false },
+        },
+      ]);
+      mockPrismaService.serviceRequest.groupBy.mockResolvedValue([
+        { assignedEmployeeId: 1, _count: { assignedEmployeeId: 3 } },
+      ]);
 
-      const publicId = 'abc123';
-      const err = await service.remove(publicId).catch((err: unknown) => err);
+      const result = await service.getAllPaginated();
 
-      expect(err).toBeInstanceOf(NotFoundException);
-      expect((err as NotFoundException).getResponse()).toMatchObject({
-        message: `No se encontro el empleado con id ${publicId}`,
+      expect(mockPrismaService.serviceRequest.groupBy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { assignedEmployeeId: { in: [1, 2] } },
+        }),
+      );
+      expect(result).toEqual([
+        {
+          publicId: 'a1',
+          name: 'Pepe Pepito',
+          role: 'Admin',
+          phoneNumber: '341',
+          isActive: true,
+          assignedServices: 3,
+        },
+        {
+          publicId: 'b2',
+          name: 'Ana Gómez',
+          role: 'Operador',
+          phoneNumber: '342',
+          isActive: false,
+          assignedServices: 0,
+        },
+      ]);
+    });
+  });
+
+  describe('setStatus', () => {
+    it('debería lanzar NotFoundException si el usuario no es un empleado', async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        userId: 5,
+        employee: null,
       });
 
+      await expect(service.setStatus('abc123', false, 99)).rejects.toThrow(
+        NotFoundException,
+      );
       expect(mockPrismaService.user.update).not.toHaveBeenCalled();
     });
 
-    it('debería deshabilidar al empleado correctamente', async () => {
+    it('debería impedir que un administrador desactive su propia cuenta', async () => {
       mockPrismaService.user.findUnique.mockResolvedValue({
-        userId: 1,
-        isActive: true,
-      });
-      mockPrismaService.user.update.mockResolvedValue({
-        userId: 1,
-        isActive: false,
+        userId: 99,
+        employee: { userId: 99 },
       });
 
-      const publicId = 'abc123';
-      const response = await service.remove(publicId);
+      await expect(service.setStatus('abc123', false, 99)).rejects.toThrow(
+        BadRequestException,
+      );
+      expect(mockPrismaService.user.update).not.toHaveBeenCalled();
+    });
 
-      expect(response).toMatchObject({
-        success: true,
-        message: `Empleado con id ${publicId} fue eliminado exitosamente`,
+    it('debería desactivar a otro empleado', async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        userId: 5,
+        employee: { userId: 5 },
       });
+      mockPrismaService.user.update.mockResolvedValue({});
+
+      const result = await service.setStatus('abc123', false, 99);
+
+      expect(mockPrismaService.user.update).toHaveBeenCalledWith({
+        where: { publicId: 'abc123' },
+        data: { isActive: false },
+      });
+      expect(result).toEqual({ success: true });
     });
   });
 });
