@@ -48,13 +48,17 @@ Backend desarrollado en **NestJS**.
    RESEND_API_KEY=your-resend-api-key
    ```
 
-   | Variable         | Descripción                                                                                                                                        |
-   | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | `DATABASE_URL`   | Cadena de conexión a la base PostgreSQL.                                                                                                           |
-   | `FRONTEND_URL`   | URL donde corre el frontend. Se usa para armar los links de los emails (recuperación de contraseña, invitaciones) y para la configuración de CORS. |
-   | `JWT_EXPIRES_IN` | Tiempo de expiración del token de sesión (ej. `1d` = 1 día).                                                                                       |
-   | `JWT_SECRET`     | Secreto usado para firmar los JWT. **Cambiar por un valor propio y seguro en cualquier entorno que no sea desarrollo local.**                      |
-   | `RESEND_API_KEY` | API key de [Resend](https://resend.com/) para el envío de emails.                                                                                  |
+   | Variable                  | Descripción                                                                                                                                        |
+   | :------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | `DATABASE_URL`            | Cadena de conexión principal a la base de datos PostgreSQL.                                                                                        |
+   | `DATABASE_URL_POOLED`     | Cadena de conexión con pooling (recomendada para servicios en la nube como Render, Supabase o Neon).                                               |
+   | `FRONTEND_URL`            | URL donde corre el frontend. Se usa para armar los links de los emails (recuperación de contraseña, invitaciones) y para la configuración de CORS. |
+   | `JWT_EXPIRES_IN`          | Tiempo de expiración del token de sesión (ej. `1d` = 1 día).                                                                                       |
+   | `JWT_SECRET`              | Secreto usado para firmar los JWT. **Cambiar por un valor propio y seguro en cualquier entorno que no sea desarrollo local.**                      |
+   | `BREVO_API_KEY`           | API key de [Brevo](https://www.brevo.com) para el envío de emails.                                                                                 |
+   | `MAIL_FROM_EMAIL`         | Dirección de correo que figurará como remitente en los emails enviados por la plataforma.                                                          |
+   | `MAIL_FROM_NAME`          | Nombre que aparecerá como remitente en los emails enviados (ej. `"Guardería Náutica"`).                                                            |
+   | `CONTACT_EMAIL_RECIPIENT` | Dirección de correo destinataria para recibir mensajes de contacto y notificaciones internas.                                                      |
 
 4. Generá el cliente de Prisma y aplicá las migraciones:
 
@@ -100,6 +104,10 @@ pnpm test:watch
 pnpm test:cov
 ```
 
+### Ejecución de tests
+
+![Tests Unitarios e Integración](./docs/images/tests-result.png)
+
 ## Calidad de código
 
 ```bash
@@ -117,10 +125,7 @@ El proyecto usa Husky para correr validaciones automáticas antes de cada commit
 
 ## Documentación de la API
 
-<!-- TODO: si el proyecto expone Swagger, indicar la ruta real, por ejemplo:
-Con el servidor corriendo, la documentación interactiva (Swagger) está disponible en:
-http://localhost:3001/api/docs
--->
+Con el servidor corriendo, la documentación interactiva (Swagger) está disponible en: https://backend-dsw-nc3p.onrender.com/api/docs
 
 ## Estructura del proyecto
 
@@ -148,14 +153,18 @@ El sistema maneja tres roles:
 - **Operario (`OPERATOR`)**: ve las solicitudes que tiene asignadas, actualiza su estado (en proceso / completada), registra la salida y el regreso de embarcaciones para servicios de botadura y retiro.
 - **Administrador (`ADMIN`)**: gestiona socios, empleados y embarcaciones (incluyendo el contrato de guarda), asigna operarios a las solicitudes, hace seguimiento de todos los servicios en curso.
 
-Más detalle del modelo de datos y las reglas de negocio en [`docs/README.md`](./docs/README.md). <!-- TODO: completar ese directorio según el formato pedido por la cátedra -->
+## Modelo de Datos (Diagrama Entidad-Relación)
+
+A continuación se visualiza el diagrama ER de la base de datos generado con prisma-erd-generator:
+
+![Diagrama ER de la Guardería Náutica](./docs/images/er-diagram.png)
 
 ## Despliegue
 
-<!-- TODO: completar con la URL real de Render una vez definida -->
-
-- **API en producción:** _pendiente_
-- **Credenciales de prueba:** _pendiente_ (se recomienda usar alguno de los usuarios del seed)
+- **API en producción:** https://backend-dsw-nc3p.onrender.com
+- **Credenciales de prueba:**
+  - Email: `valentina.suarez@nautico.com.ar`
+  - Password: `Password123!`
 
 ## Documentación adicional y propuesta del TP
 
