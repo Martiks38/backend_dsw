@@ -29,6 +29,16 @@ jest.mock('@/common/utils/getUserRole.util');
 describe('AuthService', () => {
   let service: AuthService;
 
+  const mockTx = {
+    passwordResetToken: {
+      updateMany: jest.fn(),
+      findUniqueOrThrow: jest.fn(),
+    },
+    user: {
+      update: jest.fn(),
+    },
+  };
+
   const mockPrismaService = {
     user: {
       findUnique: jest.fn(),
@@ -39,8 +49,7 @@ describe('AuthService', () => {
         Promise<{ passwordResetTokenId: number }>,
         [CreateTokenArgs]
       >(),
-      findUnique: jest.fn(),
-      update: jest.fn(),
+      updateMany: jest.fn(),
     },
     $transaction: jest.fn(),
   };
@@ -54,6 +63,14 @@ describe('AuthService', () => {
   };
 
   beforeEach(async () => {
+    mockMailService.sendPasswordReset.mockResolvedValue(undefined);
+
+    mockPrismaService.$transaction.mockImplementation((arg: unknown) =>
+      typeof arg === 'function'
+        ? (arg as (tx: typeof mockTx) => Promise<unknown>)(mockTx)
+        : Promise.resolve(arg),
+    );
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
@@ -145,70 +162,61 @@ describe('AuthService', () => {
       expect(createCallArgs.data.tokenHash).toEqual(expect.any(String));
       expect(createCallArgs.data.expiresAt).toEqual(expiresAt);
     });
+
+    it('debería invalidar los tokens vigentes previos del usuario', async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        userId: 1,
+        email: 'test@test.com',
+        isActive: true,
+      });
+
+      await service.forgotPassword('test@test.com');
+
+      expect(
+        mockPrismaService.passwordResetToken.updateMany,
+      ).toHaveBeenCalledWith({
+        where: { userId: 1, used: false },
+        data: { used: true },
+      });
+    });
   });
 
   describe('resetPassword', () => {
-    it('debería lanzar BadRequestException si el token no existe', async () => {
-      mockPrismaService.passwordResetToken.findUnique.mockResolvedValue(null);
+    const dto = { token: 'rawToken', newPassword: 'newPassword123' };
 
-      await expect(
-        service.resetPassword({
-          token: 'rawToken',
-          newPassword: 'newPassword123',
-        }),
-      ).rejects.toThrow(BadRequestException);
-    });
-
-    it('debería lanzar BadRequestException si el token ya fue usado', async () => {
-      mockPrismaService.passwordResetToken.findUnique.mockResolvedValue({
-        passwordResetTokenId: 1,
-        userId: 1,
-        used: true,
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60),
-      });
-
-      await expect(
-        service.resetPassword({
-          token: 'rawToken',
-          newPassword: 'newPassword123',
-        }),
-      ).rejects.toThrow(BadRequestException);
-    });
-
-    it('debería lanzar BadRequestException si el token expiró', async () => {
-      mockPrismaService.passwordResetToken.findUnique.mockResolvedValue({
-        passwordResetTokenId: 1,
-        userId: 1,
-        used: false,
-        expiresAt: new Date(Date.now() - 1000),
-      });
-
-      await expect(
-        service.resetPassword({
-          token: 'rawToken',
-          newPassword: 'newPassword123',
-        }),
-      ).rejects.toThrow(BadRequestException);
-    });
-
-    it('debería actualizar la contraseña y marcar el token como usado mediante una transacción', async () => {
-      mockPrismaService.passwordResetToken.findUnique.mockResolvedValue({
-        passwordResetTokenId: 1,
-        userId: 1,
-        used: false,
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60),
-      });
-
+    beforeEach(() => {
       (hashPassword as jest.Mock).mockResolvedValue('hashedPassword');
-      mockPrismaService.$transaction.mockResolvedValue([{}, {}]);
+    });
 
-      await service.resetPassword({
-        token: 'rawToken',
-        newPassword: 'newPassword123',
+    // Token inexistente, usado o expirado: el updateMany no matchea nada
+    it('debería lanzar BadRequestException si el token no existe, ya fue usado o expiró', async () => {
+      mockTx.passwordResetToken.updateMany.mockResolvedValue({ count: 0 });
+
+      await expect(service.resetPassword(dto)).rejects.toThrow(
+        BadRequestException,
+      );
+
+      expect(mockTx.user.update).not.toHaveBeenCalled();
+    });
+
+    it('debería consumir el token, actualizar la contraseña e invalidar el resto de tokens', async () => {
+      mockTx.passwordResetToken.updateMany.mockResolvedValue({ count: 1 });
+      mockTx.passwordResetToken.findUniqueOrThrow.mockResolvedValue({
+        userId: 1,
       });
+
+      await service.resetPassword(dto);
 
       expect(hashPassword).toHaveBeenCalledWith('newPassword123');
       expect(mockPrismaService.$transaction).toHaveBeenCalled();
+      expect(mockTx.user.update).toHaveBeenCalledWith({
+        where: { userId: 1 },
+        data: { password: 'hashedPassword' },
+      });
+      expect(mockTx.passwordResetToken.updateMany).toHaveBeenLastCalledWith({
+        where: { userId: 1, used: false },
+        data: { used: true },
+      });
     });
   });
 
