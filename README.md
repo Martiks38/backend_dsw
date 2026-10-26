@@ -41,11 +41,15 @@ Backend desarrollado en **NestJS**.
 3. Creá un archivo `.env` en la raíz del proyecto, usando como base el siguiente ejemplo:
 
    ```dotenv
-   DATABASE_URL=postgresql://postgres:1234@localhost:5432/guarderia
-   FRONTEND_URL=http://localhost:3000
-   JWT_EXPIRES_IN=1d
-   JWT_SECRET=secret
-   RESEND_API_KEY=your-resend-api-key
+    DATABASE_URL=postgresql://postgres:1234@localhost:5432/guarderia
+    DATABASE_URL_POOLED=postgresql://postgres:1234@localhost:5432/guarderia
+    FRONTEND_URL=http://localhost:3000
+    JWT_EXPIRES_IN=1d
+    JWT_SECRET=secret
+    BREVO_API_KEY=your-brevo-api-key
+    MAIL_FROM_EMAIL=no-reply@example.com
+    MAIL_FROM_NAME=Guardería Náutica
+    CONTACT_EMAIL_RECIPIENT=contacto@example.com
    ```
 
    | Variable                  | Descripción                                                                                                                                        |
